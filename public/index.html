@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Robotori</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+        <link rel="stylesheet" type="text/css" href="styles/index.css" />
+    </head>
+    <body ontouchstart="" onload="load()">
+        <div class="darkerBg"></div>
+        <div class="mainMenu" style="">
+            <div class="centerMenu" id="centerMainMenu" style="z-index: 100;max-width: 240px;">
+                <button class="mainMenuButtons" id="mainMenuPlayBtn" onclick="openPlayMenu();">Play</button>
+                <button class="mainMenuButtons" id="mainMenuSettingsBtn" onclick="openSettingsMenu();">Settings</button>
+                <button class="mainMenuButtons" id="mainMenuTutorialBtn">Tutorial</button>
+                <button class="mainMenuButtons halfMainMenuButtons" id="mainMenuLoginBtn" style="margin-right: 2.5px;">Login</button>
+                <button class="mainMenuButtons halfMainMenuButtons" id="mainMenuSignupBtn" style="float: right; margin-left: 2.5px;">Sign up</button>
+            </div>
+            <div class="centerMenu" id="centerSettingsMenu" style="z-index: 101; width: 250px;">
+                <div class="scrollableMenu">
+                    <div class="desc">Color Scheme</div>
+                    <button class="mainMenuButtons colorSchemeButton redColorSchemeButton" onclick="changeColorScheme('redColorScheme',this)"></button>
+                    <button class="mainMenuButtons colorSchemeButton purpleColorSchemeButton" onclick="changeColorScheme('purpleColorScheme',this)"></button>
+                    <button class="mainMenuButtons colorSchemeButton blueColorSchemeButton" onclick="changeColorScheme('blueColorScheme',this)"></button>
+                    <button class="mainMenuButtons colorSchemeButton cyanColorSchemeButton" onclick="changeColorScheme('cyanColorScheme',this)"></button>
+                    <button class="mainMenuButtons colorSchemeButton greenColorSchemeButton" onclick="changeColorScheme('greenColorScheme',this)"></button>
+                    <button class="mainMenuButtons colorSchemeButton yellowColorSchemeButton" onclick="changeColorScheme('yellowColorScheme',this)"></button>
+                </div>
+                <button class="mainMenuButtons backButton" onclick="closeSettingsMenu();">Back</button>
+            </div>
+            <div class="centerMenu" id="playMenu" style="z-index: 100; width: 240px;">
+                <div class="scrollableMenu">
+                    <div class="desc">How would you like to play?</div>
+                    <button class="mainMenuButtons" id="playMenuOnlineButton" onclick="onlineGame();">Play online</button>
+                    <button class="mainMenuButtons" id="playMenuOfflineButton">Play offline</button>
+                </div>
+                <button class="mainMenuButtons backButton" onclick="closePlayMenu();">Back</button>
+            </div>
+
+            <div class="centerMenu" id="centerShareGameMenu" style="z-index: 100;max-width: 301px;">
+                <div class="desc">Share this link with your friend:</div>
+                <input type="text" id="linkTextInput" class="mainMenuButtons text-input noClick" readonly value="robotori.com#73574" />
+                <button class="mainMenuButtons halfMainMenuButtons" id="mainMenuLoginBtn" style="margin-right: 2.5px;" onclick="copyClip('linkTextInput');">Copy</button>
+                <button class="mainMenuButtons halfMainMenuButtons" id="mainMenuSignupBtn" style="float: right; margin-left: 2.5px;">Share</button>
+
+                <button class="mainMenuButtons halfMainMenuButtons" id="mainMenuLoginBtn" style="margin-right: 2.5px;">Find player</button>
+                <button class="mainMenuButtons halfMainMenuButtons" id="mainMenuSignupBtn" style="float: right; margin-left: 2.5px;">Game Settings</button>
+
+                <button class="mainMenuButtons backButton" onclick="closeCenterShareGameMenu()">Back</button>
+            </div>
+        </div>
+        <div class="centerMenu" id="loader">
+            <div class="desc">Connecting to server</div>
+            <div class="hexagonLoader"></div>
+        </div>
+        <div class="gameUI">
+            <!-- <span style="left: 50%; transform: translateX(-50%); position: absolute;">|</span> -->
+            <svg class="gameBoard" xmlns="http://www.w3.org/2000/svg" version="1.1" width="500" height="505" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20"></polygon>
+
+                <rect style="transform: scale(0.3) translate(-241.74px, 138px);" x="0" y="0" width="150" height="150" />
+
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(-241.74px, 138px);"></polygon>
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(241.74px, 138px);"></polygon>
+
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(-483.48px, 276px);"></polygon>
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(0px, 276px);"></polygon>
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(483.48px, 276px);"></polygon>
+
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(-241.74px, 413.9px);"></polygon>
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(241.74px, 413.9px);"></polygon>
+
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(-483.48px, 552px);"></polygon>
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(0px, 552px);"></polygon>
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(483.48px, 552px);"></polygon>
+
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(-241.74px, 689.9px);"></polygon>
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(241.74px, 689.9px);"></polygon>
+
+                <polygon class="hex lightCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(-483.48px, 828px);"></polygon>
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(0px, 828px);"></polygon>
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(483.48px, 828px);"></polygon>
+
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(-241.74px, 966px);"></polygon>
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(241.74px, 966px);"></polygon>
+
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(-483.48px, 1104px);"></polygon>
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(0px, 1104px);"></polygon>
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(483.48px, 1104px);"></polygon>
+
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(-241.74px, 1242px);"></polygon>
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(241.74px, 1242px);"></polygon>
+
+                <polygon class="hex darkCells" points="300,150 225,280 75,280 0,150 75,20 225,20" style="transform: scale(0.3) translate(0px, 1380px);"></polygon>
+            </svg>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="scripts/index.js"></script>
+    </body>
+</html>
