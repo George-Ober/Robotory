@@ -8,6 +8,8 @@
     --menu-text-color: block;
     --border-radius: 6px;
     --curtainBgColor: rgba(0, 0, 0, 0.3);
+    --default-padding: 10px;
+    --red-blue-bg-text: black;
 }
 .hex {
     transform: scale(0.3);
@@ -17,7 +19,7 @@
     stroke-width: 19px;
 }
 .hex:hover {
-    stroke: var(--buttonBottom);
+    /*stroke: var(--buttonBottom);*/
 }
 .lightCells {
     fill: #d2d2d2;
@@ -26,20 +28,34 @@
     fill: #5a5a5a;
 }
 .gameBoard {
-    left: 50%;
-    top: 50%;
-    transform: translate(-44.1%,-50%) rotate(0deg);
-    position: absolute;
-    transform-origin: 44%;
+    width: 100%;
+    height: auto;
 }
 .gameUI {
     display: none;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-x: hidden;
 }
 html,
 body {
     height: 100%;
     margin: 0;
     font-family: arial, sans-serif;
+}
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+.disableSelect {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 .centerMenu {
@@ -58,9 +74,10 @@ body {
     transition: all 0.5s;
 }
 .mainMenuButtons {
-    width: calc(100% - 10px);
-    margin: 5px;
-    background: transparent;
+    display: block;
+    text-align: center;
+    width: calc(100% - 35px);
+    margin: var(--default-padding);
     border: none;
     font-size: 16px;
     background-color: var(--buttonBg);
@@ -85,9 +102,91 @@ body {
     width: calc(50% - 8px);
     white-space: nowrap;
 }
+.vsDisplay{
+    max-width: 95%;
+    text-align: center;
+    padding: 20px 0px;
+    display: inline-block;
+    white-space: nowrap;
+    left: 50%;
+    position: relative;
+    transform: translate(-50%,0) scale(0);
+    transition: all 0.5s;
+    transform-origin: top;
+}
+.pawnDots{
+    display: inline-flex;
+    height: 43px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    vertical-align: middle;
+    transition: width 0.2s;
+}
+.myPawns{
+    flex-wrap: wrap-reverse;
+}
+.vsEl {
+    display: inline-block;
+    padding: var(--default-padding);
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+}
+.vsElLeft{
+    border-radius: var(--border-radius) 0px 0px var(--border-radius);
+}
+.vsElName {
+    color: var(--red-blue-bg-text);
+    font-size: 20px;
+}
+.vsUsernameField {
+    padding: 0px;
+    font-size: inherit;
+    display: inline;
+    background: inherit;
+    width: 148px;
+    font-family: inherit;
+    border: none;
+    outline: none;
+    cursor: auto;
+    -webkit-appearance: none;
+}
+.vsTable{
+    background: var(--menuBg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 3px var(--menuBottom);
+    padding: var(--default-padding);
+}
+.vsNames{
+    font-size: 26px;
+}
+.vsAgainst{
+    background-color: var(--buttonBg);
+    padding: 8px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 3px var(--buttonBottom);
+    border: none;
+    font-size: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.pawnDot{
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border-radius: 100%;
+    float: left;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.whitePawnDot{
+    background-color: #b6b6b6;
+}
 .colorSchemeButton {
-    height: 34px;
-    width: calc((100% / 4) - 10px);
+    height: 15px;
+    width: calc((100% / 4) - 15.2px);
     float: left;
 }
 .redColorSchemeButton {
@@ -151,7 +250,7 @@ body {
 }
 .hexagonLoader {
   position: relative;
-  width: 50px; 
+  width: 50px;
   height: 28.87px;
   background-color: var(--buttonBg);
   margin: 14.43px 0;
@@ -182,6 +281,41 @@ body {
   width: 0;
   border-top: 14.43px solid var(--buttonBg);
 }
+.tableOverlay{
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.availableActionsSpan{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.pawnPlaceButton{
+    width: calc(100% / 3 - 15px);
+}
+.pawnReloadButton{
+    width: calc(50% - 13px);
+}
+.boardElement{
+    position: absolute;
+    transform: translate(-50%,-50%);
+}
+.botBoardElement{
+    width: 10%;
+    transition: top .4s, left .4s;
+}
+.botTopArea{
+    transform: translate(-50%,-50%) rotate(180deg);
+}
+.highlightedCells{
+    fill: var(--menuBottom);
+}
+#linkTextInput{
+    width: calc(100% - 20px);
+}
 @keyframes rotateLoader{
     0%{
         transform: scale(1) rotate(-45deg);
@@ -191,5 +325,32 @@ body {
     }
     100%{
         transform: scale(1) rotate(45deg);
+    }
+}
+.playActions{
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+.actionButtons{
+    width: calc((100% - 39px) / 3);
+}
+.gameBoardContainer{
+    position: absolute;
+    width: 100%;
+}
+.disabledOptionButton{
+    filter: brightness(70%);
+    pointer-events: none;
+}
+#wrap {
+    border:1px solid green;
+    float:left;
+}
+@media (max-width: 395px){
+    .gameBoard{
+    }
+    .actionButtons{
+        width: calc(100% - 10px);
     }
 }
