@@ -3,20 +3,22 @@ module.exports = {
     class Room {
         constructor(p1, p1GUID, p1Name){
             this.id = Math.floor(Math.random() * Math.floor(999999));
-            this.p1 = {socket : p1, GUID : p1GUID, pawns:{white:2, black:2}, name:p1Name, turn: false, area:"bottom"};
+            this.p1 = {socket : p1, GUID : p1GUID, pawns:{white:2, black:2}, name:p1Name === "" ? "Light" : p1Name, turn: false, area:"bottom"};
             this.pawnReserve = {white:10,black:10};
             this.gameBoard = [
                 null,null,null,null,null,null,null,null,null,"blackBot",null,"whiteBot","redBot",null,null,null,null,null,null,null,null,null,null,null
             ];
+            this.ended = false;
         }
         addSecondPlayer(p2, p2GUID, p2Name){
-            this.p2 = {socket : p2, GUID : p2GUID, pawns:{white:2, black:2}, name:p2Name, turn: false, area:"top"};
+            this.p2 = {socket : p2, GUID : p2GUID, pawns:{white:2, black:2}, name:p2Name === "" ? "Dark" : p2Name, turn: false, area:"top"};
         }
         generateGameState(player){
             let r = {};
             if (player === "p1") {
                 r = {
                     id: this.id,
+                    ended: this.ended,
                     p1: {pawns: this.p1.pawns, name: this.p1.name, you: true, turn: this.p1.turn, connected: this.p1.socket.connected, area: this.p1.area},
                     p2: {pawns: this.p2.pawns, name: this.p2.name, you: false, turn: this.p2.turn, connected: this.p2.socket.connected, area: this.p2.area},
                     gameBoard: this.gameBoard,
@@ -25,6 +27,7 @@ module.exports = {
             }else if (player === "p2"){
                 r = {
                     id: this.id,
+                    ended: this.ended,
                     p1: {pawns: this.p1.pawns, name: this.p1.name, you: false, turn: this.p1.turn, connected: this.p1.socket.connected, area: this.p1.area},
                     p2: {pawns: this.p2.pawns, name: this.p2.name, you: true, turn: this.p2.turn, connected: this.p2.socket.connected, area: this.p2.area},
                     gameBoard: this.gameBoard,

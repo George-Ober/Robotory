@@ -31,6 +31,34 @@
     width: 100%;
     height: auto;
 }
+.bckElement {
+    width: 52px;
+    position: absolute;
+    opacity: 0;
+    transform: translate(-50%,-50%);
+    transition: top 1s, left 1s, opacity .5s;
+    transition-timing-function: ease-in;
+}
+#background{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    background-color: var(--buttonBottom);
+}
+#thinking{
+    background-color: var(--buttonBg);
+    box-shadow: 0 3px var(--buttonBottom);
+    padding: 4px 10px;
+    border-radius: 10000px;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(40px, -13px);
+}
 .gameUI {
     display: none;
     position: absolute;
@@ -95,12 +123,12 @@ body {
     box-shadow: none;
     transform: translateY(3px);
 }
-.mainMenuButtons:hover:not(.noClick) {
+.mainMenuButtons:hover:not(.noClick):not(.mobileTouch){
     filter: brightness(0.925);
 }
 .halfMainMenuButtons {
-    width: calc(50% - 8px);
-    white-space: nowrap;
+    width: calc(50% - 33.3px);
+    display: inline-block;
 }
 .vsDisplay{
     max-width: 95%;
@@ -230,6 +258,7 @@ body {
 }
 .text-input {
     filter: brightness(1.2);
+    width: calc(100% - 20px);
     box-sizing: border-box;
     text-align: center;
 }
@@ -243,6 +272,8 @@ body {
     z-index: 50;
     position: absolute;
     background-color: var(--curtainBgColor);
+    opacity: 0;
+    transition: all .4s;
 }
 #loader{
     z-index: 101;
@@ -294,14 +325,32 @@ body {
     cursor: pointer;
 }
 .pawnPlaceButton{
-    width: calc(100% / 3 - 15px);
+    display: inline-block;
+    width: calc(100% / 3 - 40px);
 }
 .pawnReloadButton{
-    width: calc(50% - 13px);
+    width: calc(50% - 38.3px);
+    display: inline-block;
 }
 .boardElement{
     position: absolute;
     transform: translate(-50%,-50%);
+}
+.openMainMenuButton{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    background-color: transparent;
+    background-image: url("../images/sprites/menuButton.png");
+    background-size: cover;
+}
+.openMainMenuButton:focus{
+    outline: none;
 }
 .botBoardElement{
     width: 10%;

@@ -32,11 +32,11 @@ function makeGUID() {
 io.on('connection', (socket) => {
     console.log("User connection");
     let game;
-    socket.on("createroom",(GUID) => {
-        if (GUID === undefined){
-            game = new roomHandler.Room(socket, makeGUID(),"George");
+    socket.on("createroom",(data) => {
+        if (data.GUID === undefined){
+            game = new roomHandler.Room(socket, makeGUID(),data.name);
         }else{
-            game = new roomHandler.Room(socket, GUID,"George");
+            game = new roomHandler.Room(socket, data.GUID,data.name);
         }
         waitingRooms[game.id] = game;
         socket.emit("gotoroom", {id : game.id, GUID : game.p1.GUID});
@@ -45,18 +45,25 @@ io.on('connection', (socket) => {
         if (waitingRooms[data.roomId] !== undefined) {
             if (data.GUID === undefined || data.GUID === null){
                 game = waitingRooms[data.roomId];
-                game.addSecondPlayer(socket, makeGUID(),"Iulian");
+                game.addSecondPlayer(socket, makeGUID(),data.name);
+            }else if(data.GUID === waitingRooms[data.roomId].p1.GUID){
+                game = waitingRooms[data.roomId];
+                game.p1.socket = socket;
+                socket.emit("gotoroom",{id : game.id, GUID : game.p1.GUID});
+                return;
             }else{
                 game = waitingRooms[data.roomId];
-                game.addSecondPlayer(socket, data.GUID,"Iulian");
+                game.addSecondPlayer(socket, data.GUID,data.name);
             }
             workingRooms[game.id] = game;
             delete waitingRooms[game.id];
 
+            game.p2.socket.emit("GUID", game.p2.GUID);
             game.p1.socket.emit("startgame", game.generateGameState("p1"));
             game.p2.socket.emit("startgame", game.generateGameState("p2"));
             game.p1.turn = true;
             game.p1.socket.emit("yourTurn");
+            game.p2.socket.emit("ennemmyTurn");
         }else{
             if (workingRooms[data.roomId] !== undefined) {
                 if(data.GUID == workingRooms[data.roomId].p1.GUID){
@@ -99,6 +106,7 @@ io.on('connection', (socket) => {
 
                     game.p2.turn = true;
                     game.p2.socket.emit("yourTurn");
+                    game.p1.socket.emit("ennemmyTurn");
                 }
             }else if(socket == game.p2.socket){
                 if(game.p2.turn){
@@ -119,6 +127,7 @@ io.on('connection', (socket) => {
 
                     game.p1.turn = true;
                     game.p1.socket.emit("yourTurn");
+                    game.p2.socket.emit("ennemmyTurn");
                 }
             }
         }
@@ -139,9 +148,6 @@ io.on('connection', (socket) => {
                             game.p1.socket.emit("reloadedPawn", game.generateGameState("p1"));
                             game.p2.socket.emit("reloadedPawn", game.generateGameState("p2"));
 
-                            game.p2.turn = true;
-                            game.p2.socket.emit("yourTurn");
-
                             if(game.pawnReserve.white === 0 || game.pawnReserve.black === 0){
                                 if(game.findWinner()){
                                     game.p1.socket.emit("winner", {name:game.p1.name,you:true});
@@ -150,6 +156,11 @@ io.on('connection', (socket) => {
                                     game.p1.socket.emit("winner", {name:game.p2.name,you:false});
                                     game.p2.socket.emit("winner", {name:game.p2.name,you:true});
                                 }
+                                game.ended = true;
+                            }else{
+                                game.p2.turn = true;
+                                game.p2.socket.emit("yourTurn");
+                                game.p1.socket.emit("ennemmyTurn");
                             }
                         }
                     }
@@ -168,9 +179,6 @@ io.on('connection', (socket) => {
                             game.p1.socket.emit("reloadedPawn", game.generateGameState("p1"));
                             game.p2.socket.emit("reloadedPawn", game.generateGameState("p2"));
 
-                            game.p1.turn = true;
-                            game.p1.socket.emit("yourTurn");
-
                             if(game.pawnReserve.white === 0 || game.pawnReserve.black === 0){
                                 if(game.findWinner()){
                                     game.p1.socket.emit("winner", {name:game.p1.name,you:true});
@@ -179,6 +187,11 @@ io.on('connection', (socket) => {
                                     game.p1.socket.emit("winner", {name:game.p2.name,you:false});
                                     game.p2.socket.emit("winner", {name:game.p2.name,you:true});
                                 }
+                                game.ended = true;
+                            }else{
+                                game.p1.turn = true;
+                                game.p1.socket.emit("yourTurn");
+                                game.p2.socket.emit("ennemmyTurn");
                             }
                         }
                     }
@@ -233,6 +246,23 @@ io.on('connection', (socket) => {
                         game.p2.socket.emit("movedBot",{move:data, state:game.generateGameState("p2")});
 
                     }
+                }
+            }
+        }
+    });
+    socket.on("updateName", (data) => {
+        if(typeof game != "undefined") {
+            if(data.length < 20){
+                if(socket == game.p1.socket){
+                    game.p1.name = data === "" ? "Light" : data;
+
+                    game.p1.socket.emit("nameChanged", {id: game.id, name:game.p1.name, you: true});
+                    game.p2.socket.emit("nameChanged", {id: game.id, name:game.p1.name, you: false});
+                }else if(socket == game.p2.socket){
+                    game.p2.name = data === "" ? "Dark" : data;
+
+                    game.p1.socket.emit("nameChanged", {id: game.id, name:game.p2.name, you: false});
+                    game.p2.socket.emit("nameChanged", {id: game.id, name:game.p2.name, you: true});
                 }
             }
         }
