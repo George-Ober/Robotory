@@ -45,6 +45,7 @@ let area = "bottom";
 let gameBoard = [];
 let movingBot = false;
 let movingBotPath = {};
+let offlineGameType = false;
 
 const allLanguages = {
     en_GB: {
@@ -500,7 +501,34 @@ function copyClip(id) {
         document.selection.empty();
     }
 }
+function rematchBtn() {
+    if(offlineGameType){
+        window.localStorage.removeItem("offlineGame");
+        offlineGame();
+        closeMenu("winnerMenu");
+    }
+}
+function offlineGame() {
+    offlineGameType = true;
+    if(localStorage["offlineGame"] == undefined || localStorage["offlineGame"] == null){
+        localStorage["offlineGame"] = JSON.stringify({
+            p1: {pawns: {white:2,black:2}, name: "Light", turn: true, Oarea: "bottom"},
+            p2: {pawns: {white:2,black:2}, name: "Dark", turn: false, Oarea: "top"},
+            pawnReserve: {white:10,black:10},
+            gameBoard: [null,null,null,null,null,null,null,null,null,"blackBot",null,"whiteBot","redBot",null,null,null,null,null,null,null,null,null,null,null],
+            ended: false
+        });
+    }
+    fetchGameState(JSON.parse(localStorage["offlineGame"]));
+    document.getElementById("background").style.display = "none";
+    document.getElementsByClassName("gameUI")[0].style.display = "inline-block";
+    closeMenu("playMenu");
+    if (!JSON.parse(localStorage["offlineGame"]).ended) closeDarkerBg();
 
+    openVsDisplay("ennemyDisplay");
+    openVsDisplay("reserveInfo");
+    resizeUpdate();
+}
 function onlineGame() {
     if (socket.connected) {
         beforeTime = Math.floor(new Date() / 1000);
@@ -601,22 +629,120 @@ function placingPawnChange(d) {
     }
 }
 function sendReloadValue() {
-    socket.emit("reloadPawns", reload);
-    reload = { white: 0, black: 0 };
-    document.getElementById("reloadPawnsShowNew").innerText = "";
-    document.getElementById("confirmReloadButton").style.display = "none";
-    document.getElementById("pawnsReloadContainer").innerHTML = "";
-    closeMenu("reloadEnergyMenu");
-    openMenu("availableActionsMenu");
-    reload = { white: 0, black: 0 };
-    document.getElementById("pawnsReloadContainer").innerHTML = "";
-    document.getElementById("reloadPawnsShowNew").innerText = "";
-    document.getElementById("confirmReloadButton").style.display = "none";
-    document.getElementById("reserveWhite").innerText = reserve.white;
-    document.getElementById("reserveBlack").innerText = reserve.black;
+    if (!offlineGameType){
+        socket.emit("reloadPawns", reload);
+        reload = { white: 0, black: 0 };
+        document.getElementById("reloadPawnsShowNew").innerText = "";
+        document.getElementById("confirmReloadButton").style.display = "none";
+        document.getElementById("pawnsReloadContainer").innerHTML = "";
+        document.getElementById("reserveWhite").innerText = reserve.white;
+        document.getElementById("reserveBlack").innerText = reserve.black;
+        closeMenu("reloadEnergyMenu");
+        openMenu("availableActionsMenu");
+    }else{
+        let game = JSON.parse(localStorage["offlineGame"]);
+        if(game.p1.turn){
+            if (game.p1.pawns.white + game.p1.pawns.black < 4) {
+                if (reload.white + reload.black == 4 - game.p1.pawns.white - game.p1.pawns.black || game.pawnReserve.white - reload.white === 0 || game.pawnReserve.black - reload.black === 0) {
+                    if (reload.white <= game.pawnReserve.white && reload.black <= game.pawnReserve.black) {
+                        game.pawnReserve.white -= reload.white;
+                        game.pawnReserve.black -= reload.black;
+
+                        game.p1.pawns.white += reload.white;
+                        game.p1.pawns.black += reload.black;
+
+                        game.p1.turn = false;
+
+                        closeMenu("reloadEnergyMenu");
+                        closeMenu("availableActionsMenu");
+
+                        if (game.pawnReserve.white === 0 || game.pawnReserve.black === 0) {
+                            if (findWinner(game.gameBoard)) {
+                                document.getElementById("winnerName").innerText = game.p1.name + " won!";
+
+                                openMenu("winnerMenu");
+                                document.getElementsByClassName("darkerBg")[0].removeEventListener("click", cancelReloadPawnsButton);
+                                openDarkerBg();
+                                document.getElementById("yourTurnInfo").style.display = "none";
+                            } else {
+                                document.getElementById("winnerName").innerText = game.p2.name + " won!";
+
+                                openMenu("winnerMenu");
+                                document.getElementsByClassName("darkerBg")[0].removeEventListener("click", cancelReloadPawnsButton);
+                                openDarkerBg();
+                                document.getElementById("yourTurnInfo").style.display = "none";
+                            }
+                            game.ended = true;
+                        } else {
+                            closeDarkerBg();
+                            game.p2.turn = true;
+                        }
+                    }
+                }
+            }
+        }else if (game.p2.turn) {
+            if (game.p2.pawns.white + game.p2.pawns.black < 4) {
+                if (reload.white + reload.black == 4 - game.p2.pawns.white - game.p2.pawns.black || game.pawnReserve.white - reload.white === 0 || game.pawnReserve.black - reload.black === 0) {
+                    if (reload.white <= game.pawnReserve.white && reload.black <= game.pawnReserve.black) {
+                        game.pawnReserve.white -= reload.white;
+                        game.pawnReserve.black -= reload.black;
+
+                        game.p2.pawns.white += reload.white;
+                        game.p2.pawns.black += reload.black;
+
+                        game.p2.turn = false;
+
+                        closeMenu("reloadEnergyMenu");
+                        closeMenu("availableActionsMenu");
+
+                        if (game.pawnReserve.white === 0 || game.pawnReserve.black === 0) {
+                            if (findWinner(game.gameBoard)) {
+                                document.getElementById("winnerName").innerText = game.p1.name + " won!";
+
+                                openMenu("winnerMenu");
+                                document.getElementsByClassName("darkerBg")[0].removeEventListener("click", cancelReloadPawnsButton);
+                                openDarkerBg();
+                                document.getElementById("yourTurnInfo").style.display = "none";
+                            } else {
+                                document.getElementById("winnerName").innerText = game.p2.name + " won!";
+
+                                openMenu("winnerMenu");
+                                document.getElementsByClassName("darkerBg")[0].removeEventListener("click", cancelReloadPawnsButton);
+                                openDarkerBg();
+                                document.getElementById("yourTurnInfo").style.display = "none";
+                            }
+                            game.ended = true;
+                        } else {
+                            closeDarkerBg();
+                            game.p1.turn = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        fetchGameState(game);
+        localStorage["offlineGame"] = JSON.stringify(game);
+        reload = {};
+    }
+}
+function findWinner(gameBoard){
+    let p1Count = 0, p2Count = 0;
+    for (let i = 0; i < gameBoard.length; i++) {
+        if(gameBoard[i] === "blackBot" || gameBoard[i] === "whiteBot" || gameBoard[i] === "redBot"){
+            if(i <= 9 || i === 13 || i === 11){
+                p2Count++;
+            }else{
+                p1Count++;
+            }
+        }
+    }
+    //True is p1, false is p2
+    return p1Count > p2Count;
 }
 function addToReload(p) {
     if (reload.white + reload.black === toreload) return;
+    if (isNaN(reload.white)|| isNaN(reload.black)) cancelReloadPawnsButton();
     if (p === "whitePawn") {
         if (parseInt(document.getElementById("reserveWhite").innerText) === 0) return;
         else {
@@ -643,147 +769,266 @@ function closeRecentGamesMenu() {
     openMenu("centerMainMenu");
 }
 function fetchGameState(gameState){
-    let you;
-    let ennemy;
-    movingBot = false;
-    clearHighlightedCells();
-    if(gameState.p1.you){
-        you = gameState.p1;
-        ennemy = gameState.p2;
-    }else{
-        you = gameState.p2;
-        ennemy = gameState.p1;
-    }
+    let you, ennemy;
+    if (offlineGameType){
+        document.getElementById("yourName").innerText = gameState.p1.name;
+        document.getElementById("ennemyName").innerText = gameState.p2.name;
 
-    let recentGames = JSON.parse(localStorage["recentGames"]);
-    for (let i = 0; i < recentGames.length; i++) {
-        if(recentGames[i].id === gameState.id){
-            recentGames.splice(i,1);
-        }
-    }
-    recentGames.push({id:gameState.id, name: ennemy.name});
+        clearHighlightedCells();
+        movingBot = false;
+        placingPawn = false;
+        gameBoard = gameState.gameBoard;
 
-    localStorage["recentGames"] = JSON.stringify(recentGames);
 
-    if(ennemy.turn) document.getElementById("thinking").style.display = "inline-block";
-    else document.getElementById("thinking").style.display = "none";
-
-    gameBoard = gameState.gameBoard;
-    area = you.area;
-
-    if(you.turn){
-        document.getElementById("yourTurnInfo").style.display = "block";
-    }else{
-        document.getElementById("yourTurnInfo").style.display = "none";
-    }
-    placingPawn = false;
-    document.getElementById("yourName").innerText = you.name;
-    document.getElementById("ennemyName").innerText = ennemy.name;
-
-    document.getElementById("myPawns").innerHTML = "";
-    document.getElementById("ennemyPawns").innerHTML = "";
-    for (let i = 0; i < you.pawns.black; i++) {
-        let dot = document.createElement("div");
-        dot.classList.add("pawnDot");
-        document.getElementById("myPawns").appendChild(dot);
-    }
-    for (let i = 0; i < you.pawns.white; i++) {
-        let dot = document.createElement("div");
-        dot.classList.add("pawnDot");
-        dot.classList.add("whitePawnDot");
-        document.getElementById("myPawns").appendChild(dot);
-    }
-    for (let i = 0; i < ennemy.pawns.black; i++) {
-        let dot = document.createElement("div");
-        dot.classList.add("pawnDot");
-        document.getElementById("ennemyPawns").appendChild(dot);
-    }
-    for (let i = 0; i < ennemy.pawns.white; i++) {
-        let dot = document.createElement("div");
-        dot.classList.add("pawnDot");
-        dot.classList.add("whitePawnDot");
-        document.getElementById("ennemyPawns").appendChild(dot);
-    }
-    document.getElementById("placePawnWhite").innerText = you.pawns.white;
-    document.getElementById("placePawnBlack").innerText = you.pawns.black;
-    //Clear displayed game board
-    let tableOverlay = document.getElementsByClassName("tableOverlay")[0];
-    tableOverlay.innerHTML = "";
-    for (let i = 0; i < gameState.gameBoard.length; i++) {
-        let x = document.createElement("img");
-        if (area === "top"){
-            x.classList.add("botTopArea");
-        }
-        x.classList.add("boardElement");
-        if(gameState.gameBoard[i] == "blackBot"){
-            x.classList.add("botBoardElement");
-            x.setAttribute("src","images/sprites/blackRobot.svg");
-            x.id = "blackBot";
-            x.style.top = positionInBoardById[i][0] + "%";
-            x.style.left = positionInBoardById[i][1] + "%";
-            tableOverlay.appendChild(x);
-        }else if(gameState.gameBoard[i] == "whiteBot"){
-            x.classList.add("botBoardElement");
-            x.setAttribute("src","images/sprites/whiteRobot.svg");
-            x.id = "whiteBot";
-            x.style.top = positionInBoardById[i][0] + "%";
-            x.style.left = positionInBoardById[i][1] + "%";
-            tableOverlay.appendChild(x);
-        }else if(gameState.gameBoard[i] == "redBot"){
-            x.classList.add("botBoardElement");
-            x.setAttribute("src","images/sprites/redRobot.svg");
-            x.id = "redBot";
-            x.style.top = positionInBoardById[i][0] + "%";
-            x.style.left = positionInBoardById[i][1] + "%";
-            tableOverlay.appendChild(x);
-        }else if(gameState.gameBoard[i] == "blackPawn"){
-            x.classList.add("botBoardElement");
-            x.setAttribute("src","images/sprites/blackDot.png");
-            x.style.top = positionInBoardById[i][0] + "%";
-            x.style.left = positionInBoardById[i][1] + "%";
-            x.id = `boardOverlayPawn${i}`;
-            tableOverlay.appendChild(x);
-        }else if(gameState.gameBoard[i] == "whitePawn"){
-            x.classList.add("botBoardElement");
-            x.setAttribute("src","images/sprites/whiteDot.png");
-            x.style.top = positionInBoardById[i][0] + "%";
-            x.style.left = positionInBoardById[i][1] + "%";
-            x.id = `boardOverlayPawn${i}`;
-            tableOverlay.appendChild(x);
+        if (gameState.p1.turn){
+            you = gameState.p1;
+            ennemy = gameState.p2;
         }else{
-
+            you = gameState.p2;
+            ennemy = gameState.p1;
         }
-    }
-    reserve = gameState.pawnReserve;
-    document.getElementById("reserveWhite").innerText = gameState.pawnReserve.white;
-    document.getElementById("reserveBlack").innerText = gameState.pawnReserve.black;
-    document.getElementById("topReserveWhite").innerText = gameState.pawnReserve.white;
-    document.getElementById("topReserveBlack").innerText = gameState.pawnReserve.black;
-    document.getElementById("textReloadPawns").innerText = allLanguages[lang]["energyPawnsReloadAction"].replace("%actual", you.pawns.white + you.pawns.black).replace("%future", 4 - you.pawns.white - you.pawns.black);
-    document.getElementById("pawnsReloadContainer").innerHTML = "";
+        document.getElementById("thinking").style.display = "none";
+        if (you.turn) {
+            document.getElementById("yourTurnInfo").style.display = "block";
+        }else{
+            document.getElementById("yourTurnInfo").style.display = "none";
+        }
+        document.getElementById("myPawns").innerHTML = "";
+        document.getElementById("ennemyPawns").innerHTML = "";
+        for (let i = 0; i < gameState.p1.pawns.black; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            document.getElementById("myPawns").appendChild(dot);
+        }
+        for (let i = 0; i < gameState.p1.pawns.white; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            dot.classList.add("whitePawnDot");
+            document.getElementById("myPawns").appendChild(dot);
+        }
+        for (let i = 0; i < gameState.p2.pawns.black; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            document.getElementById("ennemyPawns").appendChild(dot);
+        }
+        for (let i = 0; i < gameState.p2.pawns.white; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            dot.classList.add("whitePawnDot");
+            document.getElementById("ennemyPawns").appendChild(dot);
+        }
+        document.getElementById("placePawnWhite").innerText = you.pawns.white;
+        document.getElementById("placePawnBlack").innerText = you.pawns.black;
 
-    document.getElementById("reloadPawnsShowNew").innerText = "";
-    document.getElementById("confirmReloadButton").style.display = "none";
+        let tableOverlay = document.getElementsByClassName("tableOverlay")[0];
+        tableOverlay.innerHTML = "";
+        for (let i = 0; i < gameState.gameBoard.length; i++) {
+            let x = document.createElement("img");
+            x.classList.add("boardElement");
+            x.classList.add("botBoardElement");
+            if (gameState.gameBoard[i] == "blackBot") {
+                x.setAttribute("src", "images/sprites/blackRobot.svg");
+                x.id = "blackBot";
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "whiteBot") {
+                x.setAttribute("src", "images/sprites/whiteRobot.svg");
+                x.id = "whiteBot";
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "redBot") {
+                x.setAttribute("src", "images/sprites/redRobot.svg");
+                x.id = "redBot";
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "blackPawn") {
+                x.setAttribute("src", "images/sprites/blackDot.png");
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                x.id = `boardOverlayPawn${i}`;
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "whitePawn") {
+                x.setAttribute("src", "images/sprites/whiteDot.png");
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                x.id = `boardOverlayPawn${i}`;
+                tableOverlay.appendChild(x);
+            }
+        }
+        reserve = gameState.pawnReserve;
 
-    toreload = 4 - you.pawns.white - you.pawns.black;
+        document.getElementById("reserveWhite").innerText = gameState.pawnReserve.white;
+        document.getElementById("reserveBlack").innerText = gameState.pawnReserve.black;
+        document.getElementById("topReserveWhite").innerText = gameState.pawnReserve.white;
+        document.getElementById("topReserveBlack").innerText = gameState.pawnReserve.black;
+        document.getElementById("textReloadPawns").innerText = allLanguages[lang]["energyPawnsReloadAction"].replace("%actual", you.pawns.white + you.pawns.black).replace("%future", 4 - you.pawns.white - you.pawns.black);
+        document.getElementById("yourTurnDesc").innerText = allLanguages[lang]["yourTurnDescOffline"].replace("%name", you.name);
+        document.getElementById("pawnsReloadContainer").innerHTML = "";
 
-    if(you.pawns.white + you.pawns.black === 4){
-        document.getElementById("reloadEnergyOptionButton").classList.add("disabledOptionButton");
-        document.getElementById("placePawnOptionButton").classList.remove("disabledOptionButton");
-    }else if (you.pawns.white + you.pawns.black === 0) {
-        document.getElementById("placePawnOptionButton").classList.add("disabledOptionButton");
+        document.getElementById("reloadPawnsShowNew").innerText = "";
+        document.getElementById("confirmReloadButton").style.display = "none";
+
+        toreload = 4 - you.pawns.white - you.pawns.black;
+
+        if (you.pawns.white + you.pawns.black === 4) {
+            document.getElementById("reloadEnergyOptionButton").classList.add("disabledOptionButton");
+            document.getElementById("placePawnOptionButton").classList.remove("disabledOptionButton");
+        } else if (you.pawns.white + you.pawns.black === 0) {
+            document.getElementById("placePawnOptionButton").classList.add("disabledOptionButton");
+        } else {
+            document.getElementById("reloadEnergyOptionButton").classList.remove("disabledOptionButton");
+            document.getElementById("placePawnOptionButton").classList.remove("disabledOptionButton");
+        }
+
+        let buttons = document.getElementsByClassName("pawnPlaceButton");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("activeColorSchemeButton");
+        }
+        if (gameState.ended) {
+            openMenu("winnerMenu");
+            openDarkerBg();
+        }
     }else{
-        document.getElementById("reloadEnergyOptionButton").classList.remove("disabledOptionButton");
-        document.getElementById("placePawnOptionButton").classList.remove("disabledOptionButton");
-    }
+        movingBot = false;
+        clearHighlightedCells();
+        if (gameState.p1.you) {
+            you = gameState.p1;
+            ennemy = gameState.p2;
+        } else {
+            you = gameState.p2;
+            ennemy = gameState.p1;
+        }
 
-    let buttons = document.getElementsByClassName("pawnPlaceButton");
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove("activeColorSchemeButton");
-    }
-    if(gameState.ended){
-        openMenu("winnerMenu");
-        openDarkerBg();
+        let recentGames = JSON.parse(localStorage["recentGames"]);
+        for (let i = 0; i < recentGames.length; i++) {
+            if (recentGames[i].id === gameState.id) {
+                recentGames.splice(i, 1);
+            }
+        }
+        recentGames.push({id: gameState.id, name: ennemy.name});
+
+        localStorage["recentGames"] = JSON.stringify(recentGames);
+
+        if (ennemy.turn) document.getElementById("thinking").style.display = "inline-block";
+        else document.getElementById("thinking").style.display = "none";
+
+        gameBoard = gameState.gameBoard;
+        area = you.area;
+
+        if (you.turn) {
+            document.getElementById("yourTurnInfo").style.display = "block";
+        } else {
+            document.getElementById("yourTurnInfo").style.display = "none";
+        }
+        placingPawn = false;
+        document.getElementById("yourName").innerText = you.name;
+        document.getElementById("ennemyName").innerText = ennemy.name;
+
+        document.getElementById("myPawns").innerHTML = "";
+        document.getElementById("ennemyPawns").innerHTML = "";
+        for (let i = 0; i < you.pawns.black; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            document.getElementById("myPawns").appendChild(dot);
+        }
+        for (let i = 0; i < you.pawns.white; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            dot.classList.add("whitePawnDot");
+            document.getElementById("myPawns").appendChild(dot);
+        }
+        for (let i = 0; i < ennemy.pawns.black; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            document.getElementById("ennemyPawns").appendChild(dot);
+        }
+        for (let i = 0; i < ennemy.pawns.white; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            dot.classList.add("whitePawnDot");
+            document.getElementById("ennemyPawns").appendChild(dot);
+        }
+        document.getElementById("placePawnWhite").innerText = you.pawns.white;
+        document.getElementById("placePawnBlack").innerText = you.pawns.black;
+        //Clear displayed game board
+        let tableOverlay = document.getElementsByClassName("tableOverlay")[0];
+        tableOverlay.innerHTML = "";
+        for (let i = 0; i < gameState.gameBoard.length; i++) {
+            let x = document.createElement("img");
+            if (area === "top") {
+                x.classList.add("botTopArea");
+            }
+            x.classList.add("boardElement");
+            x.classList.add("botBoardElement");
+            if (gameState.gameBoard[i] == "blackBot") {
+                x.setAttribute("src", "images/sprites/blackRobot.svg");
+                x.id = "blackBot";
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "whiteBot") {
+                x.setAttribute("src", "images/sprites/whiteRobot.svg");
+                x.id = "whiteBot";
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "redBot") {
+                x.setAttribute("src", "images/sprites/redRobot.svg");
+                x.id = "redBot";
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "blackPawn") {
+                x.setAttribute("src", "images/sprites/blackDot.png");
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                x.id = `boardOverlayPawn${i}`;
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "whitePawn") {
+                x.setAttribute("src", "images/sprites/whiteDot.png");
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                x.id = `boardOverlayPawn${i}`;
+                tableOverlay.appendChild(x);
+            } else {
+
+            }
+        }
+        reserve = gameState.pawnReserve;
+        document.getElementById("reserveWhite").innerText = gameState.pawnReserve.white;
+        document.getElementById("reserveBlack").innerText = gameState.pawnReserve.black;
+        document.getElementById("topReserveWhite").innerText = gameState.pawnReserve.white;
+        document.getElementById("topReserveBlack").innerText = gameState.pawnReserve.black;
+        document.getElementById("textReloadPawns").innerText = allLanguages[lang]["energyPawnsReloadAction"].replace("%actual", you.pawns.white + you.pawns.black).replace("%future", 4 - you.pawns.white - you.pawns.black);
+        document.getElementById("yourTurnDesc").innerText = allLanguages[lang]["yourTurnDesc"];
+        document.getElementById("pawnsReloadContainer").innerHTML = "";
+
+        document.getElementById("reloadPawnsShowNew").innerText = "";
+        document.getElementById("confirmReloadButton").style.display = "none";
+
+        toreload = 4 - you.pawns.white - you.pawns.black;
+
+        if (you.pawns.white + you.pawns.black === 4) {
+            document.getElementById("reloadEnergyOptionButton").classList.add("disabledOptionButton");
+            document.getElementById("placePawnOptionButton").classList.remove("disabledOptionButton");
+        } else if (you.pawns.white + you.pawns.black === 0) {
+            document.getElementById("placePawnOptionButton").classList.add("disabledOptionButton");
+        } else {
+            document.getElementById("reloadEnergyOptionButton").classList.remove("disabledOptionButton");
+            document.getElementById("placePawnOptionButton").classList.remove("disabledOptionButton");
+        }
+
+        let buttons = document.getElementsByClassName("pawnPlaceButton");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("activeColorSchemeButton");
+        }
+        if (gameState.ended) {
+            openMenu("winnerMenu");
+            openDarkerBg();
+        }
     }
 }
 function placePawnOption() {
@@ -843,7 +1088,42 @@ function showIds() {
 }
 function boardClick(element, n) {
     if (placingPawn) {
-        socket.emit("placingPawn", { color: placingPawn, pos: n });
+        if (!offlineGameType) socket.emit("placingPawn", { color: placingPawn, pos: n });
+        else{
+            let gameState = JSON.parse(localStorage["offlineGame"]);
+            if(gameState.p1.turn){
+                if(placingPawn == "whitePawn" && gameState.p1.pawns.white >= 1){
+                    if (gameState.gameBoard[n] == null){
+                        gameState.gameBoard[n] = "whitePawn";
+                        gameState.p1.pawns.white--;
+                    }else return;
+                }else if(placingPawn == "blackPawn" && gameState.p1.pawns.black >= 1){
+                    if (gameState.gameBoard[n] == null){
+                        gameState.gameBoard[n] = "blackPawn";
+                        gameState.p1.pawns.black--;
+                    }else return;
+                }else return;
+                gameState.p1.turn = false;
+                gameState.p2.turn = true;
+            }else if (gameState.p2.turn){
+                if(placingPawn == "whitePawn" && gameState.p2.pawns.white >= 1){
+                    if (gameState.gameBoard[n] == null){
+                        gameState.gameBoard[n] = "whitePawn";
+                        gameState.p2.pawns.white--;
+                    }else return;
+                }else if(placingPawn == "blackPawn" && gameState.p2.pawns.black >= 1){
+                    if (gameState.gameBoard[n] == null){
+                        gameState.gameBoard[n] = "blackPawn";
+                        gameState.p2.pawns.black--;
+                    }else return;
+                }else return;
+                gameState.p1.turn = true;
+                gameState.p2.turn = false;
+            }
+            closeVsDisplay("placePawnMenu");
+            fetchGameState(gameState);
+            localStorage["offlineGame"] = JSON.stringify(gameState);
+        }
     } else if (movingBot) {
         if (gameBoard[n] === "blackBot" || gameBoard[n] === "whiteBot" || gameBoard[n] === "redBot") {
             clearHighlightedCells();
@@ -869,7 +1149,86 @@ function updateName() {
     localStorage["name"] = document.getElementById("nameTextInput").value;
 }
 function confirmRobotPath() {
-    socket.emit("moveRobot", movingBotPath);
+    if(!offlineGameType) socket.emit("moveRobot", movingBotPath);
+    else{
+        let game = JSON.parse(localStorage["offlineGame"]);
+        if(game.p1.turn){
+            for (let i = 0; i < game.gameBoard.length; i++) {
+                if(game.gameBoard[i] === movingBotPath.bot && movingBotPath.path[0] === i){
+                    for (let j = 0; j < movingBotPath.path.length - 1; j++) {
+                        if(!((game.gameBoard[movingBotPath.path[j+1]]   === "blackPawn" && movingBotPath.bot === "blackBot") ||
+                            (game.gameBoard[movingBotPath.path[j+1]]  === "whitePawn" && movingBotPath.bot === "whiteBot") ||
+                            ((game.gameBoard[movingBotPath.path[j+1]] === "blackPawn" || game.gameBoard[movingBotPath.path[j+1]] === "whitePawn") && movingBotPath.bot === "redBot"))) {
+                            return;
+                        }
+                    }
+                    for (let j = 0; j < movingBotPath.path.length; j++) {
+                        game.gameBoard[movingBotPath.path[j]] = null;
+                    }
+
+                    game.gameBoard[movingBotPath.path[movingBotPath.path.length - 1]] = movingBotPath.bot;
+
+                    game.p1.turn = false;
+                    game.p2.turn = true;
+
+                    closeVsDisplay("moveBotMenu");
+                    document.getElementById("confirmRobotPath").style.display = "none";
+
+                    for (let i = 0; i < movingBotPath.path.length; i++) {
+                        setTimeout(() => {
+                            let x = document.getElementById(movingBotPath.bot);
+                            x.style.top = positionInBoardById[movingBotPath.path[i]][0] + "%";
+                            x.style.left = positionInBoardById[movingBotPath.path[i]][1] + "%";
+                            document.getElementById(`boardOverlayPawn${movingBotPath.path[i]}`).style.display = "none";
+                        }, i * 500);
+                    }
+                    setTimeout(() => {
+                        fetchGameState(game);
+                        localStorage["offlineGame"] = JSON.stringify(game);
+                        movingBotPath = {};
+                    }, movingBotPath.path.length * 500);
+                }
+            }
+        }else if(game.p2.turn){
+            for (let i = 0; i < game.gameBoard.length; i++) {
+                if(game.gameBoard[i] === movingBotPath.bot && movingBotPath.path[0] === i){
+                    for (let j = 0; j < movingBotPath.path.length - 1; j++) {
+                        if(!((game.gameBoard[movingBotPath.path[j+1]]   === "blackPawn" && movingBotPath.bot === "blackBot") ||
+                            (game.gameBoard[movingBotPath.path[j+1]]  === "whitePawn" && movingBotPath.bot === "whiteBot") ||
+                            ((game.gameBoard[movingBotPath.path[j+1]] === "blackPawn" || game.gameBoard[movingBotPath.path[j+1]] === "whitePawn") && movingBotPath.bot === "redBot"))) {
+                            return;
+                        }
+                    }
+                    for (let j = 0; j < movingBotPath.path.length; j++) {
+                        game.gameBoard[movingBotPath.path[j]] = null;
+                    }
+
+                    game.gameBoard[movingBotPath.path[movingBotPath.path.length - 1]] = movingBotPath.bot;
+
+                    game.p1.turn = true;
+                    game.p2.turn = false;
+
+                    closeVsDisplay("moveBotMenu");
+                    document.getElementById("confirmRobotPath").style.display = "none";
+
+                    for (let i = 0; i < movingBotPath.path.length; i++) {
+                        setTimeout(() => {
+                            let x = document.getElementById(movingBotPath.bot);
+                            x.style.top = positionInBoardById[movingBotPath.path[i]][0] + "%";
+                            x.style.left = positionInBoardById[movingBotPath.path[i]][1] + "%";
+                            document.getElementById(`boardOverlayPawn${movingBotPath.path[i]}`).style.display = "none";
+                        }, i * 500);
+                    }
+                    setTimeout(() => {
+                        fetchGameState(game);
+                        localStorage["offlineGame"] = JSON.stringify(game);
+                        movingBotPath = {};
+                    }, movingBotPath.path.length * 500);
+                }
+            }
+        }
+        
+    }
 }
 function cancelMoveBotOption() {
     movingBot = false;

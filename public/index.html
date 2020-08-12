@@ -100,7 +100,7 @@
         </div>
         <div class="vsDisplay" style="display: none;width: fit-content;padding-top: 0;transform: translate(-50%, 0px) scale(1);opacity: 1;" id="yourTurnInfo">
             <div class="vsTable">
-                <p style="margin: 0;white-space: pre-line;max-width: 284px;" data-i18n="yourTurnDesc"></p>
+                <p style="margin: 0;white-space: pre-line;max-width: 284px;" id="yourTurnDesc"></p>
                 <a class="mainMenuButtons" onclick="openAvailableActionsMenu()" data-i18n="availableOptionsBtn"></a>
             </div>
         </div>
@@ -151,7 +151,7 @@
         <div class="centerMenu" id="winnerMenu" style="z-index: 101">
             <div class="desc" id="winnerName"></div>
             <div class="desc" data-i18n="winnerMenuDesc"></div>
-            <a class="mainMenuButtons backButton" data-i18n="rematchBtn"></a>
+            <a class="mainMenuButtons backButton" onclick="rematchBtn();" data-i18n="rematchBtn"></a>
             <a class="mainMenuButtons" onclick="mainMenuAfterGame();" data-i18n="mainMenuBtn"></a>
         </div>
     </div>
