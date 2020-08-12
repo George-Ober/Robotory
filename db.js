@@ -29,7 +29,7 @@ function createAccount(a){
     MongoClient.connect(dburl, function(err, db) {
         if (err) throw err;
         var dbo = db.db(dbname);
-        var myobj = { name: a.name, email: a.email, discID: undefined, pswrd: a.password};
+        var myobj = { name: a.name, discID: undefined, pswrd: a.password};
 
         dbo.collection(colname).insertOne(myobj, function(err, res) {
             if (err) throw err;

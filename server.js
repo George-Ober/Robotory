@@ -2,6 +2,8 @@ const roomHandler = require("./room.js");
 const express = require('express');
 const util = require('util');
 let app = express();
+const https = require('https');
+const fs = require('fs');
 
 var port = process.env.PORT || 8080;
 
@@ -10,6 +12,13 @@ app.get('/', function (req, res) {
     // nbroom
     res.sendFile("public/index.html");
 });
+
+/*https.createServer({
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
+    passphrase: '1234'
+}, app)*/
+
 let server = app.listen(port, function (){
     console.log("Listening on http://127.0.0.1:"+port);
 });

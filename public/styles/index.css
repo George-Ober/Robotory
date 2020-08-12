@@ -1,11 +1,11 @@
 :root {
-    --menuBg: #ffebee;
-    --menuBottom: #ffcdd2;
-    --buttonBg: #ef9a9a;
-    --buttonBottom: #e57373;
+    --menuBg: #e8f5e9;
+    --menuBottom: #c8e6c9;
+    --buttonBg: #A5D6A7;
+    --buttonBottom: #81C784;
     --buttonTxtColor: black;
     --menuPadding: 10px;
-    --menu-text-color: block;
+    --menu-text-color: black;
     --border-radius: 6px;
     --curtainBgColor: rgba(0, 0, 0, 0.3);
     --default-padding: 10px;
@@ -21,11 +21,42 @@
 .hex:hover {
     /*stroke: var(--buttonBottom);*/
 }
+#newNotifs{
+    color: white;
+    position: fixed;
+    right:0;
+    z-index: 1000;
+    font-size: x-large;
+}
+.rightNotif{
+    position: initial;
+    display: block;
+    font-size: 18px;
+    background: var(--menuBg) none repeat scroll 0% 0%;
+    box-shadow: var(--menuBottom) 0px 5px, rgba(0, 0, 0, 0.2) 0px 7px 30px 0px;
+    color: var(--menu-text-color);
+    animation: 5s rightNotif both;
+    padding: 10px;
+}
+@keyframes rightNotif {
+    0%{
+        transform: translateX(100%);
+    }20%{
+        transform: translateX(0%);
+    }80%{
+        transform: translateX(0%);
+    }100%{
+        transform: translateX(100%);
+    }
+}
 .lightCells {
     fill: #d2d2d2;
 }
 .darkCells {
     fill: #5a5a5a;
+}
+::placeholder{
+    color: #606060;
 }
 .gameBoard {
     width: 100%;
