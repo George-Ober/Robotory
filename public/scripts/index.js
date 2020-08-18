@@ -723,7 +723,7 @@ function sendReloadValue() {
 
         fetchGameState(game);
         localStorage["offlineGame"] = JSON.stringify(game);
-        reload = {};
+        reload = { white: 0, black: 0 };
     }
 }
 function findWinner(gameBoard){
@@ -1287,6 +1287,7 @@ function moveBot() {
 }
 socket.on("gotoroom", (data) => {
     afterTime = Math.floor(new Date() / 1000);
+    offlineGameType = false;
     console.log(data);
     try {
         if (beforeTime + 2 > afterTime) {
@@ -1351,6 +1352,7 @@ socket.on("wrongroom", () => {
 });
 socket.on("startgame", (data) => {
     if (!data.ended) closeDarkerBg();
+    offlineGameType = false;
     closeMenu("centerShareGameMenu");
     closeMenu("centerMainMenu");
     document.getElementById("background").style.display = "none";
@@ -1436,7 +1438,7 @@ function generateBackgroundParticles(q = 1) {
             x.style.top = `${Math.floor(Math.random() * 20)}%`;
             x.style.left = `${Math.floor(Math.random() * 101)}%`;
             x.style.width = `${Math.floor(Math.random() * 32) + 20}px`;
-            switch (Math.floor(Math.random() * 4)) {
+            switch (Math.floor(Math.random() * 6)) {
                 case 0:
                     x.setAttribute("src", "images/sprites/blackRobot.svg");
                     break;
@@ -1448,6 +1450,12 @@ function generateBackgroundParticles(q = 1) {
                     break;
                 case 3:
                     x.setAttribute("src", "images/sprites/robotoriLogo.svg");
+                    break;
+                case 4:
+                    x.setAttribute("src", "images/sprites/blackDot.png");
+                    break;
+                case 5:
+                    x.setAttribute("src", "images/sprites/whiteDot.png");
                     break;
             }
             document.getElementById("background").appendChild(x);
@@ -1465,3 +1473,4 @@ function generateBackgroundParticles(q = 1) {
         }
     }, Math.floor(Math.random() * 101));
 }
+
