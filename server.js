@@ -14,16 +14,16 @@ app.get('/', function (req, res) {
 });
 
 
-let server = https.createServer({
+/*let server = https.createServer({
     key: fs.readFileSync('./key.pem'),
     cert: fs.readFileSync('./cert.pem'),
     passphrase: '1234'
 }, app).listen(port, function (){
     console.log("Listening on https://127.0.0.1:"+port);
-});
-/*let server = app.listen(port, function (){
-    console.log("Listening on http://127.0.0.1:"+port);
 });*/
+let server = app.listen(port, function (){
+    console.log("Listening on http://127.0.0.1:"+port);
+});
 const io = require('socket.io').listen(server).sockets;
 
 let waitingRooms = [];
