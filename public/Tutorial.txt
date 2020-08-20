@@ -1,0 +1,25 @@
+Pick a color, then click on a cell to place an energy pawn
+
+Great!
+
+There are 3 robots on the board. All of them follow this simple rule:
+
+Robots can only move in cells with a pawn of their color.
+
+The Red robot can go in cells with a pawn of any color.
+
+Let’s move a robot! Click on one of the robot, and then click on each cell to create a path, when you are done, click on ‘confirm robot path’.
+
+The robot moved!
+
+You need to have the robots in your side. Your side is always at the bottom (unless you are playing offline).
+
+You can only have 4 energy paws at the same time
+
+When you have 3 or less pawns, you can reload your energy pawns from the reserve, but the reserve isn’t unlimited.
+
+On the top you can see the reserve status. Under your name, you can see how many paws You have.
+
+When the last pawn of any color is taken from the reserve, the game immediately stops, and the winner is the player with the most bots in their side.
+
+The tutorial has ended! You can Play Online with friends or Offline with persons that are physically next to you

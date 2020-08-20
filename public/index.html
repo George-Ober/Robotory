@@ -84,7 +84,7 @@
             </div>
         </div>
         <div class="vsDisplay" id="ennemyDisplay" style="width: fit-content;padding-top: 5px;">
-            <table class="vsTable">
+            <!--<table class="vsTable">
                 <tr class="vsNames">
                     <td id="yourName"></td>
                     <td>
@@ -93,12 +93,21 @@
                     <td id="ennemyName"></td>
                 </tr>
                 <tr>
-                    <td id="myPawns"></td>
                     <td></td>
-                    <td id="ennemyPawns"></td>
                 </tr>
+            </table>-->
+            <div class="vsContainer">
+                <div class="lightVS leftVS">
+                    <span id="yourName"></span>
+                    <div id="myPawns" style="align-self: center;margin-top: 5px;"></div>
+                </div>
+                <div class="vsAgainst" data-i18n="ennemyDisplayVS"></div>
+                <div class="darkVS rightVS">
+                    <span id="ennemyName"></span>
+                    <div id="ennemyPawns" style="align-self: center;margin-top: 5px;"></div>
+                </div>
                 <span id="thinking" data-i18n="ennemyDisplayThinking"></span>
-            </table>
+            </div>
         </div>
         <div class="vsDisplay" style="display: none;width: fit-content;padding-top: 0;transform: translate(-50%, 0px) scale(1);opacity: 1;" id="yourTurnInfo">
             <div class="vsTable">

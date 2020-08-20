@@ -96,7 +96,7 @@ const allLanguages = {
         shareTextText: "Come play Robotory with me!",
         playRisk: "Play at your own risk!",
         nameInput: "Enter a name here...",
-        ennemyDisplayVS: "Against",
+        ennemyDisplayVS: "VS",
         ennemyDisplayThinking: "Thinking",
         genericConfirm: "Confirm",
         youWon: "You won!",
@@ -360,7 +360,7 @@ function load() {
         openDarkerBg();
         //openVsDisplay("ennemyDisplay");
     }
-    setInterval(generateBackgroundParticles, 100);
+    //setInterval(generateBackgroundParticles, 100);
     parseSVGs();
 }
 
@@ -578,18 +578,45 @@ function resizeUpdate(event) {
             document.getElementsByClassName("gameBoardContainer")[0].style.transform = `scale(${scaleCoef})`;
             if (area === "top") {
                 document.getElementsByClassName("gameBoardContainer")[0].style.transform = `scale(${scaleCoef}) rotate(180deg) translate(0,-100%)`;
+                document.getElementsByClassName("leftVS")[0].classList.add("darkVS");
+                document.getElementsByClassName("rightVS")[0].classList.add("lightVS");
+                document.getElementsByClassName("leftVS")[0].classList.remove("lightVS");
+                document.getElementsByClassName("rightVS")[0].classList.remove("darkVS");
+            }else{
+                document.getElementsByClassName("leftVS")[0].classList.add("lightVS");
+                document.getElementsByClassName("rightVS")[0].classList.add("darkVS");
+                document.getElementsByClassName("leftVS")[0].classList.remove("darkVS");
+                document.getElementsByClassName("rightVS")[0].classList.remove("lightVS");
             }
         } else if ((boardWidth * 384) / 537 < windowWidth) {
             let scaleCoef = windowWidth / ((boardWidth * 384) / 537);
             document.getElementsByClassName("gameBoardContainer")[0].style.transform = `scale(${scaleCoef})`;
             if (area === "top") {
                 document.getElementsByClassName("gameBoardContainer")[0].style.transform = `scale(${scaleCoef}) rotate(180deg) translate(0,-100%)`;
+                document.getElementsByClassName("leftVS")[0].classList.add("darkVS");
+                document.getElementsByClassName("rightVS")[0].classList.add("lightVS");
+                document.getElementsByClassName("leftVS")[0].classList.remove("lightVS");
+                document.getElementsByClassName("rightVS")[0].classList.remove("darkVS");
+            }else{
+                document.getElementsByClassName("leftVS")[0].classList.add("lightVS");
+                document.getElementsByClassName("rightVS")[0].classList.add("darkVS");
+                document.getElementsByClassName("leftVS")[0].classList.remove("darkVS");
+                document.getElementsByClassName("rightVS")[0].classList.remove("lightVS");
             }
         }
     } else {
         document.getElementsByClassName("gameBoardContainer")[0].style.transform = `scale(1)`;
         if (area === "top") {
             document.getElementsByClassName("gameBoardContainer")[0].style.transform = `scale(1) rotate(180deg) translate(0,-100%)`;
+            document.getElementsByClassName("leftVS")[0].classList.add("darkVS");
+            document.getElementsByClassName("rightVS")[0].classList.add("lightVS");
+            document.getElementsByClassName("leftVS")[0].classList.remove("lightVS");
+            document.getElementsByClassName("rightVS")[0].classList.remove("darkVS");
+        }else{
+            document.getElementsByClassName("leftVS")[0].classList.add("lightVS");
+            document.getElementsByClassName("rightVS")[0].classList.add("darkVS");
+            document.getElementsByClassName("leftVS")[0].classList.remove("darkVS");
+            document.getElementsByClassName("rightVS")[0].classList.remove("lightVS");
         }
         let halfUINodes = document.getElementsByClassName("halfUI");
         for (let i = 0; i < halfUINodes.length; i++) {
@@ -1346,8 +1373,8 @@ socket.on("nameChanged", (data) => {
         updateRecentGames();
     }
 });
-socket.on("ennemyOffline", () => console.info("Ennemy OFFline"));
-socket.on("ennemyOnline", () => console.error("Ennemy ONline"));
+socket.on("ennemyOffline", () => console.info("Ennemy is offline."));
+socket.on("ennemyOnline", () => console.info("Ennemy is online."));
 
 socket.on("yourTurn", (data) => {
     clearTimeout(timeout);

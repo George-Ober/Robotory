@@ -87,7 +87,7 @@
     display: none;
     position: absolute;
     right: 0;
-    top: 0;
+    top: 5px;
     transform: translate(40px, -13px);
 }
 .gameUI {
@@ -173,6 +173,14 @@ body {
     transition: all 0.5s;
     transform-origin: top;
 }
+.vsContainer{
+    display: flex;
+}
+.vsContainer > div{
+    display: flex;
+    align-self: center;
+    flex-direction: column;
+}
 .pawnDots{
     display: inline-flex;
     height: 43px;
@@ -223,13 +231,29 @@ body {
 }
 .vsAgainst{
     background-color: var(--buttonBg);
-    padding: 8px;
+    padding: 13px 15px;
     border-radius: var(--border-radius);
     box-shadow: 0 3px var(--buttonBottom);
     border: none;
-    font-size: 20px;
-    margin-left: 15px;
-    margin-right: 15px;
+    font-size: 30px;
+}
+.lightVS{
+    background-color: #cbcbcb;
+    box-shadow: 0 3px #b5b5b5;
+    padding: 5.7px 15px;
+}
+.leftVS{
+    border-bottom-left-radius: var(--border-radius);
+    border-top-left-radius: var(--border-radius);
+}
+.darkVS{
+    background-color: #858585;
+    box-shadow: 0 3px #616161;
+    padding: 5.7px 15px;
+}
+.rightVS{
+    border-bottom-right-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
 }
 .pawnDot{
     width: 10px;
