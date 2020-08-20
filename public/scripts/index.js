@@ -811,7 +811,32 @@ function closeRecentGamesMenu() {
 }
 function fetchGameState(gameState){
     let you, ennemy;
-    if (offlineGameType){
+    if (tutorial){
+        document.getElementById("myPawns").innerHTML = "";
+        document.getElementById("ennemyPawns").innerHTML = "";
+        for (let i = 0; i < gameState.p1.pawns.black; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            document.getElementById("myPawns").appendChild(dot);
+        }
+        for (let i = 0; i < gameState.p1.pawns.white; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            dot.classList.add("whitePawnDot");
+            document.getElementById("myPawns").appendChild(dot);
+        }
+        for (let i = 0; i < gameState.p2.pawns.black; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            document.getElementById("ennemyPawns").appendChild(dot);
+        }
+        for (let i = 0; i < gameState.p2.pawns.white; i++) {
+            let dot = document.createElement("div");
+            dot.classList.add("pawnDot");
+            dot.classList.add("whitePawnDot");
+            document.getElementById("ennemyPawns").appendChild(dot);
+        }
+    }else if (offlineGameType){
         document.getElementById("yourName").innerText = gameState.p1.name;
         document.getElementById("ennemyName").innerText = gameState.p2.name;
 
