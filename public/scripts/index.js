@@ -57,7 +57,10 @@ let gameBoard = [];
 let movingBot = false;
 let movingBotPath = {};
 let offlineGameType = false;
+let tutorial = false;
+let tutorialState = null;
 
+let lang = "en_GB";
 const allLanguages = {
     en_GB: {
         genericBack: "Back",
@@ -189,7 +192,6 @@ const allLanguages = {
         youLost: "Usted ha perdido!",
     },
 };
-let lang = "en_GB";
 //First one is the top, second one is the left
 const positionInBoardById = [
     [8.5, 50],
@@ -1306,15 +1308,27 @@ function recentGame(id) {
     closeMenu("recentGamesMenu");
 }
 function openDarkerBg() {
-    document.getElementsByClassName("darkerBg")[0].style.display = "inline-block";
+    document.getElementById("darkerBg").style.display = "inline-block";
     setTimeout(() => {
-        document.getElementsByClassName("darkerBg")[0].style.opacity = "1";
+        document.getElementById("darkerBg").style.opacity = "1";
     }, 100);
 }
 function closeDarkerBg() {
-    document.getElementsByClassName("darkerBg")[0].style.opacity = "0";
+    document.getElementById("darkerBg").style.opacity = "0";
     setTimeout(() => {
-        document.getElementsByClassName("darkerBg")[0].style.display = "none";
+        document.getElementById("darkerBg").style.display = "none";
+    }, 500);
+}
+function openWhiteCurtain() {
+    document.getElementById("whiteCurtain").style.display = "inline-block";
+    setTimeout(() => {
+        document.getElementById("whiteCurtain").style.opacity = "1";
+    }, 100);
+}
+function closeWhiteCurtain() {
+    document.getElementById("whiteCurtain").style.opacity = "0";
+    setTimeout(() => {
+        document.getElementById("whiteCurtain").style.display = "none";
     }, 500);
 }
 function moveBot() {
@@ -1349,7 +1363,7 @@ socket.on("gotoroom", (data) => {
         window.location.hash = `#${data.id}`;
         document.getElementById("background").style.display = "none";
     }
-    document.getElementById("linkTextInput").value = "localhost:8080/#" + data.id;
+    document.getElementById("linkTextInput").value = `localhost:8080/#${data.id}`;
     localStorage["GUID"] = data.GUID;
 });
 socket.on("GUID", (data) => {
@@ -1468,7 +1482,52 @@ shareBtn.addEventListener("click", () => {
         console.log("web share not supported");
     }
 });
+function openTutorial(){
+    closeMenu("centerMainMenu");
+    closeDarkerBg();
+    tutorial = true;
+    document.getElementById("background").style.display = "none";
+    resizeUpdate();
+    openWhiteCurtain();
+    showFullscreenText("Pick a color, then click on a cell to place an energy pawn",function(){
+        document.getElementsByClassName("openMainMenuButton")[0].style.display = "none";
+        document.getElementsByClassName("gameUI")[0].style.display = "inline-block";
+        tutorialState = {
+            step: 0,
+            state: {
+                p1: {pawns: {white: 2, black: 2}, name: "You", turn: true, Oarea: "bottom"},
+                p2: {pawns: {white: 2, black: 2}, name: "Teaching robot", turn: false, Oarea: "top"},
+                pawnReserve: {white: 10, black: 10},
+                gameBoard: [null, null, null, null, null, null, null, null, null, "blackBot", null, "whiteBot", "redBot", null, null, null, null, null, null, null, null, null, null, null],
+                ended: false
+            }
+        };
+        openVsDisplay("ennemyDisplay");
+        document.getElementById("yourName").innerText = "You";
+        document.getElementById("ennemyName").innerText = "Teaching robot";
+        moveTextToTop();
+        closeWhiteCurtain();
+        placePawnOption();
+        fetchGameState(tutorialState.state);
+    }, false,1000);
+}
+function showFullscreenText(text, methodAfter, hideAfter, duration=5000) {
+    document.getElementsByClassName("tutorialText")[0].style.display = "block";
+    setTimeout(() => document.getElementsByClassName("tutorialText")[0].style.opacity = "1",100);
+    document.getElementsByClassName("tutorialText")[0].style.top = "50%";
+    document.getElementsByClassName("tutorialText")[0].style.left = "50%";
+    document.getElementsByClassName("tutorialText")[0].style.transform = "translate(-50%,-50%)";
+    document.getElementsByClassName("tutorialText")[0].innerText = text;
 
+    setTimeout(() => {
+        if(hideAfter) document.getElementsByClassName("tutorialText")[0].style.opacity = "0";
+        methodAfter();
+    },duration);
+}
+function moveTextToTop() {
+    document.getElementsByClassName("tutorialText")[0].style.top = "10px";
+    document.getElementsByClassName("tutorialText")[0].style.transform = "translateX(-50%)";
+}
 function generateBackgroundParticles(q = 1) {
     setTimeout(() => {
         for (let i = 0; i < q; i++) {
