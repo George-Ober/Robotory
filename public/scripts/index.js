@@ -1349,7 +1349,7 @@ socket.on("gotoroom", (data) => {
         window.location.hash = `#${data.id}`;
         document.getElementById("background").style.display = "none";
     }
-    document.getElementById("linkTextInput").value = "localhost:8080/#" + data.id;
+    document.getElementById("linkTextInput").value = `${window.location.host}/#${data.id}`;
     localStorage["GUID"] = data.GUID;
 });
 socket.on("GUID", (data) => {
