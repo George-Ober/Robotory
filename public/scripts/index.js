@@ -360,7 +360,7 @@ function load() {
         openDarkerBg();
         //openVsDisplay("ennemyDisplay");
     }
-    //setInterval(generateBackgroundParticles, 100);
+    setInterval(generateBackgroundParticles, 100);
     parseSVGs();
 }
 
