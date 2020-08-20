@@ -395,6 +395,8 @@ body {
 }
 #linkTextInput{
     width: calc(100% - 20px);
+    display: flex;
+    order: 0;
 }
 @keyframes rotateLoader{
     0%{

@@ -59,9 +59,11 @@
 
     <div class="centerMenu" id="centerShareGameMenu" style="z-index: 100;max-width: 301px;">
         <div class="desc" data-i18n="shareGameMenuDesc"></div>
-        <input type="text" id="linkTextInput" class="mainMenuButtons text-input noClick" readonly/>
-        <a class="mainMenuButtons halfMainMenuButtons" style="margin-right: 5px;" onclick="copyClip('linkTextInput');" data-i18n="copyBtn"></a>
-        <a class="mainMenuButtons halfMainMenuButtons" id="shareButton" style="margin-left: 5px;" data-i18n="shareBtn"></a>
+        <div style="display: flex;">
+            <input type="text" id="linkTextInput" class="mainMenuButtons text-input noClick" readonly/>
+            <a class="mainMenuButtons halfMainMenuButtons" id="shareButton" style="margin-left: 5px;display: flex;order: 1;width: 40px;margin-right: 5px;" data-childSVG="shareBtn"></a>
+            <a class="mainMenuButtons halfMainMenuButtons" style="width: 40px;display: flex;order: 2;margin-left:5px;" onclick="copyClip('linkTextInput');" data-childSVG="copyBtn"></a>
+        </div>
 
         <a class="mainMenuButtons halfMainMenuButtons" style="margin-right: 5px;" data-i18n="randomBtn"></a>
         <a class="mainMenuButtons halfMainMenuButtons" style="margin-left: 5px;" data-i18n="gameSettingsBtn"></a>
