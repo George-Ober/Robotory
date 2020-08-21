@@ -10,6 +10,7 @@ const SVGsUsed = {
     "whitePawn": '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" preserveAspectRatio="xMidYMid meet" viewBox="0 0 640 640" width="640" height="640"><defs><path d="M529.86 320C529.86 435.82 435.82 529.86 320 529.86C204.18 529.86 110.14 435.82 110.14 320C110.14 204.18 204.18 110.14 320 110.14C435.82 110.14 529.86 204.18 529.86 320Z" id="f7mS77rnBa"/></defs><g><g><g><filter id="shadow15465084" x="79.14" y="79.14" width="481.72" height="507.72" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse"><feFlood/><feComposite in2="SourceAlpha" operator="in"/><feGaussianBlur stdDeviation="0"/><feOffset dx="0" dy="26" result="afterOffset"/><feFlood flood-color="#b8b8b8" flood-opacity="1"/><feComposite in2="afterOffset" operator="in"/><feMorphology operator="dilate" radius="0"/><feComposite in2="SourceAlpha" operator="out"/></filter><path d="M529.86 320C529.86 435.82 435.82 529.86 320 529.86C204.18 529.86 110.14 435.82 110.14 320C110.14 204.18 204.18 110.14 320 110.14C435.82 110.14 529.86 204.18 529.86 320Z" id="c1bzUBQfUY" fill="white" fill-opacity="1" filter="url(#shadow15465084)"/></g><use xlink:href="#f7mS77rnBa" opacity="1" fill="#ffffff" fill-opacity="1"/></g></g></svg>',
     "shareBtn": '<svg width="365" height="365" viewBox="0 0 365 365" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%;height: 100%;"><path d="M182.5 179.5V20M182.5 20L125.5 77M182.5 20L239 77" stroke="black" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/><path d="M116.5 129H86C72.7452 129 62 139.745 62 153V322C62 335.255 72.7452 346 86 346H279.5C292.755 346 303.5 335.255 303.5 322V153C303.5 139.745 292.755 129 279.5 129H248" stroke="black" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     "copyBtn": '<svg width="365" height="365" viewBox="0 0 365 365" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;"><rect x="121" y="91" width="164" height="223" rx="19" stroke="black" stroke-width="19" stroke-linejoin="round"/><path d="M81 255V51H212" stroke="black" stroke-width="19" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "plusIcon": '<svg width="640" height="640" viewBox="0 0 275 640" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M137.5 223.5V416.5" stroke="black" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/><path d="M41 320H234" stroke="black" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 };
 const redColorScheme = [
     ["menuBg", "#FFEBEE"],
@@ -1198,22 +1199,97 @@ function showIds() {
         tableOverlay.appendChild(x);
     }
 }
+function  animateRobotsTutorial(){
+    let duration = 12000;
+
+    let x = document.createElement("img");
+    x.setAttribute("src", forImage("BlackRobot"));
+    x.classList.add("tutorialAnimationSVG");
+    document.getElementById("tutorialSVG").appendChild(x);
+
+    setTimeout(() => {
+        let x = document.createElement("img");
+        x.setAttribute("src", forImage("plusIcon"));
+        x.classList.add("tutorialAnimationSVG");
+        document.getElementById("tutorialSVG").appendChild(x);
+    }, duration / 9);
+    setTimeout(() => {
+        let x = document.createElement("img");
+        x.setAttribute("src", forImage("blackPawn"));
+        x.classList.add("tutorialAnimationSVG");
+        document.getElementById("tutorialSVG").appendChild(x);
+    }, duration / 9*2);
+
+    setTimeout(() => {
+        document.getElementById("tutorialSVG").innerHTML = "";
+        let x = document.createElement("img");
+        x.setAttribute("src", forImage("WhiteRobot"));
+        x.classList.add("tutorialAnimationSVG");
+        document.getElementById("tutorialSVG").appendChild(x);
+    }, duration / 9*3);
+    setTimeout(() => {
+        let x = document.createElement("img");
+        x.setAttribute("src", forImage("plusIcon"));
+        x.classList.add("tutorialAnimationSVG");
+        document.getElementById("tutorialSVG").appendChild(x);
+    }, duration / 9*4);
+    setTimeout(() => {
+        let x = document.createElement("img");
+        x.setAttribute("src", forImage("whitePawn"));
+        x.classList.add("tutorialAnimationSVG");
+        document.getElementById("tutorialSVG").appendChild(x);
+    }, duration / 9*5);
+
+    setTimeout(() => {
+        document.getElementById("tutorialSVG").innerHTML = "";
+        let x = document.createElement("img");
+        x.setAttribute("src", forImage("RedRobot"));
+        x.classList.add("tutorialAnimationSVG");
+        x.style.width = "50px";
+        document.getElementById("tutorialSVG").appendChild(x);
+    }, duration / 3/4*8);
+    setTimeout(() => {
+        let x = document.createElement("img");
+        x.setAttribute("src", forImage("plusIcon"));
+        x.classList.add("tutorialAnimationSVG");
+        document.getElementById("tutorialSVG").appendChild(x);
+        x.style.width = "50px";
+    }, duration / 3/4*9);
+    setTimeout(() => {
+        let x = document.createElement("img");
+        x.setAttribute("src", forImage("whitePawn"));
+        x.classList.add("tutorialAnimationSVG");
+        document.getElementById("tutorialSVG").appendChild(x);
+        x.style.width = "50px";
+    }, duration / 3/4*10);
+    setTimeout(() => {
+        let x = document.createElement("img");
+        x.setAttribute("src", forImage("blackPawn"));
+        x.classList.add("tutorialAnimationSVG");
+        document.getElementById("tutorialSVG").appendChild(x);
+        x.style.width = "50px";
+    }, duration / 3/4*11);
+}
 function boardClick(element, n) {
     if(tutorial){
         if(tutorialState.step === 0){
             if(placingPawn == "blackPawn" && tutorialState.state.gameBoard[n] == null){
                 tutorialState.state.gameBoard[n] = "blackPawn";
-                tutorialState.state.p1.pawns.white--;
+                tutorialState.state.p1.pawns.black--;
             }else if(placingPawn == "whitePawn" && tutorialState.state.gameBoard[n] == null) {
                 tutorialState.state.gameBoard[n] = "whitePawn";
                 tutorialState.state.p1.pawns.white--;
             }else return;
             openWhiteCurtain();
             showFullscreenText("Great!",function(){
-                showFullscreenText("There are 3 robots on the board. All of them follow this simple rule:",function(){
+                animateRobotsTutorial();
+                showFullscreenText("There are 3 robots on the board, and robots can only move into cells containing a pawn of their color.",function(){
+                    showFullscreenText("...except the red robot can go in cells with a pawn of any color.",function(){
 
-                },true,4000);
+                    },false,6000);
+                },true,8000);
             }, true,2000);
+            fetchGameState(tutorialState.state);
         }
     }else {
         if (placingPawn) {
@@ -1579,7 +1655,9 @@ function openTutorial(){
     resizeUpdate();
     openWhiteCurtain();
     closeVsDisplay("reserveInfo");
+    document.title = "Robotory - Tutorial";
     showFullscreenText("Pick a color, then click on a cell to place an energy pawn",function(){
+        document.getElementsByClassName("pawnPlaceButton")[0].classList.add("glowing");document.getElementsByClassName("pawnPlaceButton")[1].classList.add("glowing");
         document.getElementsByClassName("openMainMenuButton")[0].style.display = "none";
         document.getElementsByClassName("gameUI")[0].style.display = "inline-block";
         tutorialState = {
@@ -1597,24 +1675,24 @@ function openTutorial(){
         closeWhiteCurtain();
         placePawnOption();
         fetchGameState(tutorialState.state);
-    }, false,1000);
+    }, false,4000);
 }
 function showFullscreenText(text, methodAfter, hideAfter, duration=5000) {
-    document.getElementsByClassName("tutorialText")[0].style.display = "block";
-    setTimeout(() => document.getElementsByClassName("tutorialText")[0].style.opacity = "1",100);
-    document.getElementsByClassName("tutorialText")[0].style.top = "50%";
-    document.getElementsByClassName("tutorialText")[0].style.left = "50%";
-    document.getElementsByClassName("tutorialText")[0].style.transform = "translate(-50%,-50%)";
+    document.getElementsByClassName("tutorialDisplay")[0].style.display = "block";
+    setTimeout(() => document.getElementsByClassName("tutorialDisplay")[0].style.opacity = "1",100);
+    document.getElementsByClassName("tutorialDisplay")[0].style.top = "50%";
+    document.getElementsByClassName("tutorialDisplay")[0].style.left = "50%";
+    document.getElementsByClassName("tutorialDisplay")[0].style.transform = "translate(-50%,-50%)";
     document.getElementsByClassName("tutorialText")[0].innerText = text;
-    document.getElementsByClassName("verticalAlign")[0].style.height = `${document.getElementsByClassName("tutorialText")[0].offsetHeight + 10}px`;
+    document.getElementsByClassName("verticalAlign")[0].style.height = `${document.getElementsByClassName("tutorialDisplay")[0].offsetHeight + 10}px`;
+    if(hideAfter) setTimeout( () => document.getElementsByClassName("tutorialDisplay")[0].style.opacity = "0", duration - 400);
     setTimeout(() => {
-        if(hideAfter) document.getElementsByClassName("tutorialText")[0].style.opacity = "0";
         methodAfter();
     },duration);
 }
 function moveTextToTop() {
-    document.getElementsByClassName("tutorialText")[0].style.top = "10px";
-    document.getElementsByClassName("tutorialText")[0].style.transform = "translateX(-50%)";
+    document.getElementsByClassName("tutorialDisplay")[0].style.top = "10px";
+    document.getElementsByClassName("tutorialDisplay")[0].style.transform = "translateX(-50%)";
 }
 function generateBackgroundParticles(q = 1) {
     setTimeout(() => {
