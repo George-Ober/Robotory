@@ -362,7 +362,7 @@ function load() {
         openDarkerBg();
         //openVsDisplay("ennemyDisplay");
     }
-    //setInterval(generateBackgroundParticles, 100);
+    setInterval(generateBackgroundParticles, 100);
     parseSVGs();
 }
 
@@ -1388,7 +1388,11 @@ socket.on("gotoroom", (data) => {
         window.location.hash = `#${data.id}`;
         document.getElementById("background").style.display = "none";
     }
+<<<<<<< HEAD
     document.getElementById("linkTextInput").value = `localhost:8080/#${data.id}`;
+=======
+    document.getElementById("linkTextInput").value = `${window.location.host}/#${data.id}`;
+>>>>>>> master
     localStorage["GUID"] = data.GUID;
 });
 socket.on("GUID", (data) => {
