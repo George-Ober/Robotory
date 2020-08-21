@@ -18,20 +18,14 @@
 <div class="background" id="background"></div>
 <div class="darkerBg" id="darkerBg"></div>
 <div class="darkerBg" id="whiteCurtain" style="background-color: white;z-index: 51;"></div>
-<span class="tutorialText"></span>
+<span class="tutorialText" style="width: 90%"></span>
 <div class="mainMenu" style="">
     <div class="centerMenu" id="centerMainMenu" style="z-index: 100;width: 240px;">
         <a class="mainMenuButtons" id="mainMenuResumeBtn" style="display:none;" onclick="closeMainMenu();" data-i18n="mainMenuResumeBtn"></a>
         <a class="mainMenuButtons halfMainMenuButtons" id="mainMenuPlayBtn" onclick="openPlayMenu();" data-childSVG="PlayButton" style="margin-right: 5px;"></a>
         <a class="mainMenuButtons halfMainMenuButtons" id="mainMenuSettingsBtn" onclick="openSettingsMenu();" data-childSVG="SettingsButton" style="margin-left: 5px;"></a>
         <a class="mainMenuButtons" id="recentGamesMenuBtn" style="display:none;" onclick="openRecentGamesMenu();" data-i18n="mainMenuRecentGamesBtn"></a>
-<<<<<<< HEAD
         <a class="mainMenuButtons" id="mainMenuTutorialBtn" data-i18n="mainMenuTutorialBtn" onclick="openTutorial();"></a>
-        <a class="mainMenuButtons" onclick="localStorage.clear();">Clear localStorage</a>
-=======
-        <a class="mainMenuButtons" id="mainMenuTutorialBtn" data-i18n="mainMenuTutorialBtn"></a>
-        <!-- <a class="mainMenuButtons" onclick="localStorage.clear();">Clear localStorage</a> -->
->>>>>>> master
     </div>
     <div class="centerMenu" id="recentGamesMenu" style="width: 240px;">
         <div class="desc" data-i18n="recentGamesMenuDesc"></div>
@@ -84,6 +78,7 @@
 </div>
 <div class="gameUI">
     <div class="halfUI" style="width: 50%;display: inline-block;float: left;">
+        <div class="verticalAlign"></div>
         <div class="vsDisplay" style="width: fit-content;padding-top: 5px;padding-bottom: 0;" id="reserveInfo">
             <div class="vsTable">
                 <div style="display: inline-block;"><div class="pawnDot"></div><span id="topReserveBlack">10</span></div>
@@ -133,7 +128,7 @@
                     <div class="pawnDot"></div>
                     <span id="placePawnBlack"></span>
                 </a>
-                <a class="mainMenuButtons pawnPlaceButton" onclick="cancelPlacePawnOption();" data-i18n="genericBack"></a>
+                <a class="mainMenuButtons pawnPlaceButton" id="cancelPlacePawn" onclick="cancelPlacePawnOption();" data-i18n="genericBack"></a>
             </div>
         </div>
         <div class="vsDisplay" style="display: none;width: fit-content;padding-top: 0;" id="moveBotMenu">

@@ -812,6 +812,9 @@ function closeRecentGamesMenu() {
 function fetchGameState(gameState){
     let you, ennemy;
     if (tutorial){
+        document.getElementById("yourName").innerText = gameState.p1.name;
+        document.getElementById("ennemyName").innerText = gameState.p2.name;
+
         document.getElementById("myPawns").innerHTML = "";
         document.getElementById("ennemyPawns").innerHTML = "";
         for (let i = 0; i < gameState.p1.pawns.black; i++) {
@@ -835,6 +838,49 @@ function fetchGameState(gameState){
             dot.classList.add("pawnDot");
             dot.classList.add("whitePawnDot");
             document.getElementById("ennemyPawns").appendChild(dot);
+        }
+        document.getElementById("placePawnWhite").innerText = gameState.p1.pawns.white;
+        document.getElementById("placePawnBlack").innerText = gameState.p1.pawns.black;
+        let tableOverlay = document.getElementsByClassName("tableOverlay")[0];
+        tableOverlay.innerHTML = "";
+        for (let i = 0; i < gameState.gameBoard.length; i++) {
+            let x = document.createElement("img");
+            x.classList.add("boardElement");
+            x.classList.add("botBoardElement");
+            if (gameState.gameBoard[i] == "blackBot") {
+                x.setAttribute("src", forImage("BlackRobot"));
+                x.id = "blackBot";
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "whiteBot") {
+                x.setAttribute("src", forImage("WhiteRobot"));
+                x.id = "whiteBot";
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "redBot") {
+                x.setAttribute("src", forImage("RedRobot"));
+                x.id = "redBot";
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "blackPawn") {
+                x.setAttribute("src", forImage("blackPawn"));
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                x.id = `boardOverlayPawn${i}`;
+                tableOverlay.appendChild(x);
+            } else if (gameState.gameBoard[i] == "whitePawn") {
+                x.setAttribute("src", forImage("whitePawn"));
+                x.style.top = positionInBoardById[i][0] + "%";
+                x.style.left = positionInBoardById[i][1] + "%";
+                x.id = `boardOverlayPawn${i}`;
+                tableOverlay.appendChild(x);
+            }
+        }
+        if (tutorialState.step === 0){
+            document.getElementById("cancelPlacePawn").remove();
         }
     }else if (offlineGameType){
         document.getElementById("yourName").innerText = gameState.p1.name;
@@ -1153,59 +1199,77 @@ function showIds() {
     }
 }
 function boardClick(element, n) {
-    if (placingPawn) {
-        if (!offlineGameType) socket.emit("placingPawn", { color: placingPawn, pos: n });
-        else{
-            let gameState = JSON.parse(localStorage["offlineGame"]);
-            if(gameState.p1.turn){
-                if(placingPawn == "whitePawn" && gameState.p1.pawns.white >= 1){
-                    if (gameState.gameBoard[n] == null){
-                        gameState.gameBoard[n] = "whitePawn";
-                        gameState.p1.pawns.white--;
-                    }else return;
-                }else if(placingPawn == "blackPawn" && gameState.p1.pawns.black >= 1){
-                    if (gameState.gameBoard[n] == null){
-                        gameState.gameBoard[n] = "blackPawn";
-                        gameState.p1.pawns.black--;
-                    }else return;
-                }else return;
-                gameState.p1.turn = false;
-                gameState.p2.turn = true;
-            }else if (gameState.p2.turn){
-                if(placingPawn == "whitePawn" && gameState.p2.pawns.white >= 1){
-                    if (gameState.gameBoard[n] == null){
-                        gameState.gameBoard[n] = "whitePawn";
-                        gameState.p2.pawns.white--;
-                    }else return;
-                }else if(placingPawn == "blackPawn" && gameState.p2.pawns.black >= 1){
-                    if (gameState.gameBoard[n] == null){
-                        gameState.gameBoard[n] = "blackPawn";
-                        gameState.p2.pawns.black--;
-                    }else return;
-                }else return;
-                gameState.p1.turn = true;
-                gameState.p2.turn = false;
-            }
-            closeVsDisplay("placePawnMenu");
-            fetchGameState(gameState);
-            localStorage["offlineGame"] = JSON.stringify(gameState);
+    if(tutorial){
+        if(tutorialState.step === 0){
+            if(placingPawn == "blackPawn" && tutorialState.state.gameBoard[n] == null){
+                tutorialState.state.gameBoard[n] = "blackPawn";
+                tutorialState.state.p1.pawns.white--;
+            }else if(placingPawn == "whitePawn" && tutorialState.state.gameBoard[n] == null) {
+                tutorialState.state.gameBoard[n] = "whitePawn";
+                tutorialState.state.p1.pawns.white--;
+            }else return;
+            openWhiteCurtain();
+            showFullscreenText("Great!",function(){
+                showFullscreenText("There are 3 robots on the board. All of them follow this simple rule:",function(){
+
+                },true,4000);
+            }, true,2000);
         }
-    } else if (movingBot) {
-        if (gameBoard[n] === "blackBot" || gameBoard[n] === "whiteBot" || gameBoard[n] === "redBot") {
-            clearHighlightedCells();
-            element.firstElementChild.classList.add("highlightedCells");
-            movingBotPath.bot = gameBoard[n];
-            movingBotPath.path = [n];
-            document.getElementById("confirmRobotPath").style.display = "none";
-        } else if (
-            (gameBoard[n] === "blackPawn" && movingBotPath.bot === "blackBot") ||
-            (gameBoard[n] === "whitePawn" && movingBotPath.bot === "whiteBot") ||
-            ((gameBoard[n] === "blackPawn" || gameBoard[n] === "whitePawn") && movingBotPath.bot === "redBot")
-        ) {
-            if (isNeighbour(n, movingBotPath.path[movingBotPath.path.length - 1])) {
+    }else {
+        if (placingPawn) {
+            if (!offlineGameType) socket.emit("placingPawn", {color: placingPawn, pos: n});
+            else {
+                let gameState = JSON.parse(localStorage["offlineGame"]);
+                if (gameState.p1.turn) {
+                    if (placingPawn == "whitePawn" && gameState.p1.pawns.white >= 1) {
+                        if (gameState.gameBoard[n] == null) {
+                            gameState.gameBoard[n] = "whitePawn";
+                            gameState.p1.pawns.white--;
+                        } else return;
+                    } else if (placingPawn == "blackPawn" && gameState.p1.pawns.black >= 1) {
+                        if (gameState.gameBoard[n] == null) {
+                            gameState.gameBoard[n] = "blackPawn";
+                            gameState.p1.pawns.black--;
+                        } else return;
+                    } else return;
+                    gameState.p1.turn = false;
+                    gameState.p2.turn = true;
+                } else if (gameState.p2.turn) {
+                    if (placingPawn == "whitePawn" && gameState.p2.pawns.white >= 1) {
+                        if (gameState.gameBoard[n] == null) {
+                            gameState.gameBoard[n] = "whitePawn";
+                            gameState.p2.pawns.white--;
+                        } else return;
+                    } else if (placingPawn == "blackPawn" && gameState.p2.pawns.black >= 1) {
+                        if (gameState.gameBoard[n] == null) {
+                            gameState.gameBoard[n] = "blackPawn";
+                            gameState.p2.pawns.black--;
+                        } else return;
+                    } else return;
+                    gameState.p1.turn = true;
+                    gameState.p2.turn = false;
+                }
+                closeVsDisplay("placePawnMenu");
+                fetchGameState(gameState);
+                localStorage["offlineGame"] = JSON.stringify(gameState);
+            }
+        } else if (movingBot) {
+            if (gameBoard[n] === "blackBot" || gameBoard[n] === "whiteBot" || gameBoard[n] === "redBot") {
+                clearHighlightedCells();
                 element.firstElementChild.classList.add("highlightedCells");
-                movingBotPath.path.push(n);
-                document.getElementById("confirmRobotPath").style.display = "block";
+                movingBotPath.bot = gameBoard[n];
+                movingBotPath.path = [n];
+                document.getElementById("confirmRobotPath").style.display = "none";
+            } else if (
+                (gameBoard[n] === "blackPawn" && movingBotPath.bot === "blackBot") ||
+                (gameBoard[n] === "whitePawn" && movingBotPath.bot === "whiteBot") ||
+                ((gameBoard[n] === "blackPawn" || gameBoard[n] === "whitePawn") && movingBotPath.bot === "redBot")
+            ) {
+                if (isNeighbour(n, movingBotPath.path[movingBotPath.path.length - 1])) {
+                    element.firstElementChild.classList.add("highlightedCells");
+                    movingBotPath.path.push(n);
+                    document.getElementById("confirmRobotPath").style.display = "block";
+                }
             }
         }
     }
@@ -1388,11 +1452,7 @@ socket.on("gotoroom", (data) => {
         window.location.hash = `#${data.id}`;
         document.getElementById("background").style.display = "none";
     }
-<<<<<<< HEAD
-    document.getElementById("linkTextInput").value = `localhost:8080/#${data.id}`;
-=======
     document.getElementById("linkTextInput").value = `${window.location.host}/#${data.id}`;
->>>>>>> master
     localStorage["GUID"] = data.GUID;
 });
 socket.on("GUID", (data) => {
@@ -1518,6 +1578,7 @@ function openTutorial(){
     document.getElementById("background").style.display = "none";
     resizeUpdate();
     openWhiteCurtain();
+    closeVsDisplay("reserveInfo");
     showFullscreenText("Pick a color, then click on a cell to place an energy pawn",function(){
         document.getElementsByClassName("openMainMenuButton")[0].style.display = "none";
         document.getElementsByClassName("gameUI")[0].style.display = "inline-block";
@@ -1525,15 +1586,13 @@ function openTutorial(){
             step: 0,
             state: {
                 p1: {pawns: {white: 2, black: 2}, name: "You", turn: true, Oarea: "bottom"},
-                p2: {pawns: {white: 2, black: 2}, name: "Teaching robot", turn: false, Oarea: "top"},
+                p2: {pawns: {white: 2, black: 2}, name: "Teacher", turn: false, Oarea: "top"},
                 pawnReserve: {white: 10, black: 10},
                 gameBoard: [null, null, null, null, null, null, null, null, null, "blackBot", null, "whiteBot", "redBot", null, null, null, null, null, null, null, null, null, null, null],
                 ended: false
             }
         };
         openVsDisplay("ennemyDisplay");
-        document.getElementById("yourName").innerText = "You";
-        document.getElementById("ennemyName").innerText = "Teaching robot";
         moveTextToTop();
         closeWhiteCurtain();
         placePawnOption();
@@ -1547,7 +1606,7 @@ function showFullscreenText(text, methodAfter, hideAfter, duration=5000) {
     document.getElementsByClassName("tutorialText")[0].style.left = "50%";
     document.getElementsByClassName("tutorialText")[0].style.transform = "translate(-50%,-50%)";
     document.getElementsByClassName("tutorialText")[0].innerText = text;
-
+    document.getElementsByClassName("verticalAlign")[0].style.height = `${document.getElementsByClassName("tutorialText")[0].offsetHeight + 10}px`;
     setTimeout(() => {
         if(hideAfter) document.getElementsByClassName("tutorialText")[0].style.opacity = "0";
         methodAfter();
