@@ -246,8 +246,13 @@ body {
 }
 .tutorialAnimationSVG {
     width: calc(200px / 3);
+    height: calc(200px / 3);
     animation: .2s zoomIn both;
     margin-bottom: 30px;
+}
+.tutorialAnimationSVGQuarter{
+    width: 50px;
+    height: 50px;
 }
 @keyframes zoomIn {
     0%{
@@ -284,6 +289,9 @@ body {
     transform: translate(-50%,-50%);
     z-index: 52;
     text-align: center;
+    background-color: white;
+    padding: 10px;
+    border-radius: var(--border-radius);
 }
 .lightVS{
     background-color: #cbcbcb;

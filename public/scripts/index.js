@@ -1244,28 +1244,27 @@ function  animateRobotsTutorial(){
         document.getElementById("tutorialSVG").innerHTML = "";
         let x = document.createElement("img");
         x.setAttribute("src", forImage("RedRobot"));
-        x.classList.add("tutorialAnimationSVG");
-        x.style.width = "50px";
+        x.classList.add("tutorialAnimationSVG","tutorialAnimationSVGQuarter");
         document.getElementById("tutorialSVG").appendChild(x);
     }, duration / 3/4*8);
     setTimeout(() => {
         let x = document.createElement("img");
         x.setAttribute("src", forImage("plusIcon"));
-        x.classList.add("tutorialAnimationSVG");
+        x.classList.add("tutorialAnimationSVG","tutorialAnimationSVGQuarter");
         document.getElementById("tutorialSVG").appendChild(x);
         x.style.width = "50px";
     }, duration / 3/4*9);
     setTimeout(() => {
         let x = document.createElement("img");
         x.setAttribute("src", forImage("whitePawn"));
-        x.classList.add("tutorialAnimationSVG");
+        x.classList.add("tutorialAnimationSVG","tutorialAnimationSVGQuarter");
         document.getElementById("tutorialSVG").appendChild(x);
         x.style.width = "50px";
     }, duration / 3/4*10);
     setTimeout(() => {
         let x = document.createElement("img");
         x.setAttribute("src", forImage("blackPawn"));
-        x.classList.add("tutorialAnimationSVG");
+        x.classList.add("tutorialAnimationSVG","tutorialAnimationSVGQuarter");
         document.getElementById("tutorialSVG").appendChild(x);
         x.style.width = "50px";
     }, duration / 3/4*11);
@@ -1281,15 +1280,46 @@ function boardClick(element, n) {
                 tutorialState.state.p1.pawns.white--;
             }else return;
             openWhiteCurtain();
+            tutorialState.step = 1;
+            document.getElementById("cancelMoveBotOption").remove();
             showFullscreenText("Great!",function(){
                 animateRobotsTutorial();
                 showFullscreenText("There are 3 robots on the board, and robots can only move into cells containing a pawn of their color.",function(){
                     showFullscreenText("...except the red robot can go in cells with a pawn of any color.",function(){
-
-                    },false,6000);
+                        document.getElementById("tutorialSVG").innerHTML = "";
+                        showFullscreenText("Let’s move a robot! Click on one of the robots, and then click on each cell to create a path, when you are done, click on 'confirm robot path'.",function(){
+                            closeVsDisplay("placePawnMenu");
+                            openVsDisplay("moveBotMenu");
+                            tutorialState.state.gameBoard[14] = 'whitePawn';
+                            tutorialState.state.gameBoard[19] = 'whitePawn';
+                            tutorialState.state.gameBoard[21] = 'whitePawn';
+                            tutorialState.state.gameBoard[18] = 'whitePawn';
+                            fetchGameState(tutorialState.state);
+                            moveTextToTop();
+                            closeWhiteCurtain();
+                        },false,7000);
+                    },true,6000);
                 },true,8000);
             }, true,2000);
             fetchGameState(tutorialState.state);
+        }else if(tutorialState.step === 1){
+            if (tutorialState.state.gameBoard[n] === "blackBot" || tutorialState.state.gameBoard[n] === "whiteBot" || tutorialState.state.gameBoard[n] === "redBot") {
+                clearHighlightedCells();
+                element.firstElementChild.classList.add("highlightedCells");
+                movingBotPath.bot = tutorialState.state.gameBoard[n];
+                movingBotPath.path = [n];
+                document.getElementById("confirmRobotPath").style.display = "none";
+            } else if (
+                (tutorialState.state.gameBoard[n] === "blackPawn" && movingBotPath.bot === "blackBot") ||
+                (tutorialState.state.gameBoard[n] === "whitePawn" && movingBotPath.bot === "whiteBot") ||
+                ((tutorialState.state.gameBoard[n] === "blackPawn" || tutorialState.state.gameBoard[n] === "whitePawn") && movingBotPath.bot === "redBot")
+            ) {
+                if (isNeighbour(n, movingBotPath.path[movingBotPath.path.length - 1])) {
+                    element.firstElementChild.classList.add("highlightedCells");
+                    movingBotPath.path.push(n);
+                    document.getElementById("confirmRobotPath").style.display = "block";
+                }
+            }
         }
     }else {
         if (placingPawn) {
@@ -1354,9 +1384,52 @@ function updateName() {
     socket.emit("updateName", document.getElementById("nameTextInput").value);
     localStorage["name"] = document.getElementById("nameTextInput").value;
 }
+function randomOkEmoji(){
+    let items = ["😁","😆","🤓","🤖","😸","( ᐛ )و","(＾ω＾)"];
+    return items[Math.floor(Math.random() * items.length)];
+}
 function confirmRobotPath() {
-    if(!offlineGameType) socket.emit("moveRobot", movingBotPath);
-    else{
+    if(!offlineGameType && !tutorial) socket.emit("moveRobot", movingBotPath);
+    else if(tutorial && tutorialState.step === 1){
+        for (let i = 0; i < tutorialState.state.gameBoard.length; i++) {
+            if(tutorialState.state.gameBoard[i] === movingBotPath.bot && movingBotPath.path[0] === i){
+                for (let j = 0; j < movingBotPath.path.length - 1; j++) {
+                    if(!((tutorialState.state.gameBoard[movingBotPath.path[j+1]]   === "blackPawn" && movingBotPath.bot === "blackBot") ||
+                        (tutorialState.state.gameBoard[movingBotPath.path[j+1]]  === "whitePawn" && movingBotPath.bot === "whiteBot") ||
+                        ((tutorialState.state.gameBoard[movingBotPath.path[j+1]] === "blackPawn" || tutorialState.state.gameBoard[movingBotPath.path[j+1]] === "whitePawn") && movingBotPath.bot === "redBot"))) {
+                        return;
+                    }
+                }
+                for (let j = 0; j < movingBotPath.path.length; j++) {
+                    tutorialState.state.gameBoard[movingBotPath.path[j]] = null;
+                }
+
+                tutorialState.state.gameBoard[movingBotPath.path[movingBotPath.path.length - 1]] = movingBotPath.bot;
+
+
+                for (let i = 0; i < movingBotPath.path.length; i++) {
+                    setTimeout(() => {
+                        let x = document.getElementById(movingBotPath.bot);
+                        x.style.top = positionInBoardById[movingBotPath.path[i]][0] + "%";
+                        x.style.left = positionInBoardById[movingBotPath.path[i]][1] + "%";
+                        document.getElementById(`boardOverlayPawn${movingBotPath.path[i]}`).style.display = "none";
+                    }, i * 500);
+                }
+                setTimeout(() => {
+                    openWhiteCurtain();
+                    showFullscreenText(`Good job! ${randomOkEmoji()}`, () => {
+                        showFullscreenText("You need to have the robots in your side which is always at the bottom (unless you are playing offline).", () => {
+                            showFullscreenText("You can only have 4 energy paws at the same time.", () => {
+                                showFullscreenText("When you have 3 or less pawns, you can reload your energy pawns from the reserve, but the reserve isn’t unlimited.", () => {
+
+                                }, this, 6000);
+                            }, this, 3000);
+                        }, this, 6000);
+                    }, this, 1500);
+                }, movingBotPath.path.length * 500);
+            }
+        }
+    }else{
         let game = JSON.parse(localStorage["offlineGame"]);
         if(game.p1.turn){
             for (let i = 0; i < game.gameBoard.length; i++) {
