@@ -41,6 +41,7 @@
     </div>
     <div class="centerMenu" id="centerSettingsMenu" style="z-index: 101; width: 250px;">
         <div class="scrollableMenu">
+            <a class="mainMenuButtons" id="choseLanguageButton" onclick="changeLanguage();">Language</a>
             <input type="text" id="nameTextInput" class="mainMenuButtons text-input noClick" placeholder="Enter a name here..." data-i18n-custom="placeholder:nameInput" onkeyup="updateName();" style="margin-bottom: 20px;"/>
             <div class="desc" data-i18n="colorSchemeDesc"></div>
             <a class="mainMenuButtons colorSchemeButton redColorSchemeButton" onclick="changeColorScheme('redColorScheme',this)"></a>
@@ -51,6 +52,16 @@
             <a class="mainMenuButtons colorSchemeButton yellowColorSchemeButton" onclick="changeColorScheme('yellowColorScheme',this)"></a>
         </div>
         <a class="mainMenuButtons backButton" onclick="closeSettingsMenu();" data-i18n="genericBack"></a>
+    </div>
+    <div class="centerMenu" id="langMenu" style="z-index: 101; width: 250px;">
+        <div class="scrollableMenu" style="height: 300px;">
+            <div style="display: flex;">
+                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('en_GB')" id="languageChangeen_GB">🇬🇧</a>
+                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('fr_FR')" id="languageChangefr_FR">🇫🇷</a>
+            </div>
+            <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('es_ES')" id="languageChangees_ES">🇪🇸</a>
+        </div>
+        <a class="mainMenuButtons backButton" onclick="closeChangeLanguage();" data-i18n="genericBack"></a>
     </div>
     <div class="centerMenu" id="playMenu" style="z-index: 100; width: 240px;">
         <div class="scrollableMenu">
@@ -308,7 +319,7 @@
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    /*if ('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
             navigator.serviceWorker.register('/sw.js').then(function(registration) {
                 // Registration was successful
@@ -318,7 +329,7 @@
                 console.log('ServiceWorker registration failed: ', err);
             });
         });
-    }*/
+    }
 </script>
 <script type="text/javascript" src="scripts/index.js"></script>
 </body>

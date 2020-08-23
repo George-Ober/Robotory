@@ -154,7 +154,7 @@ body {
     box-shadow: none;
     transform: translateY(3px);
 }
-.mainMenuButtons:hover:not(.noClick):not(.mobileTouch){
+.mainMenuButtons:hover:not(.noClick):not(.mobileTouch):not(.selectedLang){
     filter: brightness(0.925);
 }
 .halfMainMenuButtons {
@@ -277,6 +277,13 @@ body {
 }
 .tutorialText{
     text-align: center;
+}
+.selectedLang{
+    filter: brightness(120%);
+}
+.langBtn{
+    font-size: 40px;
+    padding: 0 8px;
 }
 .tutorialDisplay{
     display: none;

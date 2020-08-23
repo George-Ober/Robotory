@@ -70,6 +70,7 @@ const allLanguages = {
         mainMenuTutorialBtn: "Tutorial",
         playOnlineBtn: "Play online",
         playOfflineBtn: "Play offline",
+        offline: "Offline",
         copyBtn: "Copy",
         shareBtn: "Share",
         randomBtn: "Find player",
@@ -127,6 +128,7 @@ const allLanguages = {
         mainMenuTutorialBtn: "Tutoriel",
         playOnlineBtn: "Jouer en ligne",
         playOfflineBtn: "Jouer hors-ligne",
+        offline: "Hors-ligne",
         copyBtn: "Copier",
         shareBtn: "Partager",
         randomBtn: "Trouver un joueur",
@@ -184,6 +186,7 @@ const allLanguages = {
         mainMenuTutorialBtn: "Tutorial",
         playOnlineBtn: "Jugar en línea",
         playOfflineBtn: "Jouer desconectado",
+        offline: "Desconectado",
         copyBtn: "Copiar",
         shareBtn: "Compartir",
         randomBtn: "Buscar un jugador",
@@ -233,6 +236,9 @@ const allLanguages = {
         tutorialText12: "El tutorial está terminado, usted puede jugar en línea o fuera de línea con personas físicamente a su lado.",
         tutorialYou: "Ustéd",
         tutorialTeacher: "Profesor",
+    },
+    ar_SA:{
+
     },
 };
 //First one is the top, second one is the left
@@ -398,7 +404,8 @@ function load() {
     }
     lang = localStorage["lang"];
 
-    applyTranslation();
+    changeLanguageBtn(lang);
+
     document.getElementById("nameTextInput").value = localStorage["name"];
     if (window.location.hash.charAt(0) == "#") {
         socket.emit("joinroom", { GUID: localStorage["GUID"], roomId: window.location.hash.substr(1), name: localStorage["name"] });
@@ -430,7 +437,22 @@ function applyTranslation() {
         }
     }
 }
-
+function changeLanguageBtn(langChosen) {
+    let langBtns = document.getElementsByClassName("langBtn");
+    for (let i = 0; i < langBtns.length; i++) {
+        langBtns[i].classList.remove("selectedLang");
+    }
+    document.getElementById(`languageChange${langChosen}`).classList.add("selectedLang");
+    lang = langChosen;
+    localStorage["lang"] = lang;
+    applyTranslation();
+}
+function changeLanguage(){
+    openMenu("langMenu");
+}
+function closeChangeLanguage(){
+    closeMenu("langMenu");
+}
 function notification(text) {
     let n = document.createElement("DIV");
     let z = document.createTextNode(text);
@@ -932,6 +954,7 @@ function fetchGameState(gameState){
             document.getElementById("cancelPlacePawn").remove();
         }
     }else if (offlineGameType){
+        document.title = `Robotory - ${allLanguages[lang]["offline"]}`;
         document.getElementById("yourName").innerText = gameState.p1.name;
         document.getElementById("ennemyName").innerText = gameState.p2.name;
 
@@ -1054,6 +1077,7 @@ function fetchGameState(gameState){
         }
     }else{
         movingBot = false;
+        document.title = `Robotory - ${gameState.id}`;
         clearHighlightedCells();
         if (gameState.p1.you) {
             you = gameState.p1;
@@ -1800,7 +1824,7 @@ function openTutorial(){
     resizeUpdate();
     openWhiteCurtain();
     closeVsDisplay("reserveInfo");
-    document.title = "Robotory - Tutorial";
+    document.title = `Robotory - ${allLanguages[lang]["mainMenuTutorialBtn"]}`;
     showFullscreenText(allLanguages[lang]["tutorialText1"],function(){
         document.getElementsByClassName("pawnPlaceButton")[0].classList.add("glowing");document.getElementsByClassName("pawnPlaceButton")[1].classList.add("glowing");
         document.getElementsByClassName("openMainMenuButton")[0].style.display = "none";
