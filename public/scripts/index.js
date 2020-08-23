@@ -105,6 +105,20 @@ const allLanguages = {
         genericConfirm: "Confirm",
         youWon: "You won!",
         youLost: "You lost!",
+        tutorialText1: "Pick a color, then click on a cell to place an energy pawn",
+        tutorialText2: "Great!",
+        tutorialText3: "There are 3 robots on the board, and robots can only move into cells containing a pawn of their color.",
+        tutorialText4: "...except the red robot can go in cells with a pawn of any color.",
+        tutorialText5: "Let’s move a robot! Click on one of the robots, and then click on each pawn to create a path, when you are done, click on 'confirm robot path'.",
+        tutorialText6: "Good job!",
+        tutorialText7: "You need to have the robots in your side which is always at the bottom (unless you are playing offline).",
+        tutorialText8: "You can only have 4 energy paws at the same time.",
+        tutorialText9: "When you have 3 or less pawns, you can reload your energy pawns from the reserve, but the reserve isn’t unlimited.",
+        tutorialText10: "On the top you can see the reserve status. Under your name, you can see how many paws You have.",
+        tutorialText11: "When the last pawn of any color is taken from the reserve, the game immediately stops, and the winner is the player with the most bots in their side.",
+        tutorialText12: "The tutorial has ended! You can Play Online with friends or Offline with persons that are physically next to you",
+        tutorialYou: "You",
+        tutorialTeacher: "Teacher",
     },
     fr_FR: {
         genericBack: "Retour",
@@ -143,11 +157,25 @@ const allLanguages = {
         shareTextText: "Viens jouer une partie de Robotory avec moi!",
         playRisk: "Je prends des risques!",
         nameInput: "Entrez un nom...",
-        ennemyDisplayVS: "Contre",
+        ennemyDisplayVS: "VS",
         ennemyDisplayThinking: "Je pense",
         genericConfirm: "Confirmer",
         youWon: "Vous avez gagné!",
         youLost: "Vous avez perdu!",
+        tutorialText1: "Choisissez une couleur, puis cliquez sur une case pour placer un pion.",
+        tutorialText2: "Parfait!",
+        tutorialText3: "Il y a trois robots sur le damier, et les robots ne se déplacent que sur les cases avec un pion de leur couleur.",
+        tutorialText4: "...sauf le robot rouge qui fonctionne avec des pions de toutes les couleurs.",
+        tutorialText5: "Déplaçons un robot ! Cliquez sur un des robots, puis cliquez sur les pions un par un pour créer un 'trajet' puis cliquez sur confirmer.",
+        tutorialText6: "Excellent !",
+        tutorialText7: "Il faut que vous ayez les robots de votre côté qui est toujours en bas (sauf si vous jouez hors-ligne).",
+        tutorialText8: "Vous ne pouvez garder que 4 pions non posés au même moment.",
+        tutorialText9: "Quand vous avez 3 pions ou moins, vous pouvez recharger les pions depuis la réserve qui est limitée.",
+        tutorialText10: "En haut, vous pouvez voir la réserve, et sous votre nom, vous pouvez voir vos pions non-posés.",
+        tutorialText11: "La partie s'arrête quand un joueur prend le dernier pion d'énergie d'une couleur lors d'un rechargement depuis la reserve. Le gagnant est celui qui a le plus de robots.",
+        tutorialText12: "Le tutoriel est fini, vous pouvez jouer en ligne ou hors ligne avec des persones physiquement à côté de vous.",
+        tutorialYou: "Vous",
+        tutorialTeacher: "Professeur",
     },
     es_ES: {
         genericBack: "Atrás",
@@ -186,11 +214,25 @@ const allLanguages = {
         shareTextText: "¡Ven a jugar a Robotory conmigo!",
         playRisk: "Quiero correr riesgos.",
         nameInput: "Introduzca un nombre...",
-        ennemyDisplayVS: "Contra",
+        ennemyDisplayVS: "VS",
         ennemyDisplayThinking: "Estoy piensando",
         genericConfirm: "Confirmar",
         youWon: "Usted ha ganado!",
         youLost: "Usted ha perdido!",
+        tutorialText1: "Elige un color y haz clic en una casilla para colocar una pieza.",
+        tutorialText2: "Perfecto!",
+        tutorialText3: "Hay tres robots en el tablero, y los robots sólo se mueven en las cajas con una pieza de su color.",
+        tutorialText4: "...excepto el robot rojo que funciona con piezas de todos los colores.",
+        tutorialText5: "¡Muevamos un robot! Haga clic en uno de los robots y haga clic en las fichas una por una para crear un 'trayecto' y haga clic en confirmar.",
+        tutorialText6: "Estupendo!",
+        tutorialText7: "Tienes que tener los robots de tu lado que siempre está abajo (a menos que juegues fuera de línea).",
+        tutorialText8: "Sólo puede mantener 4 piezas que no son colocadas al mismo tiempo.",
+        tutorialText9: "Cuando tengas 3 piezas o menos, puedes recargar las piezas desde la reserva que no es ilimitada.",
+        tutorialText10: "En la parte superior se puede ver la reserva, y bajo su nombre se puede ver sus peones no colocados.",
+        tutorialText11: "El juego se acaba cuando un jugador toma la última pieza de energía de un color durante una recarga de la reserva. El ganador es el que tiene más robots.",
+        tutorialText12: "El tutorial está terminado, usted puede jugar en línea o fuera de línea con personas físicamente a su lado.",
+        tutorialYou: "Ustéd",
+        tutorialTeacher: "Profesor",
     },
 };
 //First one is the top, second one is the left
@@ -312,6 +354,12 @@ class BrowserDetector {
     isSupported() {
         return !!(this.unsupportedBrowsers.hasOwnProperty(this.browser.name) && +this.browser.version > this.unsupportedBrowsers[this.browser.name]);
     }
+}
+function getIndexDOM(child){
+    let i = 0;
+    while( (child = child.previousSibling) != null )
+        i++;
+    return i;
 }
 function load() {
     if (window.localStorage["colorScheme"] === undefined || window.localStorage["colorScheme"] === null) {
@@ -1282,12 +1330,12 @@ function boardClick(element, n) {
             openWhiteCurtain();
             tutorialState.step = 1;
             document.getElementById("cancelMoveBotOption").remove();
-            showFullscreenText("Great!",function(){
+            showFullscreenText(allLanguages[lang]["tutorialText2"],function(){
                 animateRobotsTutorial();
-                showFullscreenText("There are 3 robots on the board, and robots can only move into cells containing a pawn of their color.",function(){
-                    showFullscreenText("...except the red robot can go in cells with a pawn of any color.",function(){
+                showFullscreenText(allLanguages[lang]["tutorialText3"],function(){
+                    showFullscreenText(allLanguages[lang]["tutorialText4"],function(){
                         document.getElementById("tutorialSVG").innerHTML = "";
-                        showFullscreenText("Let’s move a robot! Click on one of the robots, and then click on each cell to create a path, when you are done, click on 'confirm robot path'.",function(){
+                        showFullscreenText(allLanguages[lang]["tutorialText5"],function(){
                             closeVsDisplay("placePawnMenu");
                             openVsDisplay("moveBotMenu");
                             tutorialState.state.gameBoard[14] = 'whitePawn';
@@ -1388,6 +1436,16 @@ function randomOkEmoji(){
     let items = ["😁","😆","🤓","🤖","😸","( ᐛ )و","(＾ω＾)"];
     return items[Math.floor(Math.random() * items.length)];
 }
+function showText(text, hideAfter, duration=5000, methodAfter){
+    document.getElementsByClassName("tutorialDisplay")[0].style.display = "block";
+    setTimeout(() => document.getElementsByClassName("tutorialDisplay")[0].style.opacity = "1",100);
+    document.getElementsByClassName("tutorialText")[0].innerText = text;
+    document.getElementsByClassName("verticalAlign")[0].style.height = `${document.getElementsByClassName("tutorialDisplay")[0].offsetHeight + 10}px`;
+    if(hideAfter) setTimeout( () => document.getElementsByClassName("tutorialDisplay")[0].style.opacity = "0", duration - 400);
+    setTimeout(() => {
+        methodAfter();
+    },duration);
+}
 function confirmRobotPath() {
     if(!offlineGameType && !tutorial) socket.emit("moveRobot", movingBotPath);
     else if(tutorial && tutorialState.step === 1){
@@ -1417,15 +1475,29 @@ function confirmRobotPath() {
                 }
                 setTimeout(() => {
                     openWhiteCurtain();
-                    showFullscreenText(`Good job! ${randomOkEmoji()}`, () => {
-                        showFullscreenText("You need to have the robots in your side which is always at the bottom (unless you are playing offline).", () => {
-                            showFullscreenText("You can only have 4 energy paws at the same time.", () => {
-                                showFullscreenText("When you have 3 or less pawns, you can reload your energy pawns from the reserve, but the reserve isn’t unlimited.", () => {
-
-                                }, this, 6000);
-                            }, this, 3000);
-                        }, this, 6000);
-                    }, this, 1500);
+                    showFullscreenText(`${allLanguages[lang]["tutorialText6"]} ${randomOkEmoji()}`, () => {
+                        showFullscreenText(allLanguages[lang]["tutorialText7"], () => {
+                            showFullscreenText(allLanguages[lang]["tutorialText8"], () => {
+                                showFullscreenText(allLanguages[lang]["tutorialText9"], () => {
+                                    openVsDisplay("reserveInfo");
+                                    closeVsDisplay("moveBotMenu");
+                                    document.querySelector("#reserveInfo > div").classList.add("glowing");
+                                    document.getElementsByClassName("leftVS")[0].classList.add("glowing");
+                                    document.getElementsByClassName("gameBoardContainer")[0].style.display = "none";
+                                    showText(allLanguages[lang]["tutorialText10"],true,15000, ()=>{
+                                        openWhiteCurtain();
+                                        showFullscreenText(allLanguages[lang]["tutorialText11"],()=>{
+                                            showFullscreenText(allLanguages[lang]['tutorialText12'],()=>{
+                                                window.location.reload();
+                                            },true,8000);
+                                        },true,10000);
+                                    });
+                                    moveTextToTop();
+                                    closeWhiteCurtain();
+                                }, true, 8000);
+                            }, true, 4800);
+                        }, true, 6000);
+                    }, true, 2500);
                 }, movingBotPath.path.length * 500);
             }
         }
@@ -1729,15 +1801,15 @@ function openTutorial(){
     openWhiteCurtain();
     closeVsDisplay("reserveInfo");
     document.title = "Robotory - Tutorial";
-    showFullscreenText("Pick a color, then click on a cell to place an energy pawn",function(){
+    showFullscreenText(allLanguages[lang]["tutorialText1"],function(){
         document.getElementsByClassName("pawnPlaceButton")[0].classList.add("glowing");document.getElementsByClassName("pawnPlaceButton")[1].classList.add("glowing");
         document.getElementsByClassName("openMainMenuButton")[0].style.display = "none";
         document.getElementsByClassName("gameUI")[0].style.display = "inline-block";
         tutorialState = {
             step: 0,
             state: {
-                p1: {pawns: {white: 2, black: 2}, name: "You", turn: true, Oarea: "bottom"},
-                p2: {pawns: {white: 2, black: 2}, name: "Teacher", turn: false, Oarea: "top"},
+                p1: {pawns: {white: 2, black: 2}, name: allLanguages[lang]["tutorialYou"], turn: true, Oarea: "bottom"},
+                p2: {pawns: {white: 2, black: 2}, name: allLanguages[lang]["tutorialTeacher"], turn: false, Oarea: "top"},
                 pawnReserve: {white: 10, black: 10},
                 gameBoard: [null, null, null, null, null, null, null, null, null, "blackBot", null, "whiteBot", "redBot", null, null, null, null, null, null, null, null, null, null, null],
                 ended: false

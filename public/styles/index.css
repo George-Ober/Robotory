@@ -272,8 +272,7 @@ body {
 
 @keyframes glow {
     from{
-        background-color: transparent;
-        box-shadow: none;
+        opacity: 0;
     }
 }
 .tutorialText{
@@ -292,6 +291,8 @@ body {
     background-color: white;
     padding: 10px;
     border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 450px;
 }
 .lightVS{
     background-color: #cbcbcb;
