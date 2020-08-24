@@ -1,4 +1,4 @@
-const timestamp = "3";
+const timestamp = "4";
 const cacheName = `cache-v${timestamp}`;
 const filesToCache = [
     '/index.html',
@@ -10,7 +10,8 @@ self.addEventListener("install", (event) => {
     self.skipWaiting();
     event.waitUntil(
         caches.open(cacheName).then(cache => {
-            return cache.addAll(filesToCache);
+            return cache.addAll(filesToCache.map(url => new Request(url, {credentials: 'same-origin'})));
+            //return cache.addAll(filesToCache);
         })
     );
 });
