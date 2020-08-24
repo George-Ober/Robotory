@@ -25,6 +25,10 @@
 <div class="mainMenu" style="">
     <div class="centerMenu" id="centerMainMenu" style="z-index: 100;width: 240px;">
         <a class="mainMenuButtons" id="mainMenuResumeBtn" style="display:none;" onclick="closeMainMenu();" data-i18n="mainMenuResumeBtn"></a>
+        <div id="mainMenuUpdateBtn" style="display: none;">
+            <div class="desc" data-i18n="updateDesc"></div>
+            <a class="mainMenuButtons" onclick="window.location.reload();" data-i18n="mainMenuUpdateBtn"></a>
+        </div>
         <a class="mainMenuButtons halfMainMenuButtons" id="mainMenuPlayBtn" onclick="openPlayMenu();" data-childSVG="PlayButton" style="margin-right: 5px;"></a>
         <a class="mainMenuButtons halfMainMenuButtons" id="mainMenuSettingsBtn" onclick="openSettingsMenu();" data-childSVG="SettingsButton" style="margin-left: 5px;"></a>
         <a class="mainMenuButtons" id="mainMenuTutorialBtn" data-i18n="mainMenuTutorialBtn" onclick="openTutorial();"></a>
@@ -323,12 +327,23 @@
         window.addEventListener('load', function() {
             navigator.serviceWorker.register('/sw.js').then(function(registration) {
                 // Registration was successful
-                console.log('ServiceWorker registration successful with : ', registration);
+                registration.onupdatefound = (()=>{
+                    if (null != registration.active) {
+                        const t = registration.installing;
+                        t.onstatechange = (()=>{
+                                "installed" == t.state && showUpdate()
+                            }
+                        )
+                    }
+                });
             }, function(err) {
                 // registration failed :(
                 console.log('ServiceWorker registration failed: ', err);
             });
         });
+    }
+    function showUpdate(){
+        document.getElementById("mainMenuUpdateBtn").style.display = "block";
     }
 </script>
 <script type="text/javascript" src="scripts/index.js"></script>

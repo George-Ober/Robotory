@@ -120,6 +120,8 @@ const allLanguages = {
         tutorialText12: "The tutorial has ended! You can Play Online with friends or Offline with persons that are physically next to you",
         tutorialYou: "You",
         tutorialTeacher: "Teacher",
+        mainMenuUpdateBtn: "Update",
+        updateDesc: "An update is available",
     },
     fr_FR: {
         genericBack: "Retour",
@@ -178,6 +180,8 @@ const allLanguages = {
         tutorialText12: "Le tutoriel est fini, vous pouvez jouer en ligne ou hors ligne avec des persones physiquement à côté de vous.",
         tutorialYou: "Vous",
         tutorialTeacher: "Professeur",
+        mainMenuUpdateBtn: "Mettre à jour",
+        updateDesc: "Une mise à jour est disponible",
     },
     es_ES: {
         genericBack: "Atrás",
@@ -236,6 +240,8 @@ const allLanguages = {
         tutorialText12: "El tutorial está terminado, usted puede jugar en línea o fuera de línea con personas físicamente a su lado.",
         tutorialYou: "Ustéd",
         tutorialTeacher: "Profesor",
+        mainMenuUpdateBtn: "Actualizar",
+        updateDesc: "Una actualización está disponible",
     },
     ar_SA:{
 

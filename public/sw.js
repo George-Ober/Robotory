@@ -7,9 +7,8 @@ const filesToCache = [
 ];
 
 self.addEventListener("install", (event) => {
-    console.log(event);
+    self.skipWaiting();
     event.waitUntil(
-        //console.log(caches)
         caches.open(cacheName).then(cache => {
             return cache.addAll(filesToCache);
         })
@@ -37,11 +36,11 @@ self.addEventListener("fetch", event => {
                 const fetchPromise = fetch(event.request).then(networkResponse => {
                     cache.put(event.request, networkResponse.clone());
                     return networkResponse;
-                });
+                }).catch(e => {});
 
                 return response || fetchPromise;
-            })
-        })
+            }).catch(e => {})
+        }).catch(e => {})
     )
 });
 
