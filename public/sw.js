@@ -1,4 +1,4 @@
-const timestamp = "1";
+const timestamp = "3";
 const cacheName = `cache-v${timestamp}`;
 const filesToCache = [
     '/index.html',
@@ -17,14 +17,13 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", event => {
     event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames.filter(cacheName => {
-
-                }).map(cacheName => {
-                    return caches.delete(cacheName);
-                })
-            );
+        caches.keys().then((keyList) => {
+            return Promise.all(keyList.map((key) => {
+                let result = /cache-v(\d+)/.exec(key);
+                if(result && result[1] != timestamp){
+                    return caches.delete(key);
+                }
+            }));
         })
     );
 });
