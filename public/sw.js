@@ -1,4 +1,4 @@
-const timestamp = "0";
+const timestamp = "1";
 const cacheName = `cache-v${timestamp}`;
 const filesToCache = [
     '/index.html',

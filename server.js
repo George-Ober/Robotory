@@ -91,6 +91,8 @@ io.on('connection', (socket) => {
                     game = workingRooms[data.roomId];
                     socket.emit("spectator",game.generateGameState("spect"));
                 }
+            }else if(data.reconnect){
+                socket.emit("wrongReconnect",data.roomId);
             }else{
                 socket.emit("wrongroom");
             }

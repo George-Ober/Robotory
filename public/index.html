@@ -27,17 +27,17 @@
         <a class="mainMenuButtons" id="mainMenuResumeBtn" style="display:none;" onclick="closeMainMenu();" data-i18n="mainMenuResumeBtn"></a>
         <div id="mainMenuUpdateBtn" style="display: none;">
             <div class="desc" data-i18n="updateDesc"></div>
-            <a class="mainMenuButtons" onclick="window.location.reload();" data-i18n="mainMenuUpdateBtn"></a>
+            <a class="mainMenuButtons" onclick="window.location.reload();"><div class="btnIconContainer" data-bgSVG="arrowUpdate"></div><span class="btnText" data-i18n="mainMenuUpdateBtn"></span></a>
         </div>
         <a class="mainMenuButtons halfMainMenuButtons" id="mainMenuPlayBtn" onclick="openPlayMenu();" data-childSVG="PlayButton" style="margin-right: 5px;"></a>
         <a class="mainMenuButtons halfMainMenuButtons" id="mainMenuSettingsBtn" onclick="openSettingsMenu();" data-childSVG="SettingsButton" style="margin-left: 5px;"></a>
-        <a class="mainMenuButtons" id="mainMenuTutorialBtn" data-i18n="mainMenuTutorialBtn" onclick="openTutorial();"></a>
+        <a class="mainMenuButtons" id="mainMenuTutorialBtn" onclick="openTutorial();"><div class="btnIconContainer" data-bgSVG="tutorialIcon"></div><span class="btnText" data-i18n="mainMenuTutorialBtn"></span></a>
         <a class="mainMenuButtons" id="recentGamesMenuBtn" style="display:none;" onclick="openRecentGamesMenu();" data-i18n="mainMenuRecentGamesBtn"></a>
     </div>
     <div class="centerMenu" id="recentGamesMenu" style="width: 240px;">
         <div class="desc" data-i18n="recentGamesMenuDesc"></div>
         <div id="recentGamesList"></div>
-        <a class="backButton mainMenuButtons" onclick="closeRecentGamesMenu();" data-i18n="genericBack"></a>
+        <a class="backButton mainMenuButtons" onclick="closeRecentGamesMenu();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
     </div>
     <div class="centerMenu" id="unsupported" style="z-index: 200;width: 300px;">
         <div class="desc" data-i18n="unsupportedDesc"></div>
@@ -45,7 +45,7 @@
     </div>
     <div class="centerMenu" id="centerSettingsMenu" style="z-index: 101; width: 250px;">
         <div class="scrollableMenu">
-            <a class="mainMenuButtons" id="choseLanguageButton" onclick="changeLanguage();">Language</a>
+            <a class="mainMenuButtons" id="choseLanguageButton" onclick="changeLanguage();"><div class="btnIconContainer" data-bgSVG="flagIcon"></div><span class="btnText">Language</span></a>
             <input type="text" id="nameTextInput" class="mainMenuButtons text-input noClick" placeholder="Enter a name here..." data-i18n-custom="placeholder:nameInput" onkeyup="updateName();" style="margin-bottom: 20px;"/>
             <div class="desc" data-i18n="colorSchemeDesc"></div>
             <a class="mainMenuButtons colorSchemeButton redColorSchemeButton" onclick="changeColorScheme('redColorScheme',this)"></a>
@@ -55,7 +55,7 @@
             <a class="mainMenuButtons colorSchemeButton greenColorSchemeButton" onclick="changeColorScheme('greenColorScheme',this)"></a>
             <a class="mainMenuButtons colorSchemeButton yellowColorSchemeButton" onclick="changeColorScheme('yellowColorScheme',this)"></a>
         </div>
-        <a class="mainMenuButtons backButton" onclick="closeSettingsMenu();" data-i18n="genericBack"></a>
+        <a class="mainMenuButtons backButton" onclick="closeSettingsMenu();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
     </div>
     <div class="centerMenu" id="langMenu" style="z-index: 101; width: 250px;">
         <div class="scrollableMenu" style="height: 300px;">
@@ -65,7 +65,7 @@
             </div>
             <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('es_ES')" id="languageChangees_ES">🇪🇸</a>
         </div>
-        <a class="mainMenuButtons backButton" onclick="closeChangeLanguage();" data-i18n="genericBack"></a>
+        <a class="mainMenuButtons backButton" onclick="closeChangeLanguage();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
     </div>
     <div class="centerMenu" id="playMenu" style="z-index: 100; width: 240px;">
         <div class="scrollableMenu">
@@ -73,7 +73,7 @@
             <a class="mainMenuButtons" id="playMenuOnlineButton" onclick="onlineGame();" data-i18n="playOnlineBtn"></a>
             <a class="mainMenuButtons" id="playMenuOfflineButton" onclick="offlineGame();" data-i18n="playOfflineBtn"></a>
         </div>
-        <a class="mainMenuButtons backButton" onclick="closePlayMenu();" data-i18n="genericBack"></a>
+        <a class="mainMenuButtons backButton" onclick="closePlayMenu();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
     </div>
 
     <div class="centerMenu" id="centerShareGameMenu" style="z-index: 100;max-width: 301px;">
@@ -87,7 +87,7 @@
         <a class="mainMenuButtons halfMainMenuButtons" style="margin-right: 5px;" data-i18n="randomBtn"></a>
         <a class="mainMenuButtons halfMainMenuButtons" style="margin-left: 5px;" data-i18n="gameSettingsBtn"></a>
 
-        <a class="mainMenuButtons backButton" onclick="closeCenterShareGameMenu()" data-i18n="genericBack"></a>
+        <a class="mainMenuButtons backButton" onclick="closeCenterShareGameMenu()" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
     </div>
 </div>
 <div class="centerMenu" id="loader">
@@ -146,21 +146,21 @@
                     <div class="pawnDot"></div>
                     <span id="placePawnBlack"></span>
                 </a>
-                <a class="mainMenuButtons pawnPlaceButton" id="cancelPlacePawn" onclick="cancelPlacePawnOption();" data-i18n="genericBack"></a>
+                <a class="mainMenuButtons pawnPlaceButton" id="cancelPlacePawn" onclick="cancelPlacePawnOption();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
             </div>
         </div>
         <div class="vsDisplay" style="display: none;width: fit-content;padding-top: 0;" id="moveBotMenu">
             <div class="vsTable">
                 <p style="margin: 0;white-space: pre-line;max-width: 284px;" data-i18n="moveBotDesc"></p>
                 <a class="mainMenuButtons" id="confirmRobotPath" style="display: none;" onclick="confirmRobotPath();" data-i18n="confirmPathBtn"></a>
-                <a class="mainMenuButtons" onclick="cancelMoveBotOption();" id="cancelMoveBotOption" data-i18n="genericBack"></a>
+                <a class="mainMenuButtons" onclick="cancelMoveBotOption();" id="cancelMoveBotOption" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
             </div>
         </div>
         <div class="centerMenu" id="availableActionsMenu" style="z-index: 100;max-width: 240px;">
             <a class="mainMenuButtons" id="placePawnOptionButton" onclick="placePawnOption();" data-i18n="placePawnOptionBtn"></a>
             <a class="mainMenuButtons" onclick="moveBot();" data-i18n="moveRbotBtn"></a>
             <a class="mainMenuButtons" id="reloadEnergyOptionButton" onclick="openReloadEnergyMenu()" data-i18n="reloadEnergyBtn"></a>
-            <a class="mainMenuButtons backButton" onclick="closeAvailableActionsMenu();" data-i18n="genericBack"></a>
+            <a class="mainMenuButtons backButton" onclick="closeAvailableActionsMenu();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
         </div>
         <div class="centerMenu" id="reloadEnergyMenu" style="z-index: 101">
             <div id="myPawnsInMenu">
@@ -176,7 +176,7 @@
                 <div class="desc" id="reloadPawnsShowNew"></div>
                 <div id="pawnsReloadContainer"></div>
                 <a class="backButton mainMenuButtons" id="confirmReloadButton" onclick="sendReloadValue();" data-i18n="genericConfirm"></a>
-                <a class="backButton mainMenuButtons" onclick="cancelReloadPawnsButton();" data-i18n="genericBack"></a>
+                <a class="backButton mainMenuButtons" onclick="cancelReloadPawnsButton();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
             </div>
         </div>
         <div class="centerMenu" id="winnerMenu" style="z-index: 101">

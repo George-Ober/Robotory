@@ -132,13 +132,21 @@ body {
     padding: var(--menuPadding);
     transition: all 0.5s;
 }
+.btnIconContainer {
+    width: 35px;
+    height: 35px;
+    background-size: cover;
+    position: absolute;
+    left: 7px;
+    top: calc((100% - 35px) / 2);
+}
 .mainMenuButtons {
     display: block;
     text-align: center;
     width: calc(100% - 35px);
     margin: var(--default-padding);
     border: none;
-    font-size: 16px;
+    font-size: 20px;
     background-color: var(--buttonBg);
     padding: 8px;
     border-radius: var(--border-radius);
@@ -146,6 +154,10 @@ body {
     transition-duration: 0.1s;
     color: var(--buttonTxtColor);
     cursor: pointer;
+    position: relative;
+}
+.btnText{
+    padding-left: 20px;
 }
 .mainMenuButtons:focus {
     outline: none;

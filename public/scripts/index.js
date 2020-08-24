@@ -11,6 +11,10 @@ const SVGsUsed = {
     "shareBtn": '<svg width="365" height="365" viewBox="0 0 365 365" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%;height: 100%;"><path d="M182.5 179.5V20M182.5 20L125.5 77M182.5 20L239 77" stroke="black" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/><path d="M116.5 129H86C72.7452 129 62 139.745 62 153V322C62 335.255 72.7452 346 86 346H279.5C292.755 346 303.5 335.255 303.5 322V153C303.5 139.745 292.755 129 279.5 129H248" stroke="black" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     "copyBtn": '<svg width="365" height="365" viewBox="0 0 365 365" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;"><rect x="121" y="91" width="164" height="223" rx="19" stroke="black" stroke-width="19" stroke-linejoin="round"/><path d="M81 255V51H212" stroke="black" stroke-width="19" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     "plusIcon": '<svg width="640" height="640" viewBox="0 0 275 640" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M137.5 223.5V416.5" stroke="black" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/><path d="M41 320H234" stroke="black" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "flagIcon": '<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M205.965 374.336L274.933 184.849M274.933 184.849L308.423 92.836C398.767 83.8476 370.477 161.575 461.357 148.5L427.867 240.512C339.667 233.152 360.886 170.931 274.933 184.849Z" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><path d="M306.823 374.336L237.855 184.849M237.855 184.849L204.365 92.836C114.021 83.8476 142.311 161.575 51.4308 148.5L84.9207 240.512C173.121 233.152 151.902 170.931 237.855 184.849Z" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "tutorialIcon": '<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M354 179C354 125.428 310.124 82 256 82C201.876 82 158 125.428 158 179" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><path d="M256 349V270.48C309.892 270.48 354 230.824 354 177.5" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="256" cy="414.882" rx="15" ry="15.8824" fill="black"/></svg>',
+    "arrowBack": '<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M407 256H105M105 256L206.5 176M105 256L206.5 336" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "arrowUpdate": '<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M56 261L150.5 381L245 261" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><path d="M452 359C452 261.414 478 128 302 128C126 128 151.014 261.414 151.014 359" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 };
 const redColorScheme = [
     ["menuBg", "#FFEBEE"],
@@ -215,7 +219,7 @@ const allLanguages = {
         winnerMenuDesc: "El juego se acaba cuando un jugador toma la última pieza de energía de un color durante una recarga.",
         shareGameMenuDesc: "Comparte este enlace con un amigo:",
         serverError: "No se puede conectar al servidor",
-        recentGamesMenuAgainst: "aontra %player",
+        recentGamesMenuAgainst: "Contra %player",
         energyPawnsReloadAction: "Tiene %actual fichas de energía, tiene que tomar %future de cualquier color para tener 4 de nuevo.",
         shareTextTitle: "Juego Robotory!",
         shareTextText: "¡Ven a jugar a Robotory conmigo!",
@@ -374,6 +378,15 @@ function getIndexDOM(child){
     return i;
 }
 function load() {
+    if (localStorage["name"] === undefined || localStorage["name"] == null) {
+        localStorage["name"] = "";
+    }
+    if (localStorage["lang"] === undefined || localStorage["lang"] == null) {
+        localStorage["lang"] = "en_GB";
+    }
+    lang = localStorage["lang"];
+
+    changeLanguageBtn(lang);
     if (window.localStorage["colorScheme"] === undefined || window.localStorage["colorScheme"] === null) {
         window.localStorage["colorScheme"] = "greenColorScheme";
     } else {
@@ -402,15 +415,6 @@ function load() {
     if (!navigator.share) {
         document.getElementById("shareButton").style.display = "none";
     }
-    if (localStorage["name"] === undefined || localStorage["name"] == null) {
-        localStorage["name"] = "";
-    }
-    if (localStorage["lang"] === undefined || localStorage["lang"] == null) {
-        localStorage["lang"] = "en_GB";
-    }
-    lang = localStorage["lang"];
-
-    changeLanguageBtn(lang);
 
     document.getElementById("nameTextInput").value = localStorage["name"];
     if (window.location.hash.charAt(0) == "#") {
@@ -475,6 +479,7 @@ function updateRecentGames() {
     document.getElementById("recentGamesMenuBtn").style.display = "block";
     document.getElementById("recentGamesList").innerHTML = "";
     let j = JSON.parse(window.localStorage["recentGames"]);
+    if (j.length === 0) document.getElementById("recentGamesMenuBtn").style.display = "none";
     for (let i = 0; i < j.length; i++) {
         let x = document.createElement("a");
         x.classList.add("mainMenuButtons");
@@ -1644,8 +1649,11 @@ function closeMainMenu() {
     closeMenu("centerMainMenu");
 }
 function recentGame(id) {
-    socket.emit("joinroom", { GUID: localStorage["GUID"], roomId: id, name: localStorage["name"] });
-    closeMenu("recentGamesMenu");
+    if (!socket.connected) notification(allLanguages[lang]["serverError"]);
+    else {
+        socket.emit("joinroom", {GUID: localStorage["GUID"], roomId: id, name: localStorage["name"],reconnect:true});
+        closeRecentGamesMenu();
+    }
 }
 function openDarkerBg() {
     document.getElementById("darkerBg").style.display = "inline-block";
@@ -1737,6 +1745,16 @@ socket.on("yourTurn", (data) => {
 });
 socket.on("ennemmyTurn", () => {
     document.getElementById("thinking").style.display = "inline-block";
+});
+socket.on("wrongReconnect", (data) => {
+    let x = JSON.parse(localStorage["recentGames"]);
+    for (let i = 0; i < x.length; i++) {
+        if(x[i].id === data){
+            x.splice(i, 1);
+            localStorage["recentGames"] = JSON.stringify(x);
+            updateRecentGames();
+        }
+    }
 });
 socket.on("wrongroom", () => {
     window.location.hash = "";
@@ -1919,6 +1937,10 @@ function parseSVGs() {
         if (allElements[i].getAttribute("data-childSVG") != null) {
             if (SVGsUsed[allElements[i].getAttribute("data-childSVG")] !== undefined) {
                 allElements[i].innerHTML = SVGsUsed[allElements[i].getAttribute("data-childSVG")];
+            }
+        }else if (allElements[i].getAttribute("data-bgSVG") != null) {
+            if (SVGsUsed[allElements[i].getAttribute("data-bgSVG")] !== undefined) {
+                allElements[i].style.backgroundImage = `url(${forImage(allElements[i].getAttribute("data-bgSVG"))})`;
             }
         }
     }
