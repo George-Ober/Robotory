@@ -1,4 +1,4 @@
-const timestamp = "8";
+const timestamp = "9";
 const cacheName = `cache-v${timestamp}`;
 const filesToCache = [
     `/index.html?v=${timestamp}`,
@@ -6,14 +6,27 @@ const filesToCache = [
     `/scripts/index.js?v=${timestamp}`,
 ];
 
-self.addEventListener("install", (event) => {
-    self.skipWaiting();
+self.addEventListener("install", (e) => {
+    /*self.skipWaiting();
     event.waitUntil(
         caches.open(cacheName).then(cache => {
             //return cache.addAll(filesToCache.map(url => new Request(url, {credentials: 'same-origin'})));
             return cache.addAll(filesToCache);
         })
-    );
+    );*/
+    self.skipWaiting();
+    let cachesPromise = caches.open(cacheName).then((cache) => {
+        return cache.addAll(filesToCache.map(url => new Request(url, {credentials: 'same-origin'})));
+    });
+    let tryPromise = new Promise((resolve, reject) => {
+        Promise.all([cachesPromise]).then(() => {
+            resolve();
+        }, (e) => {
+            console.log("Error whilst initialling the SW.");
+            resolve();
+        });
+    });
+    e.waitUntil(tryPromise);
 });
 
 self.addEventListener("activate", event => {
