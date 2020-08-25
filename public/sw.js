@@ -1,9 +1,11 @@
-const timestamp = "9";
+const timestamp = "10";
 const cacheName = `cache-v${timestamp}`;
 const filesToCache = [
+    '/',
     `/index.html?v=${timestamp}`,
     `/styles/index.css?v=${timestamp}`,
     `/scripts/index.js?v=${timestamp}`,
+    `/socket.io/socket.io.js?v=${timestamp}`
 ];
 
 self.addEventListener("install", (e) => {
