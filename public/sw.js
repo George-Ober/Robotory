@@ -1,9 +1,9 @@
 const timestamp = "8";
 const cacheName = `cache-v${timestamp}`;
 const filesToCache = [
-    '/index.html',
-    '/styles/index.css',
-    '/scripts/index.js',
+    `/index.html?v=${timestamp}`,
+    `/styles/index.css?v=${timestamp}`,
+    `/scripts/index.js?v=${timestamp}`,
 ];
 
 self.addEventListener("install", (event) => {
@@ -29,8 +29,8 @@ self.addEventListener("activate", event => {
     );
 });
 
-self.addEventListener("fetch", event => {
-    event.respondWith(
+self.addEventListener("fetch", e => {
+    /*event.respondWith(
         caches.open(cacheName).then(cache => {
             return cache.match(event.request).then(response => {
                 const fetchPromise = fetch(event.request).then(networkResponse => {
@@ -41,7 +41,40 @@ self.addEventListener("fetch", event => {
                 return response || fetchPromise;
             }).catch(e => {})
         }).catch(e => {})
-    )
+    )*/
+    let url = new URL(e.request.url);
+    console.log(url);
+    let doSearchCache = false;
+    //if(["localhost"].indexOf(url.hostname) == -1){
+        if(/\?v=\d+$/.test(url.search)){
+            doSearchCache = true;
+        }else if(url.pathname == "/"){
+            doSearchCache = true;
+        }
+    //}
+    console.log(doSearchCache);
+    if(doSearchCache){
+        e.respondWith(
+            caches.match(e.request).then((response) => {
+                if(response){
+                    return response;
+                }
+
+
+                return fetch(e.request).then((response)=>{
+
+                    //cache request for next use
+                    if(response.ok){
+                        return caches.open(cacheName).then((cache)=>{
+                            cache.put(e.request, response.clone());
+                            return response;
+                        });
+                    }
+                    return response;
+                });
+            })
+        );
+    }
 });
 
 /*
