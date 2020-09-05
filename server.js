@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) George Ober - All Rights Reserved
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ *  Written by George Ober <george.a.ober@gmail.com>,
+ *  on 5/9/2020 (DD/MM/YY).
+ */
+
 const roomHandler = require("./room.js");
 const express = require('express');
 const util = require('util');
@@ -9,7 +17,6 @@ var port = process.env.PORT || 8080;
 
 app.use(express.static('public'));
 app.get('/', function (req, res) {
-    // nbroom
     res.sendFile("public/index.html");
 });
 
