@@ -1,4 +1,4 @@
-const timestamp = "10";
+const timestamp = "16";
 const cacheName = `cache-v${timestamp}`;
 const filesToCache = [
     '/',

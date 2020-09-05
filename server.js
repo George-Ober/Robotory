@@ -98,6 +98,15 @@ io.on('connection', (socket) => {
             }
         }
     });
+    socket.on("removeSpectator",(data) => {
+        if(typeof game != "undefined"){
+            for (let i = 0; i < game.spectators.length; i++) {
+                if(game.spectators[i] == socket) {
+                    game.spectators.splice(i, 1);
+                }
+            }
+        }
+    });
     socket.on("placingPawn",(data) => {
         if(typeof game != "undefined"){
             if (socket == game.p1.socket){

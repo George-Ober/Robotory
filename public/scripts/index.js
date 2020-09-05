@@ -15,6 +15,7 @@ const SVGsUsed = {
     "tutorialIcon": '<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M354 179C354 125.428 310.124 82 256 82C201.876 82 158 125.428 158 179" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><path d="M256 349V270.48C309.892 270.48 354 230.824 354 177.5" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="256" cy="414.882" rx="15" ry="15.8824" fill="black"/></svg>',
     "arrowBack": '<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M407 256H105M105 256L206.5 176M105 256L206.5 336" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     "arrowUpdate": '<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M56 261L150.5 381L245 261" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><path d="M452 359C452 261.414 478 128 302 128C126 128 151.014 261.414 151.014 359" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "menuBtn" : '<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M87 147H424" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><path d="M87 256H424" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><path d="M87 365H424" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 };
 const redColorScheme = [
     ["menuBg", "#FFEBEE"],
@@ -126,6 +127,7 @@ const allLanguages = {
         tutorialTeacher: "Teacher",
         mainMenuUpdateBtn: "Update",
         updateDesc: "An update is available",
+        madeBy: "Made by George Ober"
     },
     fr_FR: {
         genericBack: "Retour",
@@ -186,6 +188,7 @@ const allLanguages = {
         tutorialTeacher: "Professeur",
         mainMenuUpdateBtn: "Mettre à jour",
         updateDesc: "Une mise à jour est disponible",
+        madeBy: "Fait par George Ober",
     },
     es_ES: {
         genericBack: "Atrás",
@@ -246,6 +249,7 @@ const allLanguages = {
         tutorialTeacher: "Profesor",
         mainMenuUpdateBtn: "Actualizar",
         updateDesc: "Una actualización está disponible",
+        madeBy: "Escrito por George Ober",
     },
     ar_SA:{
 
@@ -628,6 +632,10 @@ function offlineGame() {
 function onlineGame() {
     if (socket.connected) {
         beforeTime = Math.floor(new Date() / 1000);
+        if (spectator){
+            spectator = false;
+            socket.emit("removeSpectator");
+        }
         socket.emit("createroom", { GUID: localStorage["GUID"], name: localStorage["name"] });
         closeMenu("playMenu");
         openMenu("loader");
@@ -1104,7 +1112,7 @@ function fetchGameState(gameState){
                 recentGames.splice(i, 1);
             }
         }
-        recentGames.push({id: gameState.id, name: ennemy.name});
+        if(!spectator) recentGames.push({id: gameState.id, name: ennemy.name});
 
         localStorage["recentGames"] = JSON.stringify(recentGames);
 
@@ -1729,7 +1737,7 @@ socket.on("nameChanged", (data) => {
                 recentGames.splice(i, 1);
             }
         }
-        recentGames.push({ id: data.id, name: data.name });
+        if(!spectator)recentGames.push({ id: data.id, name: data.name });
 
         localStorage["recentGames"] = JSON.stringify(recentGames);
         updateRecentGames();
@@ -1844,6 +1852,11 @@ function openTutorial(){
     closeMenu("centerMainMenu");
     closeDarkerBg();
     tutorial = true;
+    offlineGameType = false;
+    if (spectator){
+        spectator = false;
+        socket.emit("removeSpectator");
+    }
     document.getElementById("background").style.display = "none";
     resizeUpdate();
     openWhiteCurtain();

@@ -184,6 +184,7 @@ body {
     transform: translate(-50%,0) scale(0);
     transition: all 0.5s;
     transform-origin: top;
+    width: max-content;
 }
 .vsContainer{
     display: flex;
