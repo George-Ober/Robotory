@@ -640,10 +640,7 @@ function offlineGame() {
 function onlineGame() {
     if (socket.connected) {
         beforeTime = Math.floor(new Date() / 1000);
-        if (spectator){
-            spectator = false;
-            socket.emit("removeSpectator");
-        }
+
         socket.emit("createroom", { GUID: localStorage["GUID"], name: localStorage["name"] });
         closeMenu("playMenu");
         openMenu("loader");
@@ -1120,7 +1117,7 @@ function fetchGameState(gameState){
                 recentGames.splice(i, 1);
             }
         }
-        if(!spectator) recentGames.push({id: gameState.id, name: ennemy.name});
+        recentGames.push({id: gameState.id, name: ennemy.name});
 
         localStorage["recentGames"] = JSON.stringify(recentGames);
 
@@ -1745,7 +1742,7 @@ socket.on("nameChanged", (data) => {
                 recentGames.splice(i, 1);
             }
         }
-        if(!spectator)recentGames.push({ id: data.id, name: data.name });
+        recentGames.push({ id: data.id, name: data.name });
 
         localStorage["recentGames"] = JSON.stringify(recentGames);
         updateRecentGames();
@@ -1861,10 +1858,6 @@ function openTutorial(){
     closeDarkerBg();
     tutorial = true;
     offlineGameType = false;
-    if (spectator){
-        spectator = false;
-        socket.emit("removeSpectator");
-    }
     document.getElementById("background").style.display = "none";
     resizeUpdate();
     openWhiteCurtain();
