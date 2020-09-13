@@ -6,7 +6,7 @@
  *  on 5/9/2020 (DD/MM/YY).
  */
 
-const timestamp = "16";
+const timestamp = "17";
 const cacheName = `cache-v${timestamp}`;
 const filesToCache = [
     '/',
