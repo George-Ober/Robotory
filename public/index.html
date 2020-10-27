@@ -11,7 +11,7 @@
 <head>
     <title>Robotory</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="stylesheet" type="text/css" href="styles/index.css?v=9" />
+    <link rel="stylesheet" type="text/css" href="styles/index.css?v=20" />
     <link rel="icon" type="image/svg" href="images/icon256.png  ">
 
     <link rel="apple-touch-icon" href="images/iconApple.png">
@@ -32,7 +32,7 @@
 </div>
 <div class="mainMenu" style="">
     <div class="centerMenu" id="centerMainMenu" style="z-index: 100;width: 240px;">
-        <a class="mainMenuButtons" id="mainMenuResumeBtn" style="display:none;" onclick="closeMainMenu();" data-i18n="mainMenuResumeBtn"></a>
+        <a class="mainMenuButtons" id="mainMenuResumeBtn" style="display:none;" onclick="closeMainMenu();"><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="mainMenuResumeBtn"></span></a>
         <div id="mainMenuUpdateBtn" style="display: none;">
             <div class="desc" data-i18n="updateDesc"></div>
             <a class="mainMenuButtons" onclick="window.location.reload();"><div class="btnIconContainer" data-bgSVG="arrowUpdate"></div><span class="btnText" data-i18n="mainMenuUpdateBtn"></span></a>
@@ -93,8 +93,7 @@
             <a class="mainMenuButtons halfMainMenuButtons" style="width: 40px;display: flex;order: 2;margin-left:5px;" onclick="copyClip('linkTextInput');" data-childSVG="copyBtn"></a>
         </div>
 
-        <a class="mainMenuButtons halfMainMenuButtons" style="margin-right: 5px;" data-i18n="randomBtn"></a>
-        <a class="mainMenuButtons halfMainMenuButtons" style="margin-left: 5px;" data-i18n="gameSettingsBtn"></a>
+        <a class="mainMenuButtons" data-i18n="gameSettingsBtn"></a>
 
         <a class="mainMenuButtons backButton" onclick="closeCenterShareGameMenu()" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
     </div>
@@ -155,7 +154,7 @@
                     <div class="pawnDot"></div>
                     <span id="placePawnBlack"></span>
                 </a>
-                <a class="mainMenuButtons pawnPlaceButton" id="cancelPlacePawn" onclick="cancelPlacePawnOption();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
+                <a class="mainMenuButtons pawnPlaceButton" id="cancelPlacePawn" onclick="cancelPlacePawnOption();" ><span data-i18n="genericBack"></span></a>
             </div>
         </div>
         <div class="vsDisplay" style="display: none;width: fit-content;padding-top: 0;" id="moveBotMenu">
@@ -330,7 +329,7 @@
     </div >
     <button class="openMainMenuButton" onclick="openMainMenu();"></button>
 </div>
-<script src="/socket.io/socket.io.js?v=9"></script>
+<script src="/socket.io/socket.io.js?v=20"></script>
 <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
@@ -355,6 +354,6 @@
         document.getElementById("mainMenuUpdateBtn").style.display = "block";
     }
 </script>
-<script type="text/javascript" src="scripts/index.js?v=9"></script>
+<script type="text/javascript" src="scripts/index.js?v=20"></script>
 </body>
 </html>

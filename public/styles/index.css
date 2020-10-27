@@ -11,6 +11,8 @@
     --menuBottom: #c8e6c9;
     --buttonBg: #A5D6A7;
     --buttonBottom: #81C784;
+    --buttonHoverBg: #99c69a;
+    --buttonHoverBottom: #77b87a;
     --buttonTxtColor: black;
     --menuPadding: 10px;
     --menu-text-color: black;
@@ -169,14 +171,15 @@ body {
 }
 .mainMenuButtons:focus {
     outline: none;
+}.mainMenuButtons:hover:not(.noClick):not(.mobileTouch):not(.selectedLang){
+    background-color: var(--buttonHoverBg);
+    box-shadow: 0 3px var(--buttonHoverBottom);
 }
-.mainMenuButtons:active:not(.noClick) {
+.mainMenuButtons:active:not(.noClick):not(.mobileTouch):not(.selectedLang){
     box-shadow: none;
     transform: translateY(3px);
 }
-.mainMenuButtons:hover:not(.noClick):not(.mobileTouch):not(.selectedLang){
-    filter: brightness(0.925);
-}
+
 .halfMainMenuButtons {
     width: calc(50% - 33.3px);
     display: inline-block;
@@ -398,7 +401,7 @@ body {
 }
 .scrollableMenu {
     max-height: 300px;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 .text-input {
     filter: brightness(1.2);

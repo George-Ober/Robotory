@@ -30,36 +30,48 @@ const redColorScheme = [
     ["menuBottom", "#FFCDD2"],
     ["buttonBg", "#EF9A9A"],
     ["buttonBottom", "#E57373"],
+    ["buttonHoverBg", "#dd8e8e"],
+    ["buttonHoverBottom", "#d46a6a"],
 ];
 const purpleColorScheme = [
     ["menuBg", "#f3e5f5"],
     ["menuBottom", "#e1bee7"],
     ["buttonBg", "#CE93D8"],
     ["buttonBottom", "#BA68C8"],
+    ["buttonHoverBg", "#bf88c8"],
+    ["buttonHoverBottom", "#ac60b9"],
 ];
 const blueColorScheme = [
     ["menuBg", "#e8eaf6"],
     ["menuBottom", "#c5cae9"],
     ["buttonBg", "#9FA8DA"],
     ["buttonBottom", "#7986CB"],
+    ["buttonHoverBg", "#939bca"],
+    ["buttonHoverBottom", "#707cbc"],
 ];
 const cyanColorScheme = [
     ["menuBg", "#e0f7fa"],
     ["menuBottom", "#b2ebf2"],
     ["buttonBg", "#80DEEA"],
     ["buttonBottom", "#4DD0E1"],
+    ["buttonHoverBg", "#76cdd8"],
+    ["buttonHoverBottom", "#47c0d0"],
 ];
 const greenColorScheme = [
     ["menuBg", "#e8f5e9"],
     ["menuBottom", "#c8e6c9"],
     ["buttonBg", "#A5D6A7"],
     ["buttonBottom", "#81C784"],
+    ["buttonHoverBg", "#99c69a"],
+    ["buttonHoverBottom", "#77b87a"],
 ];
 const yellowColorScheme = [
     ["menuBg", "#fff3e0"],
     ["menuBottom", "#ffe0b2"],
     ["buttonBg", "#ffcc80"],
     ["buttonBottom", "#ffb74d"],
+    ["buttonHoverBg", "#ecbd76"],
+    ["buttonHoverBottom", "#eca947"],
 ];
 
 let placingPawn = false;
@@ -440,7 +452,7 @@ function load() {
         openDarkerBg();
         //openVsDisplay("ennemyDisplay");
     }
-    setInterval(generateBackgroundParticles, 100);
+    //setInterval(generateBackgroundParticles, 100);
     parseSVGs();
 }
 
@@ -482,10 +494,10 @@ function notification(text) {
     n.appendChild(z);
 
     document.getElementById("newNotifs").prepend(n);
-    /*setTimeout(function(){
+    setTimeout(function(){
         let x = document.getElementById("newNotifs");
         x.removeChild(x.lastChild);
-    },5000);*/
+    },5000);
 }
 function updateRecentGames() {
     document.getElementById("recentGamesMenuBtn").style.display = "block";
@@ -1654,6 +1666,9 @@ function closeMainMenu() {
         return;
     } else if (menusStack[menusStack.length - 1] === "playMenu") {
         closePlayMenu();
+        return;
+    }else if (menusStack[menusStack.length - 1] === "langMenu") {
+        closeChangeLanguage();
         return;
     }
     closeDarkerBg();
