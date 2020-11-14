@@ -28,8 +28,8 @@
     stroke: var(--menuBottom);
     stroke-width: 19px;
 }
-.hex:hover {
-    /*stroke: var(--buttonBottom);*/
+a{
+    color: inherit;
 }
 #newNotifs{
     color: white;
@@ -169,7 +169,7 @@ body {
 .btnText{
     padding-left: 20px;
 }
-.mainMenuButtons:focus {
+/* .mainMenuButtons:focus {
     outline: none;
 }.mainMenuButtons:hover:not(.noClick):not(.mobileTouch):not(.selectedLang){
     background-color: var(--buttonHoverBg);
@@ -178,6 +178,22 @@ body {
 .mainMenuButtons:active:not(.noClick):not(.mobileTouch):not(.selectedLang){
     box-shadow: none;
     transform: translateY(3px);
+} */
+.mainMenuButtons:focus {
+	outline: 0;
+	box-shadow: 0px 3px var(--buttonBottom), 0px 3px 12px 0px rgba(0, 0, 0, 0.24);
+}
+.mainMenuButtons:focus:not(.menuTextField) {
+	box-shadow: 0px 3px var(--buttonHoverBottom), 0px 3px 12px 0px rgba(0, 0, 0, 0.24);
+	background: var(--buttonHoverBg);
+}
+.mainMenuButtons:hover:not(.btnNoActive):not(.touchDevice){
+    background: var(--buttonHoverBg);
+	box-shadow: 0px 3px var(--buttonHoverBottom);
+}
+.mainMenuButtons:active:not(.btnNoActive):not(.touchDevice), .mainMenuButtons.btnActive:not(.btnNoActive){
+	box-shadow: none;
+	transform: translate(0, 2px);
 }
 
 .halfMainMenuButtons {

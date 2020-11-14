@@ -138,16 +138,16 @@ const allLanguages = {
         tutorialText5: "Let’s move a robot! Click on one of the robots, and then click on each pawn to create a path, when you are done, click on 'confirm robot path'.",
         tutorialText6: "Good job!",
         tutorialText7: "You need to have the robots in your side which is always at the bottom (unless you are playing offline).",
-        tutorialText8: "You can only have 4 energy paws at the same time.",
+        tutorialText8: "You can only have 4 energy pawns at the same time.",
         tutorialText9: "When you have 3 or less pawns, you can reload your energy pawns from the reserve, but the reserve isn’t unlimited.",
-        tutorialText10: "On the top you can see the reserve status. Under your name, you can see how many paws You have.",
+        tutorialText10: "On the top you can see the reserve status. Under your name, you can see how many pawns You have.",
         tutorialText11: "When the last pawn of any color is taken from the reserve, the game immediately stops, and the winner is the player with the most bots in their side.",
         tutorialText12: "The tutorial has ended! You can Play Online with friends or Offline with persons that are physically next to you",
         tutorialYou: "You",
         tutorialTeacher: "Teacher",
         mainMenuUpdateBtn: "Update",
         updateDesc: "An update is available",
-        madeBy: "Made by George Ober"
+        madeBy: "Made by Cazeip"
     },
     fr_FR: {
         genericBack: "Retour",
@@ -208,7 +208,7 @@ const allLanguages = {
         tutorialTeacher: "Professeur",
         mainMenuUpdateBtn: "Mettre à jour",
         updateDesc: "Une mise à jour est disponible",
-        madeBy: "Fait par George Ober",
+        madeBy: "Fait par Cazeip",
     },
     es_ES: {
         genericBack: "Atrás",
@@ -269,7 +269,7 @@ const allLanguages = {
         tutorialTeacher: "Profesor",
         mainMenuUpdateBtn: "Actualizar",
         updateDesc: "Una actualización está disponible",
-        madeBy: "Escrito por George Ober",
+        madeBy: "Escrito por Cazeip",
     },
     ar_SA:{
 
@@ -1976,4 +1976,7 @@ function parseSVGs() {
 }
 function forImage(name) {
     return "data:image/svg+xml;base64," + window.btoa(SVGsUsed[name]);
+}
+document.ontouchmove = function(event){
+    event.preventDefault();
 }
