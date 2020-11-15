@@ -114,6 +114,7 @@ body {
     height: 100%;
     margin: 0;
     font-family: arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 html,
 body {
@@ -562,8 +563,6 @@ body {
     float:left;
 }
 @media (max-width: 395px){
-    .gameBoard{
-    }
     .actionButtons{
         width: calc(100% - 10px);
     }
