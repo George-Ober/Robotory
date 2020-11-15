@@ -41,7 +41,7 @@
         <a class="mainMenuButtons halfMainMenuButtons" id="mainMenuSettingsBtn" onclick="openSettingsMenu();" data-childSVG="SettingsButton" style="margin-left: 5px;"></a>
         <a class="mainMenuButtons" id="mainMenuTutorialBtn" onclick="openTutorial();"><div class="btnIconContainer" data-bgSVG="tutorialIcon"></div><span class="btnText" data-i18n="mainMenuTutorialBtn"></span></a>
         <a class="mainMenuButtons" id="recentGamesMenuBtn" style="display:none;" onclick="openRecentGamesMenu();" data-i18n="mainMenuRecentGamesBtn"></a>
-        <div class="desc"><a href="./about.html" data-i18n="madeBy"></a></div>
+        <div class="desc tinyDesc"><a href="./about.html" data-i18n="madeBy"></a></div>
     </div>
     <div class="centerMenu" id="recentGamesMenu" style="width: 240px;">
         <div class="desc" data-i18n="recentGamesMenuDesc"></div>
@@ -54,25 +54,23 @@
     </div>
     <div class="centerMenu" id="centerSettingsMenu" style="z-index: 101; width: 250px;">
         <div class="scrollableMenu">
+            <input type="text" id="nameTextInput" class="mainMenuButtons text-input btnNoActive" placeholder="Enter a name here..." data-i18n-custom="placeholder:nameInput" onkeyup="updateName();" autocomplete="off" maxlength="15"/>
+            <div class="desc tinyDesc">This is the name that will be shown to anyone playing against you.</div>
             <a class="mainMenuButtons" id="choseLanguageButton" onclick="changeLanguage();"><div class="btnIconContainer" data-bgSVG="flagIcon"></div><span class="btnText">Language</span></a>
-            <input type="text" id="nameTextInput" class="mainMenuButtons text-input noClick" placeholder="Enter a name here..." data-i18n-custom="placeholder:nameInput" onkeyup="updateName();" style="margin-bottom: 20px;"/>
-            <div class="desc" data-i18n="colorSchemeDesc"></div>
-            <a class="mainMenuButtons colorSchemeButton redColorSchemeButton" onclick="changeColorScheme('redColorScheme',this)"></a>
-            <a class="mainMenuButtons colorSchemeButton purpleColorSchemeButton" onclick="changeColorScheme('purpleColorScheme',this)"></a>
-            <a class="mainMenuButtons colorSchemeButton blueColorSchemeButton" onclick="changeColorScheme('blueColorScheme',this)"></a>
-            <a class="mainMenuButtons colorSchemeButton cyanColorSchemeButton" onclick="changeColorScheme('cyanColorScheme',this)"></a>
-            <a class="mainMenuButtons colorSchemeButton greenColorSchemeButton" onclick="changeColorScheme('greenColorScheme',this)"></a>
-            <a class="mainMenuButtons colorSchemeButton yellowColorSchemeButton" onclick="changeColorScheme('yellowColorScheme',this)"></a>
         </div>
         <a class="mainMenuButtons backButton" onclick="closeSettingsMenu();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
     </div>
     <div class="centerMenu" id="langMenu" style="z-index: 101; width: 250px;">
         <div class="scrollableMenu" style="height: 300px;">
             <div style="display: flex;">
-                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('en_GB')" id="languageChangeen_GB">🇬🇧</a>
                 <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('fr_FR')" id="languageChangefr_FR">🇫🇷</a>
+                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('en_GB')" id="languageChangeen_GB">🇬🇧</a>
             </div>
-            <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('es_ES')" id="languageChangees_ES">🇪🇸</a>
+            <div style="display: flex;">
+                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('es_ES')" id="languageChangees_ES">🇪🇸</a>
+                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('de_DE')" id="languageChangees_DE">🇩🇪</a>
+
+            </div>
         </div>
         <a class="mainMenuButtons backButton" onclick="closeChangeLanguage();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
     </div>
@@ -327,7 +325,7 @@
             <div class="tableOverlay"></div>
         </div>
     </div >
-    <button class="openMainMenuButton" onclick="openMainMenu();"></button>
+    <button class="openMainMenuButton" data-bgSVG="menuBtn" onclick="openMainMenu();"></button>
 </div>
 <script src="/socket.io/socket.io.js?v=20"></script>
 <script>

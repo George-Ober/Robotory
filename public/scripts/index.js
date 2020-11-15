@@ -24,56 +24,8 @@ const SVGsUsed = {
     "arrowBack": '<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M407 256H105M105 256L206.5 176M105 256L206.5 336" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     "arrowUpdate": '<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M56 261L150.5 381L245 261" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><path d="M452 359C452 261.414 478 128 302 128C126 128 151.014 261.414 151.014 359" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     "menuBtn" : '<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M87 147H424" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><path d="M87 256H424" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/><path d="M87 365H424" stroke="black" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "mainMenu" : '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g style="stroke: black;stroke-width: 20px;stroke-linecap: round;" transform="translate(50, 50) scale(0.8) translate(-50, -50)"><line x1="12.5" y1="20" x2="87.5" y2="20"></line><line x1="12.5" y1="50" x2="87.5" y2="50"></line><line x1="12.5" y1="80" x2="87.5" y2="80"></line></g></svg>',
 };
-const redColorScheme = [
-    ["menuBg", "#FFEBEE"],
-    ["menuBottom", "#FFCDD2"],
-    ["buttonBg", "#EF9A9A"],
-    ["buttonBottom", "#E57373"],
-    ["buttonHoverBg", "#dd8e8e"],
-    ["buttonHoverBottom", "#d46a6a"],
-];
-const purpleColorScheme = [
-    ["menuBg", "#f3e5f5"],
-    ["menuBottom", "#e1bee7"],
-    ["buttonBg", "#CE93D8"],
-    ["buttonBottom", "#BA68C8"],
-    ["buttonHoverBg", "#bf88c8"],
-    ["buttonHoverBottom", "#ac60b9"],
-];
-const blueColorScheme = [
-    ["menuBg", "#e8eaf6"],
-    ["menuBottom", "#c5cae9"],
-    ["buttonBg", "#9FA8DA"],
-    ["buttonBottom", "#7986CB"],
-    ["buttonHoverBg", "#939bca"],
-    ["buttonHoverBottom", "#707cbc"],
-];
-const cyanColorScheme = [
-    ["menuBg", "#e0f7fa"],
-    ["menuBottom", "#b2ebf2"],
-    ["buttonBg", "#80DEEA"],
-    ["buttonBottom", "#4DD0E1"],
-    ["buttonHoverBg", "#76cdd8"],
-    ["buttonHoverBottom", "#47c0d0"],
-];
-const greenColorScheme = [
-    ["menuBg", "#e8f5e9"],
-    ["menuBottom", "#c8e6c9"],
-    ["buttonBg", "#A5D6A7"],
-    ["buttonBottom", "#81C784"],
-    ["buttonHoverBg", "#99c69a"],
-    ["buttonHoverBottom", "#77b87a"],
-];
-const yellowColorScheme = [
-    ["menuBg", "#fff3e0"],
-    ["menuBottom", "#ffe0b2"],
-    ["buttonBg", "#ffcc80"],
-    ["buttonBottom", "#ffb74d"],
-    ["buttonHoverBg", "#ecbd76"],
-    ["buttonHoverBottom", "#eca947"],
-];
-
 let placingPawn = false;
 let reserve = { white: 10, black: 10 };
 let reload = { white: 0, black: 0 };
@@ -147,7 +99,9 @@ const allLanguages = {
         tutorialTeacher: "Teacher",
         mainMenuUpdateBtn: "Update",
         updateDesc: "An update is available",
-        madeBy: "Made by Cazeip"
+        madeBy: "Made by Cazeip",
+        lightName: "Light",
+        darkName: "Dark"
     },
     fr_FR: {
         genericBack: "Retour",
@@ -209,6 +163,8 @@ const allLanguages = {
         mainMenuUpdateBtn: "Mettre à jour",
         updateDesc: "Une mise à jour est disponible",
         madeBy: "Fait par Cazeip",
+        lightName: "Clair",
+        darkName: "Foncé"
     },
     es_ES: {
         genericBack: "Atrás",
@@ -270,6 +226,8 @@ const allLanguages = {
         mainMenuUpdateBtn: "Actualizar",
         updateDesc: "Una actualización está disponible",
         madeBy: "Escrito por Cazeip",
+        lightName: "Claro",
+        darkName: "Oscuro"
     },
     ar_SA:{
 
@@ -406,16 +364,15 @@ function load() {
         localStorage["name"] = "";
     }
     if (localStorage["lang"] === undefined || localStorage["lang"] == null) {
-        localStorage["lang"] = "en_GB";
+        if(/^fr\b/.test(navigator.language)){
+            localStorage["lang"] = "fr_FR";
+        }else if(/^es\b/.test(navigator.language)){
+            localStorage["lang"] = "es_ES";
+        } else localStorage["lang"] = "en_GB";
     }
     lang = localStorage["lang"];
 
     changeLanguageBtn(lang);
-    if (window.localStorage["colorScheme"] === undefined || window.localStorage["colorScheme"] === null) {
-        window.localStorage["colorScheme"] = "greenColorScheme";
-    } else {
-        applyColorScheme(eval(window.localStorage["colorScheme"]));
-    }
     if (!(window.localStorage["recentGames"] === undefined || window.localStorage["recentGames"] === null)) {
         if (JSON.parse(window.localStorage["recentGames"]).length !== 0) {
             updateRecentGames();
@@ -423,19 +380,18 @@ function load() {
     } else {
         window.localStorage["recentGames"] = JSON.stringify([]);
     }
-    document.getElementsByClassName(window.localStorage["colorScheme"] + "Button")[0].classList.add("activeColorSchemeButton");
     resizeUpdate();
     let allElements = document.getElementsByTagName("*");
     for (let i = 0; i < allElements.length; i++) {
         if (allElements[i].tagName == "INPUT") break;
         allElements[i].classList.add("disableSelect");
     }
-    if (testIfTouch()) {
+    /* if (testIfTouch()) {
         let allElements = document.getElementsByTagName("*");
         for (let i = 0; i < allElements.length; i++) {
             allElements[i].classList.add("touchDevice");
         }
-    }
+    } */
     if (!navigator.share) {
         document.getElementById("shareButton").style.display = "none";
     }
@@ -507,7 +463,7 @@ function updateRecentGames() {
     for (let i = 0; i < j.length; i++) {
         let x = document.createElement("a");
         x.classList.add("mainMenuButtons");
-        x.innerText = allLanguages[lang]["recentGamesMenuAgainst"].replace("%player", j[i].name);
+        x.innerText = allLanguages[lang]["recentGamesMenuAgainst"].replace("%player", useableName(j[i].name));
         x.setAttribute("onclick", `recentGame(${j[i].id})`);
         document.getElementById("recentGamesList").appendChild(x);
     }
@@ -587,25 +543,6 @@ function openRecentGamesMenu() {
     closeMenu("centerMainMenu");
     openMenu("recentGamesMenu");
 }
-function changeColorScheme(scheme, button) {
-    var buttons = document.getElementsByClassName("colorSchemeButton");
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove("activeColorSchemeButton");
-    }
-    button.classList.add("activeColorSchemeButton");
-
-    window.localStorage["colorScheme"] = scheme;
-
-    applyColorScheme(eval(window.localStorage["colorScheme"]));
-}
-function applyColorScheme(scheme) {
-    for (var i = 0; i < scheme.length; i++) {
-        document.documentElement.style.setProperty("--" + scheme[i][0], scheme[i][1]);
-        if (scheme[i][0] === "buttonBottom") {
-            document.getElementById("themeColorMeta").setAttribute("content", scheme[i][1]);
-        }
-    }
-}
 
 function copyClip(id) {
     var copyText = document.getElementById(id);
@@ -631,8 +568,8 @@ function offlineGame() {
     offlineGameType = true;
     if(localStorage["offlineGame"] == undefined || localStorage["offlineGame"] == null){
         localStorage["offlineGame"] = JSON.stringify({
-            p1: {pawns: {white:2,black:2}, name: "Light", turn: true, Oarea: "bottom"},
-            p2: {pawns: {white:2,black:2}, name: "Dark", turn: false, Oarea: "top"},
+            p1: {pawns: {white:2,black:2}, name: useableName("Light"), turn: true, Oarea: "bottom"},
+            p2: {pawns: {white:2,black:2}, name: useableName("Dark"), turn: false, Oarea: "top"},
             pawnReserve: {white:10,black:10},
             gameBoard: [null,null,null,null,null,null,null,null,null,"blackBot",null,"whiteBot","redBot",null,null,null,null,null,null,null,null,null,null,null],
             ended: false
@@ -918,8 +855,8 @@ function closeRecentGamesMenu() {
 function fetchGameState(gameState){
     let you, ennemy;
     if (tutorial){
-        document.getElementById("yourName").innerText = gameState.p1.name;
-        document.getElementById("ennemyName").innerText = gameState.p2.name;
+        document.getElementById("yourName").innerText = useableName(gameState.p1.name);
+        document.getElementById("ennemyName").innerText = useableName(gameState.p2.name);
 
         document.getElementById("myPawns").innerHTML = "";
         document.getElementById("ennemyPawns").innerHTML = "";
@@ -990,8 +927,8 @@ function fetchGameState(gameState){
         }
     }else if (offlineGameType){
         document.title = `Robotory - ${allLanguages[lang]["offline"]}`;
-        document.getElementById("yourName").innerText = gameState.p1.name;
-        document.getElementById("ennemyName").innerText = gameState.p2.name;
+        document.getElementById("yourName").innerText = useableName(gameState.p1.name);
+        document.getElementById("ennemyName").innerText = useableName(gameState.p2.name);
 
         clearHighlightedCells();
         movingBot = false;
@@ -1144,8 +1081,8 @@ function fetchGameState(gameState){
             document.getElementById("yourTurnInfo").style.display = "none";
         }
         placingPawn = false;
-        document.getElementById("yourName").innerText = you.name;
-        document.getElementById("ennemyName").innerText = ennemy.name;
+        document.getElementById("yourName").innerText = useableName(you.name);
+        document.getElementById("ennemyName").innerText = useableName(ennemy.name);
 
         document.getElementById("myPawns").innerHTML = "";
         document.getElementById("ennemyPawns").innerHTML = "";
@@ -1267,30 +1204,9 @@ function cancelPlacePawnOption() {
 
 function clearHighlightedCells() {
     try {
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
-        document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
+        for (let i = 0; i < 24; i++) {   
+            document.getElementsByClassName("highlightedCells")[0].classList.remove("highlightedCells");
+        }
     } catch (e) {}
 }
 function showIds() {
@@ -1741,14 +1657,23 @@ socket.on("gotoroom", (data) => {
     document.getElementById("linkTextInput").value = `${window.location.host}/#${data.id}`;
     localStorage["GUID"] = data.GUID;
 });
+function useableName(input){
+    if(input == "Light"){
+        return allLanguages[lang].lightName;
+    }else if(input == "Dark"){
+        return allLanguages[lang].darkName;
+    }else{
+        return input;
+    }
+}
 socket.on("GUID", (data) => {
     localStorage["GUID"] = data;
 });
 socket.on("nameChanged", (data) => {
     if (data.you) {
-        document.getElementById("yourName").innerText = data.name;
+        document.getElementById("yourName").innerText = useableName(data.name);
     } else {
-        document.getElementById("ennemyName").innerText = data.name;
+        document.getElementById("ennemyName").innerText = useableName(data.name);
 
         let recentGames = JSON.parse(localStorage["recentGames"]);
         for (let i = 0; i < recentGames.length; i++) {
