@@ -192,7 +192,7 @@ body {
     background: var(--buttonHoverBg);
 	box-shadow: 0px 3px var(--buttonHoverBottom);
 }
-.mainMenuButtons:active:not(.btnNoActive):not(.touchDevice), .mainMenuButtons.btnActive:not(.btnNoActive){
+.mainMenuButtons:active:not(.btnNoActive), .mainMenuButtons.btnActive:not(.btnNoActive){
     box-shadow: none !important;
 	transform: translate(0, 2px);
 }

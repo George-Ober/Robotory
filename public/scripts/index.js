@@ -101,7 +101,8 @@ const allLanguages = {
         updateDesc: "An update is available",
         madeBy: "Made by Cazeip",
         lightName: "Light",
-        darkName: "Dark"
+        darkName: "Dark",
+        nameInputDesc: "This is the name that will be shown to anyone playing against you.",
     },
     fr_FR: {
         genericBack: "Retour",
@@ -164,7 +165,8 @@ const allLanguages = {
         updateDesc: "Une mise à jour est disponible",
         madeBy: "Fait par Cazeip",
         lightName: "Clair",
-        darkName: "Foncé"
+        darkName: "Foncé",
+        nameInputDesc: "Ce nom sera affiché à quiconque jouant contre vous.",
     },
     es_ES: {
         genericBack: "Atrás",
@@ -227,7 +229,8 @@ const allLanguages = {
         updateDesc: "Una actualización está disponible",
         madeBy: "Escrito por Cazeip",
         lightName: "Claro",
-        darkName: "Oscuro"
+        darkName: "Oscuro",
+        nameInputDesc: "Este nombre será mostrado a cualquier otro jugador que jugará contra ti.",
     },
     ar_SA:{
 
@@ -386,12 +389,12 @@ function load() {
         if (allElements[i].tagName == "INPUT") break;
         allElements[i].classList.add("disableSelect");
     }
-    /* if (testIfTouch()) {
+    if (testIfTouch()) {
         let allElements = document.getElementsByTagName("*");
         for (let i = 0; i < allElements.length; i++) {
             allElements[i].classList.add("touchDevice");
         }
-    } */
+    }
     if (!navigator.share) {
         document.getElementById("shareButton").style.display = "none";
     }

@@ -55,7 +55,7 @@
     <div class="centerMenu" id="centerSettingsMenu" style="z-index: 101; width: 250px;">
         <div class="scrollableMenu">
             <input type="text" id="nameTextInput" class="mainMenuButtons text-input btnNoActive" placeholder="Enter a name here..." data-i18n-custom="placeholder:nameInput" onkeyup="updateName();" autocomplete="off" maxlength="15"/>
-            <div class="desc tinyDesc">This is the name that will be shown to anyone playing against you.</div>
+            <div class="desc tinyDesc" data-i18n="nameInputDesc"></div>
             <a class="mainMenuButtons" id="choseLanguageButton" onclick="changeLanguage();"><div class="btnIconContainer" data-bgSVG="flagIcon"></div><span class="btnText">Language</span></a>
         </div>
         <a class="mainMenuButtons backButton" onclick="closeSettingsMenu();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
@@ -152,7 +152,7 @@
                     <div class="pawnDot"></div>
                     <span id="placePawnBlack"></span>
                 </a>
-                <a class="mainMenuButtons pawnPlaceButton" id="cancelPlacePawn" onclick="cancelPlacePawnOption();" ><span data-i18n="genericBack"></span></a>
+                <a class="mainMenuButtons pawnPlaceButton" id="cancelPlacePawn" onclick="cancelPlacePawnOption();" style="width: min-content;"><span data-i18n="genericBack"></span></a>
             </div>
         </div>
         <div class="vsDisplay" style="display: none;width: fit-content;padding-top: 0;" id="moveBotMenu">
