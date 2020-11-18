@@ -63,13 +63,11 @@
     <div class="centerMenu" id="langMenu" style="z-index: 101; width: 250px;">
         <div class="scrollableMenu" style="height: 300px;">
             <div style="display: flex;">
-                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('fr_FR')" id="languageChangefr_FR">🇫🇷</a>
-                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('en_GB')" id="languageChangeen_GB">🇬🇧</a>
+                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('fr_FR')" id="languageChangefr_FR" data-bgSVG="frFlag"></a>
+                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('en_GB')" id="languageChangeen_GB" data-bgSVG="ukFlag"></a>
             </div>
             <div style="display: flex;">
-                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('es_ES')" id="languageChangees_ES">🇪🇸</a>
-                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('de_DE')" id="languageChangees_DE">🇩🇪</a>
-
+                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('es_ES')" id="languageChangees_ES" data-bgSVG="esFlag"></a>
             </div>
         </div>
         <a class="mainMenuButtons backButton" onclick="closeChangeLanguage();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>

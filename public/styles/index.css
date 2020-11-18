@@ -186,11 +186,12 @@ body {
 }
 .mainMenuButtons:focus:not(.menuTextField) {
 	box-shadow: 0px 3px var(--buttonHoverBottom), 0px 3px 12px 0px rgba(0, 0, 0, 0.24);
-	background: var(--buttonHoverBg);
+	background-color: var(--buttonHoverBg);
 }
 .mainMenuButtons:hover:not(.btnNoActive):not(.touchDevice){
-    background: var(--buttonHoverBg);
-	box-shadow: 0px 3px var(--buttonHoverBottom);
+    background-color: var(--buttonHoverBg);
+    box-shadow: 0px 3px var(--buttonHoverBottom);
+    background-size: 120%;
 }
 .mainMenuButtons:active:not(.btnNoActive), .mainMenuButtons.btnActive:not(.btnNoActive){
     box-shadow: none !important;
@@ -319,12 +320,13 @@ body {
 .tutorialText{
     text-align: center;
 }
-.selectedLang{
-    filter: brightness(120%);
-}
 .langBtn{
     font-size: 40px;
     padding: 0 8px;
+    background-size: 100%;
+    background-position: center;
+    box-shadow: none;
+    height: 50px;
 }
 .tutorialDisplay{
     display: none;
