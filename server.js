@@ -171,8 +171,7 @@ io.on('connection', (socket) => {
                             game.p1.pawns.black += data.black;
 
                             game.p1.turn = false;
-                            game.p1.socket.emit("reloadedPawn", game.generateGameState("p1"));
-                            game.p2.socket.emit("reloadedPawn", game.generateGameState("p2"));
+                            
 
                             if(game.pawnReserve.white === 0 || game.pawnReserve.black === 0){
                                 if(game.findWinner()){
@@ -184,6 +183,8 @@ io.on('connection', (socket) => {
                                 }
                                 game.ended = true;
                             }else{
+                                game.p1.socket.emit("reloadedPawn", game.generateGameState("p1"));
+                                game.p2.socket.emit("reloadedPawn", game.generateGameState("p2"));
                                 game.p2.turn = true;
                                 game.p2.socket.emit("yourTurn");
                                 game.p1.socket.emit("ennemmyTurn");
@@ -202,9 +203,7 @@ io.on('connection', (socket) => {
                             game.p2.pawns.black += data.black;
 
                             game.p2.turn = false;
-                            game.p1.socket.emit("reloadedPawn", game.generateGameState("p1"));
-                            game.p2.socket.emit("reloadedPawn", game.generateGameState("p2"));
-
+                            
                             if(game.pawnReserve.white === 0 || game.pawnReserve.black === 0){
                                 if(game.findWinner()){
                                     game.p1.socket.emit("winner", {name:game.p1.name,you:true});
@@ -215,6 +214,8 @@ io.on('connection', (socket) => {
                                 }
                                 game.ended = true;
                             }else{
+                                game.p1.socket.emit("reloadedPawn", game.generateGameState("p1"));
+                                game.p2.socket.emit("reloadedPawn", game.generateGameState("p2"));
                                 game.p1.turn = true;
                                 game.p1.socket.emit("yourTurn");
                                 game.p2.socket.emit("ennemmyTurn");

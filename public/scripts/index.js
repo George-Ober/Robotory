@@ -1733,7 +1733,6 @@ socket.on("startgame", (data) => {
     fetchGameState(data);
     document.getElementsByClassName("gameUI")[0].style.display = "inline-block";
     resizeUpdate();
-    console.log(data);
     openVsDisplay("ennemyDisplay");
     openVsDisplay("reserveInfo");
 });
@@ -1777,6 +1776,9 @@ socket.on("winner", (data) => {
         document.getElementById("winnerName").innerText = allLanguages[lang]["youLost"];
     }
     openMenu("winnerMenu");
+    document.getElementsByClassName("darkerBg")[0].removeEventListener("click", closeAvailableActionsMenu);
+    document.getElementsByClassName("darkerBg")[0].removeEventListener("click", cancelReloadPawnsButton);
+    closeMenu('availableActionsMenu');
     openDarkerBg();
     document.getElementById("yourTurnInfo").style.display = "none";
 });
