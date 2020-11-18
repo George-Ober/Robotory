@@ -360,6 +360,93 @@ class BrowserDetector {
         return !!(this.unsupportedBrowsers.hasOwnProperty(this.browser.name) && +this.browser.version > this.unsupportedBrowsers[this.browser.name]);
     }
 }
+class w {
+	static get availableSounds() {
+		return ["game-end", "game-start", "move"]
+	}
+	static get allowWithoutUserEventSounds() {
+		return ["game-end", "game-start", "move"]
+	}
+	constructor() {
+		window.AudioContext = window.AudioContext || window.webkitAudioContext,
+			this.supported = !!AudioContext,
+		this.supported && (this.ctx = new AudioContext,
+			this.sounds = {},
+			this.enabled = !0,
+			this.ctx.onstatechange = (() => {
+				this.onCtxStatechange()
+			}),
+			this.boundUserEvent = this.userEvent.bind(this),
+			this.addedUserEventListeners = !1,
+			this.onCtxStatechange())
+	}
+	init() {
+		if (this.supported)
+			for (let t of w.availableSounds)
+				this.sounds[t] = new E(t, this.ctx)
+	}
+	onCtxStatechange() {
+		this.supported && ("suspended" == this.ctx.state ? this.addUserEventListeners() : "running" == this.ctx.state && this.removeUserEventListeners())
+	}
+	addUserEventListeners() {
+		this.supported && (this.addedUserEventListeners || (window.addEventListener("touchstart", this.boundUserEvent),
+			window.addEventListener("touchend", this.boundUserEvent),
+			window.addEventListener("click", this.boundUserEvent),
+			this.addedUserEventListeners = !0))
+	}
+	removeUserEventListeners() {
+		this.supported && this.addedUserEventListeners && (window.removeEventListener("touchstart", this.boundUserEvent),
+			window.removeEventListener("touchend", this.boundUserEvent),
+			window.removeEventListener("click", this.boundUserEvent),
+			this.addedUserEventListeners = !1)
+	}
+	userEvent() {
+		this.supported && this.ctx.resume()
+	}
+	playSound(t, e) {
+		if (!this.supported)
+			return;
+		if (!this.enabled)
+			return;
+		if ("running" != this.ctx.state && -1 == w.allowWithoutUserEventSounds.indexOf(t))
+			return;
+		let i = this.sounds[t];
+		i && i.play(e)
+	}
+}
+class E {
+	constructor(t, e) {
+		this.name = t,
+			this.ctx = e,
+			this.loaded = !1,
+			this.buffer = null,
+			this.load()
+	}
+	load() {
+		let t = "./sounds/" + this.name + ".mp3?v=" + "20"
+			, e = new XMLHttpRequest;
+		e.open("GET", t, !0),
+			e.responseType = "arraybuffer",
+			e.onload = (()=>{
+					this.ctx.decodeAudioData(e.response, t=>{
+							this.loaded = !0,
+								this.buffer = t
+						}
+					)
+				}
+			),
+			e.send()
+	}
+	play(t) {
+		if (!this.loaded)
+			return;
+		let e = this.ctx.createBufferSource();
+		e.buffer = this.buffer,
+		t && t > 0 && e.playbackRate.setValueAtTime(t, this.ctx.currentTime),
+			e.connect(this.ctx.destination),
+			e.start()
+	}
+}
 function getIndexDOM(child){
     let i = 0;
     while( (child = child.previousSibling) != null )
@@ -417,6 +504,7 @@ function load() {
     }
     //setInterval(generateBackgroundParticles, 100);
     parseSVGs();
+    (sfx = new w).init();
 }
 
 function applyTranslation() {
@@ -1311,6 +1399,7 @@ function boardClick(element, n) {
                 tutorialState.state.gameBoard[n] = "whitePawn";
                 tutorialState.state.p1.pawns.white--;
             }else return;
+            sfx.playSound('move');
             openWhiteCurtain();
             tutorialState.step = 1;
             document.getElementById("cancelMoveBotOption").remove();
@@ -1390,6 +1479,7 @@ function boardClick(element, n) {
                 closeVsDisplay("placePawnMenu");
                 fetchGameState(gameState);
                 localStorage["offlineGame"] = JSON.stringify(gameState);
+                sfx.playSound('move');
             }
         } else if (movingBot) {
             if (gameBoard[n] === "blackBot" || gameBoard[n] === "whiteBot" || gameBoard[n] === "redBot") {
@@ -1417,7 +1507,7 @@ function updateName() {
     localStorage["name"] = document.getElementById("nameTextInput").value;
 }
 function randomOkEmoji(){
-    let items = ["😁","😆","🤓","🤖","😸","( ᐛ )و","(＾ω＾)"];
+    let items = ["😁","😆","🤓","🤖","😸","(＾ω＾)"];
     return items[Math.floor(Math.random() * items.length)];
 }
 function showText(text, hideAfter, duration=5000, methodAfter){
@@ -1735,10 +1825,11 @@ socket.on("startgame", (data) => {
     resizeUpdate();
     openVsDisplay("ennemyDisplay");
     openVsDisplay("reserveInfo");
+    sfx.playSound('game-start');
 });
 socket.on("placedPawn", (data) => {
     closeVsDisplay("placePawnMenu");
-
+    sfx.playSound('move');
     fetchGameState(data.state);
 });
 function mainMenuAfterGame() {
@@ -1781,6 +1872,7 @@ socket.on("winner", (data) => {
     closeMenu('availableActionsMenu');
     openDarkerBg();
     document.getElementById("yourTurnInfo").style.display = "none";
+    sfx.playSound('game-end');
 });
 
 const shareBtn = document.getElementById("shareButton");
