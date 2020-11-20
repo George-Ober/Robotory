@@ -57,6 +57,8 @@
             <input type="text" id="nameTextInput" class="mainMenuButtons text-input btnNoActive" placeholder="Enter a name here..." data-i18n-custom="placeholder:nameInput" onkeyup="updateName();" autocomplete="off" maxlength="15"/>
             <div class="desc tinyDesc" data-i18n="nameInputDesc"></div>
             <a class="mainMenuButtons" id="choseLanguageButton" onclick="changeLanguage();"><div class="btnIconContainer" data-bgSVG="flagIcon"></div><span class="btnText">Language</span></a>
+            <a class="mainMenuButtons" id="soundsButton" onclick="toggleSounds();"><div class="btnIconContainer" id="soundIcon" data-bgSVG="soundIcon"></div><span class="btnText" data-i18n="sounds"></span></a>
+            <div class="desc tinyDesc" data-i18n="soundsDesc"></div>
         </div>
         <a class="mainMenuButtons backButton" onclick="closeSettingsMenu();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
     </div>
