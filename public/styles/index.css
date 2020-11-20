@@ -366,14 +366,19 @@ body {
     border-bottom-right-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
 }
+#pawnsReloadContainer{
+    height: 20px;
+}
 .pawnDot{
     width: 10px;
     height: 10px;
     background-color: black;
     border-radius: 100%;
     float: left;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin: auto 5px;
+}
+.reloadPawnDot{
+    margin: 5px calc(12.5% - 5px);
 }
 .whitePawnDot{
     background-color: #b6b6b6;

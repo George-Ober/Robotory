@@ -520,11 +520,11 @@ function load() {
         //openVsDisplay("ennemyDisplay");
     }
     //setInterval(generateBackgroundParticles, 100);
-    parseSVGs();
     (sfx = new w).init();
     if (localStorage["sounds"] === undefined || localStorage["sounds"] == null) {
         localStorage["sounds"] = "true";
     }
+    parseSVGs();
     if(JSON.parse(localStorage.sounds) == false){
         sfx.enabled = false;
     }
@@ -699,8 +699,8 @@ function offlineGame() {
     offlineGameType = true;
     if(localStorage["offlineGame"] == undefined || localStorage["offlineGame"] == null){
         localStorage["offlineGame"] = JSON.stringify({
-            p1: {pawns: {white:2,black:2}, name: useableName("Light"), turn: true, Oarea: "bottom"},
-            p2: {pawns: {white:2,black:2}, name: useableName("Dark"), turn: false, Oarea: "top"},
+            p1: {pawns: {white:2,black:2}, name: "Light", turn: true, Oarea: "bottom"},
+            p2: {pawns: {white:2,black:2}, name: "Dark", turn: false, Oarea: "top"},
             pawnReserve: {white:10,black:10},
             gameBoard: [null,null,null,null,null,null,null,null,null,"blackBot",null,"whiteBot","redBot",null,null,null,null,null,null,null,null,null,null,null],
             ended: false
@@ -835,12 +835,12 @@ function placingPawnChange(d) {
     placingPawn = d;
     let buttons = document.getElementsByClassName("pawnPlaceButton");
     for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove("activeColorSchemeButton");
+        buttons[i].classList.remove("btnActive");
     }
     if (d == "whitePawn") {
-        buttons[0].classList.add("activeColorSchemeButton");
+        buttons[0].classList.add("btnActive");
     } else {
-        buttons[1].classList.add("activeColorSchemeButton");
+        buttons[1].classList.add("btnActive");
     }
 }
 function sendReloadValue() {
@@ -973,6 +973,7 @@ function addToReload(p) {
     }
     let dot = document.createElement("div");
     dot.classList.add("pawnDot");
+    dot.classList.add("reloadPawnDot");
     if (p === "whitePawn") dot.classList.add("whitePawnDot");
 
     document.getElementById("reloadPawnsShowNew").innerText = allLanguages[lang]["energyPawnsReloadDescritpion"];
@@ -1172,7 +1173,7 @@ function fetchGameState(gameState){
 
         let buttons = document.getElementsByClassName("pawnPlaceButton");
         for (var i = 0; i < buttons.length; i++) {
-            buttons[i].classList.remove("activeColorSchemeButton");
+            buttons[i].classList.remove("btnActive");
         }
         if (gameState.ended) {
             openMenu("winnerMenu");
@@ -1311,7 +1312,7 @@ function fetchGameState(gameState){
 
         let buttons = document.getElementsByClassName("pawnPlaceButton");
         for (var i = 0; i < buttons.length; i++) {
-            buttons[i].classList.remove("activeColorSchemeButton");
+            buttons[i].classList.remove("btnActive");
         }
         if (gameState.ended) {
             openMenu("winnerMenu");
