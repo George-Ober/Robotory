@@ -111,6 +111,7 @@ const allLanguages = {
         nameInputDesc: "This is the name that will be shown to anyone playing against you.",
         sounds: "Sounds",
         soundsDesc: "If enabled, these sounds will be played throughout your experience in order to enhance it.",
+        installBtn: "Install",
     },
     fr_FR: {
         genericBack: "Retour",
@@ -177,6 +178,7 @@ const allLanguages = {
         nameInputDesc: "Ce nom sera affiché à quiconque jouant contre vous.",
         sounds: "Sons",
         soundsDesc: "Si activé, vous entendrez des sons quand vous jouez.",
+        installBtn: "Installer",
     },
     es_ES: {
         genericBack: "Atrás",
@@ -243,6 +245,7 @@ const allLanguages = {
         nameInputDesc: "Este nombre será mostrado a cualquier otro jugador que jugará contra ti.",
         sounds: "Sonidos",
         soundsDesc: "Si esta opción está activada, oirá unos sonidos cuando jugará.",
+        installBtn: "Instalar",
     },
     ar_SA:{
 
@@ -528,6 +531,20 @@ function load() {
     if(JSON.parse(localStorage.sounds) == false){
         sfx.enabled = false;
     }
+    window.addEventListener("beforeinstallprompt", t => {
+        savedInstallPromptEvent = t,
+        t.preventDefault(),
+        shouldShowInstallButton = !0
+        document.getElementById('installMainMenuBtn').style.display = "";
+    });
+}
+function clickInstall(){
+    savedInstallPromptEvent.prompt(),
+    savedInstallPromptEvent.userChoice.then(t=>{
+        "accepted" === t.outcome && (shouldShowInstallButton = !1,
+                document.getElementById('installMainMenuBtn').style.display = "none")
+     }
+    )
 }
 function toggleSounds(){
     let soundIcon = document.getElementById('soundIcon');
