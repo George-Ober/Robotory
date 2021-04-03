@@ -373,10 +373,10 @@ class BrowserDetector {
 }
 class w {
 	static get availableSounds() {
-		return ["game-end", "game-start", "move", "robot-move", "mousedown", "mouseup"]
+		return ["game-end", "game-start", "move", "robot-move", "mousedown", "mouseup", "win"]
 	}
 	static get allowWithoutUserEventSounds() {
-        return ["game-end", "game-start", "move", "robot-move", "mousedown", "mouseup"]
+        return ["game-end", "game-start", "move", "robot-move", "mousedown", "mouseup", "win"]
 	}
 	constructor() {
 		window.AudioContext = window.AudioContext || window.webkitAudioContext,
@@ -722,6 +722,7 @@ function offlineGame() {
             gameBoard: [null,null,null,null,null,null,null,null,null,"blackBot",null,"whiteBot","redBot",null,null,null,null,null,null,null,null,null,null,null],
             ended: false
         });
+        sfx.playSound('game-start');
     }
     fetchGameState(JSON.parse(localStorage["offlineGame"]));
     document.getElementById("background").style.display = "none";
@@ -747,6 +748,7 @@ function onlineGame() {
 /*window.onbeforeunload = function(){
     socket.disconnect();
 };*/
+window.onclick = resizeUpdate;
 window.onresize = resizeUpdate;
 
 function resizeUpdate(event) {
@@ -905,6 +907,7 @@ function sendReloadValue() {
                                 document.getElementById("yourTurnInfo").style.display = "none";
                             }
                             game.ended = true;
+                            sfx.playSound('game-end');
                         } else {
                             closeDarkerBg();
                             game.p2.turn = true;
@@ -1922,6 +1925,7 @@ socket.on("movedBot", (data) => {
 socket.on("winner", (data) => {
     if (data.you) {
         document.getElementById("winnerName").innerText = allLanguages[lang]["youWon"];
+        sfx.playSound('win');
     } else {
         document.getElementById("winnerName").innerText = allLanguages[lang]["youLost"];
     }
