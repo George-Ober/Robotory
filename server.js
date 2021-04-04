@@ -174,14 +174,14 @@ io.on('connection', (socket) => {
                             
 
                             if(game.pawnReserve.white === 0 || game.pawnReserve.black === 0){
-                                if(game.findWinner()){
-                                    game.p1.socket.emit("winner", {name:game.p1.name,you:true});
-                                    game.p2.socket.emit("winner", {name:game.p1.name,you:false});
-                                }else{
-                                    game.p1.socket.emit("winner", {name:game.p2.name,you:false});
-                                    game.p2.socket.emit("winner", {name:game.p2.name,you:true});
-                                }
                                 game.ended = true;
+                                if(game.findWinner()){
+                                    game.p1.socket.emit("winner", {name:game.p1.name,you:true, state: game.generateGameState('p1')});
+                                    game.p2.socket.emit("winner", {name:game.p1.name,you:false, state: game.generateGameState('p2')});
+                                }else{
+                                    game.p1.socket.emit("winner", {name:game.p2.name,you:false, state: game.generateGameState('p1')});
+                                    game.p2.socket.emit("winner", {name:game.p2.name,you:true, state: game.generateGameState('p2')});
+                                }
                             }else{
                                 game.p1.socket.emit("reloadedPawn", game.generateGameState("p1"));
                                 game.p2.socket.emit("reloadedPawn", game.generateGameState("p2"));
@@ -205,14 +205,14 @@ io.on('connection', (socket) => {
                             game.p2.turn = false;
                             
                             if(game.pawnReserve.white === 0 || game.pawnReserve.black === 0){
-                                if(game.findWinner()){
-                                    game.p1.socket.emit("winner", {name:game.p1.name,you:true});
-                                    game.p2.socket.emit("winner", {name:game.p1.name,you:false});
-                                }else{
-                                    game.p1.socket.emit("winner", {name:game.p2.name,you:false});
-                                    game.p2.socket.emit("winner", {name:game.p2.name,you:true});
-                                }
                                 game.ended = true;
+                                if(game.findWinner()){
+                                    game.p1.socket.emit("winner", {name:game.p1.name,you:true, state: game.generateGameState('p1')});
+                                    game.p2.socket.emit("winner", {name:game.p1.name,you:false, state: game.generateGameState('p2')});
+                                }else{
+                                    game.p1.socket.emit("winner", {name:game.p2.name,you:false, state: game.generateGameState('p1')});
+                                    game.p2.socket.emit("winner", {name:game.p2.name,you:true, state: game.generateGameState('p2')});
+                                }
                             }else{
                                 game.p1.socket.emit("reloadedPawn", game.generateGameState("p1"));
                                 game.p2.socket.emit("reloadedPawn", game.generateGameState("p2"));
@@ -290,6 +290,34 @@ io.on('connection', (socket) => {
 
                     game.p1.socket.emit("nameChanged", {id: game.id, name:game.p2.name, you: false});
                     game.p2.socket.emit("nameChanged", {id: game.id, name:game.p2.name, you: true});
+                }
+            }
+        }
+    });
+    socket.on("askRematch", (data) => {
+        if(typeof game != "undefined"){
+            if(game.ended){
+                if(socket == game.p1.socket){
+                    if (!game.p1.rematchWanted){
+                        game.p1.rematchWanted = true;
+                    }
+                }else if(socket == game.p2.socket){
+                    if (!game.p2.rematchWanted){
+                        game.p2.rematchWanted = true;
+                    }
+                }
+                if(game.p1.rematchWanted && game.p2.rematchWanted){
+                    //Reset Sequence
+                    game.resetGame();
+                    game.p1.socket.emit("startgame", game.generateGameState("p1"));
+                    game.p2.socket.emit("startgame", game.generateGameState("p2"));
+                    game.p1.turn = true;
+                    game.p1.socket.emit("yourTurn");
+                    game.p2.socket.emit("ennemmyTurn");
+                    console.log("Both agreed");
+                }else{
+                    game.p1.socket.emit("askedRematch",{state:game.generateGameState("p1")});
+                    game.p2.socket.emit("askedRematch",{state:game.generateGameState("p2")});
                 }
             }
         }

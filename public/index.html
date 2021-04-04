@@ -189,7 +189,10 @@
         <div class="centerMenu" id="winnerMenu" style="z-index: 101">
             <div class="desc" id="winnerName"></div>
             <div class="desc" data-i18n="winnerMenuDesc"></div>
-            <a class="mainMenuButtons backButton" onclick="rematchBtn();" data-i18n="rematchBtn"></a>
+            <a class="mainMenuButtons backButton" onclick="rematchBtn();">
+                <span id="rematchBtntxt" data-i18n="rematchBtn"></span>
+                <span id="ready" data-i18n="readyForRematch"></span>
+            </a>
             <a class="mainMenuButtons" onclick="mainMenuAfterGame();" data-i18n="mainMenuBtn"></a>
         </div>
     </div>

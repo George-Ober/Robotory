@@ -11,7 +11,7 @@ module.exports = {
     class Room {
         constructor(p1, p1GUID, p1Name){
             this.id = Math.floor(Math.random() * Math.floor(999999));
-            this.p1 = {socket : p1, GUID : p1GUID, pawns:{white:2, black:2}, name:p1Name === "" ? "Light" : p1Name, turn: false, area:"bottom"};
+            this.p1 = {socket : p1, GUID : p1GUID, pawns:{white:2, black:2}, name:p1Name === "" ? "Light" : p1Name, turn: false, area:"bottom", rematchWanted: false};
             this.pawnReserve = {white:10,black:10};
             this.gameBoard = [
                 null,null,null,null,null,null,null,null,null,"blackBot",null,"whiteBot","redBot",null,null,null,null,null,null,null,null,null,null,null
@@ -19,7 +19,7 @@ module.exports = {
             this.ended = false;
         }
         addSecondPlayer(p2, p2GUID, p2Name){
-            this.p2 = {socket : p2, GUID : p2GUID, pawns:{white:2, black:2}, name:p2Name === "" ? "Dark" : p2Name, turn: false, area:"top"};
+            this.p2 = {socket : p2, GUID : p2GUID, pawns:{white:2, black:2}, name:p2Name === "" ? "Dark" : p2Name, turn: false, area:"top", rematchWanted: false};
         }
         generateGameState(player){
             let r = {};
@@ -27,8 +27,8 @@ module.exports = {
                 r = {
                     id: this.id,
                     ended: this.ended,
-                    p1: {pawns: this.p1.pawns, name: this.p1.name, you: true, turn: this.p1.turn, connected: this.p1.socket.connected, area: this.p1.area},
-                    p2: {pawns: this.p2.pawns, name: this.p2.name, you: false, turn: this.p2.turn, connected: this.p2.socket.connected, area: this.p2.area},
+                    p1: {pawns: this.p1.pawns, name: this.p1.name, you: true, turn: this.p1.turn, connected: this.p1.socket.connected, area: this.p1.area, rematchWanted: this.p1.rematchWanted},
+                    p2: {pawns: this.p2.pawns, name: this.p2.name, you: false, turn: this.p2.turn, connected: this.p2.socket.connected, area: this.p2.area, rematchWanted: this.p2.rematchWanted},
                     gameBoard: this.gameBoard,
                     pawnReserve: this.pawnReserve
                 };
@@ -36,8 +36,8 @@ module.exports = {
                 r = {
                     id: this.id,
                     ended: this.ended,
-                    p1: {pawns: this.p1.pawns, name: this.p1.name, you: false, turn: this.p1.turn, connected: this.p1.socket.connected, area: this.p1.area},
-                    p2: {pawns: this.p2.pawns, name: this.p2.name, you: true, turn: this.p2.turn, connected: this.p2.socket.connected, area: this.p2.area},
+                    p1: {pawns: this.p1.pawns, name: this.p1.name, you: false, turn: this.p1.turn, connected: this.p1.socket.connected, area: this.p1.area, rematchWanted: this.p1.rematchWanted},
+                    p2: {pawns: this.p2.pawns, name: this.p2.name, you: true, turn: this.p2.turn, connected: this.p2.socket.connected, area: this.p2.area, rematchWanted: this.p2.rematchWanted},
                     gameBoard: this.gameBoard,
                     pawnReserve: this.pawnReserve
                 };
@@ -51,6 +51,19 @@ module.exports = {
                 };
             }
             return r;
+        }
+        resetGame(){
+            this.pawnReserve = {white:10, black:10};
+            this.gameBoard = [
+                null,null,null,null,null,null,null,null,null,"blackBot",null,"whiteBot","redBot",null,null,null,null,null,null,null,null,null,null,null
+            ];
+            this.ended = false;
+            this.p1.pawns = {white:2, black: 2};
+            this.p2.pawns = {white:2, black: 2};
+            this.p1.turn = false;
+            this.p2.turn = false;
+            this.p1.rematchWanted = false;
+            this.p2.rematchWanted = false;
         }
         findWinner(){
             let p1Count = 0, p2Count = 0;

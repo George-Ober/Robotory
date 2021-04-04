@@ -112,6 +112,8 @@ const allLanguages = {
         sounds: "Sounds",
         soundsDesc: "If enabled, these sounds will be played throughout your experience in order to enhance it.",
         installBtn: "Install",
+        readyForRematch: "Ready?",
+        waitingForOponent: "Waiting for oponent"
     },
     fr_FR: {
         genericBack: "Retour",
@@ -179,6 +181,8 @@ const allLanguages = {
         sounds: "Sons",
         soundsDesc: "Si activé, vous entendrez des sons quand vous jouez.",
         installBtn: "Installer",
+        readyForRematch: "Prêt ?",
+        waitingForOponent: "En attente de l'adversaire",
     },
     es_ES: {
         genericBack: "Atrás",
@@ -246,6 +250,8 @@ const allLanguages = {
         sounds: "Sonidos",
         soundsDesc: "Si esta opción está activada, oirá unos sonidos cuando jugará.",
         installBtn: "Instalar",
+        readyForRematch: "Listo?",
+        waitingForOponent: "Esperando por el oponente",
     },
     ar_SA:{
 
@@ -710,8 +716,14 @@ function rematchBtn() {
         window.localStorage.removeItem("offlineGame");
         offlineGame();
         closeMenu("winnerMenu");
+    }else{
+        socket.emit('askRematch');
+        document.getElementById('ready').style.display = "none";
     }
 }
+socket.on('askedRematch', (data) => {
+    fetchGameState(data.state);
+});
 function offlineGame() {
     offlineGameType = true;
     if(localStorage["offlineGame"] == undefined || localStorage["offlineGame"] == null){
@@ -1337,6 +1349,14 @@ function fetchGameState(gameState){
         if (gameState.ended) {
             openMenu("winnerMenu");
             openDarkerBg();
+            if(you.rematchWanted){
+                document.getElementById('rematchBtntxt').innerText = allLanguages[lang]["waitingForOponent"];
+            }else if(ennemy.rematchWanted){
+                document.getElementById('ready').style.display = "block";
+            }
+        }else{
+            closeMenu('winnerMenu');
+            closeDarkerBg();
         }
     }
 }
@@ -1929,6 +1949,8 @@ socket.on("winner", (data) => {
     } else {
         document.getElementById("winnerName").innerText = allLanguages[lang]["youLost"];
     }
+    document.getElementById("rematchBtntxt").innerText = allLanguages[lang].rematchBtn;
+    document.getElementById('ready').style.display = "none";
     openMenu("winnerMenu");
     document.getElementsByClassName("darkerBg")[0].removeEventListener("click", closeAvailableActionsMenu);
     document.getElementsByClassName("darkerBg")[0].removeEventListener("click", cancelReloadPawnsButton);
@@ -1936,6 +1958,7 @@ socket.on("winner", (data) => {
     openDarkerBg();
     document.getElementById("yourTurnInfo").style.display = "none";
     sfx.playSound('game-end');
+    fetchGameState(data.state);
 });
 
 const shareBtn = document.getElementById("shareButton");

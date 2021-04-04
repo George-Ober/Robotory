@@ -89,6 +89,28 @@ a{
     overflow: hidden;
     background-color: var(--buttonBottom);
 }
+
+#ready{
+    background-color: #ef9a9a;
+    box-shadow: 0 3px #e57373;
+    padding: 4px 10px;
+    border-radius: 10000px;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 5px;
+    transform: translate(20px, -20px);
+    animation: fizz-in both 300ms;
+    font-size: 16px;
+}
+@keyframes fizz-in{
+    0%{
+        transform: translate(20px, -20px) scale(0);
+    }
+    100%{
+        transform: translate(20px, -20px) scale(1);
+    }
+}
 #thinking{
     background-color: var(--buttonBg);
     box-shadow: 0 3px var(--buttonBottom);
