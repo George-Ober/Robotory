@@ -6,14 +6,17 @@
  *  on 5/9/2020 (DD/MM/YY).
  */
 
-const timestamp = "21";
+const timestamp = "22";
 const cacheName = `cache-v${timestamp}`;
 const filesToCache = [
     '/',
     `/index.html?v=${timestamp}`,
+    `/about.html?v=${timestamp}`,
     `/styles/index.css?v=${timestamp}`,
     `/scripts/index.js?v=${timestamp}`,
-    `/socket.io/socket.io.js?v=${timestamp}`
+    `/socket.io/socket.io.js?v=${timestamp}`,
+    `/scripts/particles.js?v=${timestamp}`,
+    `/scripts/app.js?v=${timestamp}`
 ];
 
 self.addEventListener("install", (e) => {

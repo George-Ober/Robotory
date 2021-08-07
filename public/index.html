@@ -23,7 +23,7 @@
 </head>
 <body ontouchstart="" onload="load()">
 <div id="newNotifs"></div>
-<div class="background" id="background"></div>
+<div class="background" id="background"><div id="particles-js" style="width:100%;height:100%;"></div></div>
 <div class="darkerBg" id="darkerBg"></div>
 <div class="darkerBg" id="whiteCurtain" style="background-color: white;z-index: 51;"></div>
 <div class="tutorialDisplay">
@@ -71,7 +71,7 @@
             </div>
             <div style="display: flex;">
                 <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('es_ES')" id="languageChangees_ES" data-bgSVG="esFlag"></a>
-                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('ro_RO')" id="languageChangero_RO">RO</a>
+                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('ro_RO')" id="languageChangero_RO" data-bgSVG="roFlag"></a>
             </div>
         </div>
         <a class="mainMenuButtons backButton" onclick="closeChangeLanguage();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
@@ -358,5 +358,7 @@
     }
 </script>
 <script type="text/javascript" src="scripts/index.js?v=20"></script>
+<script src="scripts/particles.js?v=20"></script>
+<script src="scripts/app.js?v=20"></script>
 </body>
 </html>
