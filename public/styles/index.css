@@ -563,6 +563,7 @@ body {
     width: calc(100% - 20px);
     display: flex;
     order: 0;
+    min-width: 125px;
 }
 @keyframes rotateLoader{
     0%{
