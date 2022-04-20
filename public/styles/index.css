@@ -1,10 +1,10 @@
 /*
- * Copyright (C) George Ober - All Rights Reserved
- *  Unauthorized copying of this file, via any medium is strictly prohibited
- *  Proprietary and confidential
- *  Written by George Ober <george.a.ober@gmail.com>,
- *  on 5/9/2020 (DD/MM/YY).
- */
+* Copyright (C) George Ober - All Rights Reserved
+*  Unauthorized copying of this file, via any medium is strictly prohibited
+*  Proprietary and confidential
+*  Written by George Ober <george.a.ober@gmail.com>,
+*  on 5/9/2020 (DD/MM/YY).
+*/
 
 :root {
     --menuBg: #e8f5e9;
@@ -21,6 +21,7 @@
     --default-padding: 10px;
     --red-blue-bg-text: black;
 }
+
 .hex {
     transform: scale(0.3);
     transform-origin: 50% 0%;
@@ -28,17 +29,20 @@
     stroke: var(--menuBottom);
     stroke-width: 19px;
 }
-a{
+
+a {
     color: inherit;
 }
-#newNotifs{
+
+#newNotifs {
     color: white;
     position: fixed;
-    right:0;
+    right: 0;
     z-index: 1000;
     font-size: x-large;
 }
-.rightNotif{
+
+.rightNotif {
     position: initial;
     display: block;
     font-size: 18px;
@@ -48,39 +52,52 @@ a{
     animation: 5s rightNotif both;
     padding: 10px;
 }
+
 @keyframes rightNotif {
-    0%{
+    0% {
         transform: translateX(100%);
-    }20%{
+    }
+
+    20% {
         transform: translateX(0%);
-    }80%{
+    }
+
+    80% {
         transform: translateX(0%);
-    }100%{
+    }
+
+    100% {
         transform: translateX(100%);
     }
 }
+
 .lightCells {
     fill: #d2d2d2;
 }
+
 .darkCells {
     fill: #5a5a5a;
 }
-::placeholder{
+
+::placeholder {
     color: #606060;
 }
+
 .gameBoard {
     width: 100%;
     height: auto;
 }
+
 .bckElement {
     width: 52px;
     position: absolute;
     opacity: 0;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     transition: top 1s, left 1s, opacity .5s;
     transition-timing-function: ease-in;
 }
-#background{
+
+#background {
     height: 100%;
     width: 100%;
     position: absolute;
@@ -90,7 +107,7 @@ a{
     background-color: var(--buttonBottom);
 }
 
-#ready{
+#ready {
     background-color: #ef9a9a;
     box-shadow: 0 3px #e57373;
     padding: 4px 10px;
@@ -103,15 +120,18 @@ a{
     animation: fizz-in both 300ms;
     font-size: 16px;
 }
-@keyframes fizz-in{
-    0%{
+
+@keyframes fizz-in {
+    0% {
         transform: translate(20px, -20px) scale(0);
     }
-    100%{
+
+    100% {
         transform: translate(20px, -20px) scale(1);
     }
 }
-#thinking{
+
+#thinking {
     background-color: var(--buttonBg);
     box-shadow: 0 3px var(--buttonBottom);
     padding: 4px 10px;
@@ -122,6 +142,7 @@ a{
     top: 5px;
     transform: translate(40px, -13px);
 }
+
 .gameUI {
     display: none;
     position: absolute;
@@ -131,6 +152,7 @@ a{
     height: 100%;
     overflow-x: hidden;
 }
+
 html,
 body {
     height: 100%;
@@ -138,18 +160,21 @@ body {
     font-family: arial, sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
+
 html,
 body {
     height: 100%;
     width: 100%;
     overflow: auto;
 }
+
 .disableSelect {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
 }
+
 .centerMenu {
     position: absolute;
     top: 50%;
@@ -165,6 +190,7 @@ body {
     padding: var(--menuPadding);
     transition: all 0.5s;
 }
+
 .btnIconContainer {
     width: 35px;
     height: 35px;
@@ -173,6 +199,7 @@ body {
     left: 7px;
     top: calc((100% - 35px) / 2);
 }
+
 .mainMenuButtons {
     display: block;
     text-align: center;
@@ -189,9 +216,11 @@ body {
     cursor: pointer;
     position: relative;
 }
-.btnText{
+
+.btnText {
     padding-left: 20px;
 }
+
 /* .mainMenuButtons:focus {
     outline: none;
 }.mainMenuButtons:hover:not(.noClick):not(.mobileTouch):not(.selectedLang){
@@ -203,28 +232,33 @@ body {
     transform: translateY(3px);
 } */
 .mainMenuButtons:focus {
-	outline: 0;
-	box-shadow: 0px 3px var(--buttonBottom), 0px 3px 12px 0px rgba(0, 0, 0, 0.24);
+    outline: 0;
+    box-shadow: 0px 3px var(--buttonBottom), 0px 3px 12px 0px rgba(0, 0, 0, 0.24);
 }
+
 .mainMenuButtons:focus:not(.menuTextField) {
-	box-shadow: 0px 3px var(--buttonHoverBottom), 0px 3px 12px 0px rgba(0, 0, 0, 0.24);
-	background-color: var(--buttonHoverBg);
+    box-shadow: 0px 3px var(--buttonHoverBottom), 0px 3px 12px 0px rgba(0, 0, 0, 0.24);
+    background-color: var(--buttonHoverBg);
 }
-.mainMenuButtons:hover:not(.btnNoActive):not(.touchDevice){
+
+.mainMenuButtons:hover:not(.btnNoActive):not(.touchDevice) {
     background-color: var(--buttonHoverBg);
     box-shadow: 0px 3px var(--buttonHoverBottom);
     background-size: 120%;
 }
-.mainMenuButtons:active:not(.btnNoActive), .mainMenuButtons.btnActive:not(.btnNoActive){
+
+.mainMenuButtons:active:not(.btnNoActive),
+.mainMenuButtons.btnActive:not(.btnNoActive) {
     box-shadow: none !important;
-	transform: translate(0, 2px);
+    transform: translate(0, 2px);
 }
 
 .halfMainMenuButtons {
     width: calc(50% - 33.3px);
     display: inline-block;
 }
-.vsDisplay{
+
+.vsDisplay {
     max-width: 95%;
     text-align: center;
     padding: 20px 0px;
@@ -232,20 +266,23 @@ body {
     white-space: nowrap;
     left: 50%;
     position: relative;
-    transform: translate(-50%,0) scale(0);
+    transform: translate(-50%, 0) scale(0);
     transition: all 0.5s;
     transform-origin: top;
     width: max-content;
 }
-.vsContainer{
+
+.vsContainer {
     display: flex;
 }
-.vsContainer > div{
+
+.vsContainer>div {
     display: flex;
     align-self: center;
     flex-direction: column;
 }
-.pawnDots{
+
+.pawnDots {
     display: inline-flex;
     height: 43px;
     flex-direction: column;
@@ -255,9 +292,11 @@ body {
     vertical-align: middle;
     transition: width 0.2s;
 }
-.myPawns{
+
+.myPawns {
     flex-wrap: wrap-reverse;
 }
+
 .vsEl {
     display: inline-block;
     padding: var(--default-padding);
@@ -265,13 +304,16 @@ body {
     position: relative;
     overflow: hidden;
 }
-.vsElLeft{
+
+.vsElLeft {
     border-radius: var(--border-radius) 0px 0px var(--border-radius);
 }
+
 .vsElName {
     color: var(--red-blue-bg-text);
     font-size: 20px;
 }
+
 .vsUsernameField {
     padding: 0px;
     font-size: inherit;
@@ -284,16 +326,19 @@ body {
     cursor: auto;
     -webkit-appearance: none;
 }
-.vsTable{
+
+.vsTable {
     background: var(--menuBg);
     border-radius: var(--border-radius);
     box-shadow: 0 3px var(--menuBottom);
     padding: var(--default-padding);
 }
-.vsNames{
+
+.vsNames {
     font-size: 26px;
 }
-.vsAgainst{
+
+.vsAgainst {
     background-color: var(--buttonBg);
     padding: 13px 15px;
     border-radius: var(--border-radius);
@@ -301,48 +346,56 @@ body {
     border: none;
     font-size: 30px;
 }
-#tutorialSVG{
+
+#tutorialSVG {
     display: flex;
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
     min-width: 200px;
 }
+
 .tutorialAnimationSVG {
     width: calc(200px / 3);
     height: calc(200px / 3);
     animation: .2s zoomIn both;
     margin-bottom: 30px;
 }
-.tutorialAnimationSVGQuarter{
+
+.tutorialAnimationSVGQuarter {
     width: 50px;
     height: 50px;
 }
+
 @keyframes zoomIn {
-    0%{
+    0% {
         transform: scale(0.2);
     }
-    70%{
+
+    70% {
         transform: scale(1.2);
     }
-    0%{
+
+    0% {
         transform: scale(1);
     }
 }
 
-.glowing{
+.glowing {
     animation: glow 1s linear both alternate-reverse infinite;
 }
 
 @keyframes glow {
-    from{
+    from {
         opacity: 0;
     }
 }
-.tutorialText{
+
+.tutorialText {
     text-align: center;
 }
-.langBtn{
+
+.langBtn {
     font-size: 40px;
     padding: 0 8px;
     background-size: 100%;
@@ -350,14 +403,15 @@ body {
     box-shadow: none;
     height: 50px;
 }
-.tutorialDisplay{
+
+.tutorialDisplay {
     display: none;
     opacity: 0;
     transition: .4s;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     z-index: 52;
     text-align: center;
     background-color: white;
@@ -366,32 +420,39 @@ body {
     width: 90%;
     max-width: 450px;
 }
-.lightVS{
+
+.lightVS {
     background-color: #cbcbcb;
     box-shadow: 0 3px #b5b5b5;
     padding: 5.7px 15px;
 }
-.verticalAlign{
+
+.verticalAlign {
     width: 100%;
     height: 10px;
 }
-.leftVS{
+
+.leftVS {
     border-bottom-left-radius: var(--border-radius);
     border-top-left-radius: var(--border-radius);
 }
-.darkVS{
+
+.darkVS {
     background-color: #858585;
     box-shadow: 0 3px #616161;
     padding: 5.7px 15px;
 }
-.rightVS{
+
+.rightVS {
     border-bottom-right-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
 }
-#pawnsReloadContainer{
+
+#pawnsReloadContainer {
     height: 20px;
 }
-.pawnDot{
+
+.pawnDot {
     width: 10px;
     height: 10px;
     background-color: black;
@@ -399,45 +460,56 @@ body {
     float: left;
     margin: auto 5px;
 }
-.reloadPawnDot{
+
+.reloadPawnDot {
     margin: 5px calc(12.5% - 5px);
 }
-.whitePawnDot{
+
+.whitePawnDot {
     background-color: #b6b6b6;
 }
+
 .colorSchemeButton {
     height: 15px;
     width: calc((100% / 4) - 15.2px);
     float: left;
 }
+
 .redColorSchemeButton {
     background-color: #ef9a9a;
     box-shadow: 0 3px #e57373;
 }
+
 .blueColorSchemeButton {
     background-color: #9fa8da;
     box-shadow: 0 3px #7986cb;
 }
+
 .greenColorSchemeButton {
     background-color: #a5d6a7;
     box-shadow: 0 3px #81c784;
 }
+
 .purpleColorSchemeButton {
     background-color: #ce93d8;
     box-shadow: 0 3px #ba68c8;
 }
+
 .cyanColorSchemeButton {
     background-color: #80deea;
     box-shadow: 0 3px #4dd0e1;
 }
+
 .yellowColorSchemeButton {
     background-color: #ffcc80;
     box-shadow: 0 3px #ffb74d;
 }
+
 .activeColorSchemeButton {
     box-shadow: none;
     transform: translateY(3px);
 }
+
 .desc {
     color: var(--menu-text-color);
     line-height: 1.15;
@@ -445,25 +517,30 @@ body {
     max-width: 230px;
     margin: auto;
 }
+
 .tinyDesc {
     color: var(--menu-text-color);
     opacity: 0.5;
     font-size: 13px;
 }
+
 .scrollableMenu {
     max-height: 300px;
     overflow-y: hidden;
 }
+
 .text-input {
     filter: brightness(1.2);
     width: calc(100% - 20px);
     box-sizing: border-box;
     text-align: center;
 }
+
 .backButton {
     margin-top: 15px;
 }
-.darkerBg{
+
+.darkerBg {
     display: none;
     width: 100%;
     height: 100%;
@@ -473,44 +550,47 @@ body {
     opacity: 0;
     transition: all .4s;
 }
-#loader{
+
+#loader {
     z-index: 101;
     width: 100px;
 }
+
 .hexagonLoader {
-  position: relative;
-  width: 50px;
-  height: 28.87px;
-  background-color: var(--buttonBg);
-  margin: 14.43px 0;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-  margin-top: 30px;
-  animation: rotateLoader 4s infinite;
-  animation-timing-function: ease-in-out;
+    position: relative;
+    width: 50px;
+    height: 28.87px;
+    background-color: var(--buttonBg);
+    margin: 14.43px 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 30px;
+    animation: rotateLoader 4s infinite;
+    animation-timing-function: ease-in-out;
 }
 
 .hexagonLoader:before,
 .hexagonLoader:after {
-  content: "";
-  position: absolute;
-  width: 0;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
+    content: "";
+    position: absolute;
+    width: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
 }
 
 .hexagonLoader:before {
-  bottom: 100%;
-  border-bottom: 14.43px solid var(--buttonBg);
+    bottom: 100%;
+    border-bottom: 14.43px solid var(--buttonBg);
 }
 
 .hexagonLoader:after {
-  top: 100%;
-  width: 0;
-  border-top: 14.43px solid var(--buttonBg);
+    top: 100%;
+    width: 0;
+    border-top: 14.43px solid var(--buttonBg);
 }
-.tableOverlay{
+
+.tableOverlay {
     position: absolute;
     pointer-events: none;
     width: 100%;
@@ -518,23 +598,28 @@ body {
     top: 0;
     left: 0;
 }
-.availableActionsSpan{
+
+.availableActionsSpan {
     text-decoration: underline;
     cursor: pointer;
 }
-.pawnPlaceButton{
+
+.pawnPlaceButton {
     display: inline-block;
     width: calc(100% / 3 - 40px);
 }
-.pawnReloadButton{
+
+.pawnReloadButton {
     width: calc(50% - 38.3px);
     display: inline-block;
 }
-.boardElement{
+
+.boardElement {
     position: absolute;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
 }
-.openMainMenuButton{
+
+.openMainMenuButton {
     display: block;
     position: absolute;
     top: 0;
@@ -546,70 +631,88 @@ body {
     background-color: transparent;
     background-size: cover;
 }
-.openMainMenuButton:focus{
+
+.openMainMenuButton:focus {
     outline: none;
 }
-.botBoardElement{
+
+.botBoardElement {
     width: 10%;
     transition: top .4s, left .4s;
 }
-.botTopArea{
-    transform: translate(-50%,-50%) rotate(180deg);
+
+.botTopArea {
+    transform: translate(-50%, -50%) rotate(180deg);
 }
-.highlightedCells{
+
+.highlightedCells {
     fill: var(--menuBottom);
 }
-#linkTextInput{
+
+#linkTextInput {
     width: calc(100% - 20px);
     display: flex;
     order: 0;
     min-width: 125px;
 }
-@keyframes rotateLoader{
-    0%{
+
+@keyframes rotateLoader {
+    0% {
         transform: scale(0) rotate(0);
     }
-    12.5%{
+
+    12.5% {
         transform: scale(1) rotate(30deg);
     }
-    37.5%{
+
+    37.5% {
         transform: scale(1) rotate(30deg);
     }
-    50%{
+
+    50% {
         transform: scale(1) rotate(90deg);
     }
-    68.75%{
+
+    68.75% {
         transform: scale(1) rotate(90deg);
     }
-    75%{
+
+    75% {
         transform: scale(1.1) rotate(80deg);
     }
-    100%{
+
+    100% {
         transform: scale(0) rotate(180deg);
     }
 }
-.playActions{
+
+.playActions {
     position: fixed;
     width: 100%;
     bottom: 0;
 }
-.actionButtons{
+
+.actionButtons {
     width: calc((100% - 39px) / 3);
 }
-.gameBoardContainer{
+
+.gameBoardContainer {
     position: absolute;
     width: 100%;
 }
-.disabledOptionButton{
+
+.disabledOptionButton {
     filter: brightness(70%);
     pointer-events: none;
 }
+
 #wrap {
-    border:1px solid green;
-    float:left;
+    border: 1px solid green;
+    float: left;
 }
-@media (max-width: 395px){
-    .actionButtons{
+
+@media (max-width: 395px) {
+    .actionButtons {
         width: calc(100% - 10px);
     }
 }

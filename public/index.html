@@ -1,13 +1,14 @@
 <!--
-  ~ Copyright (C) George Ober - All Rights Reserved
-  ~  Unauthorized copying of this file, via any medium is strictly prohibited
-  ~  Proprietary and confidential
-  ~  Written by George Ober <george.a.ober@gmail.com>,
-  ~  on 5/9/2020 (DD/MM/YY).
-  -->
+    ~ Copyright (C) George Ober - All Rights Reserved
+    ~  Unauthorized copying of this file, via any medium is strictly prohibited
+    ~  Proprietary and confidential
+    ~  Written by George Ober <george.a.ober@gmail.com>,
+    ~  on 5/9/2020 (DD/MM/YY).
+-->
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Robotory</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -24,350 +25,543 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2B2YS2493J"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-	gtag('config', 'G-2B2YS2493J');
+        gtag('config', 'G-2B2YS2493J');
     </script>
 </head>
+
 <body ontouchstart="" onload="load()">
-<div id="newNotifs"></div>
-<div class="background" id="background"><div id="particles-js" style="width:100%;height:100%;"></div></div>
-<div class="darkerBg" id="darkerBg"></div>
-<div class="darkerBg" id="whiteCurtain" style="background-color: white;z-index: 51;"></div>
-<div class="tutorialDisplay">
-    <div id="tutorialSVG"></div>
-    <span class="tutorialText"></span>
-</div>
-<div class="mainMenu">
-    <div class="centerMenu" id="centerMainMenu" style="z-index: 100;width: 240px;">
-        <a class="mainMenuButtons" id="mainMenuResumeBtn" style="display:none;" onclick="closeMainMenu();"><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="mainMenuResumeBtn"></span></a>
-        <div id="mainMenuUpdateBtn" style="display: none;">
-            <div class="desc" data-i18n="updateDesc"></div>
-            <a class="mainMenuButtons" onclick="window.location.reload();"><div class="btnIconContainer" data-bgSVG="arrowUpdate"></div><span class="btnText" data-i18n="mainMenuUpdateBtn"></span></a>
-        </div>
-        <a class="mainMenuButtons halfMainMenuButtons" id="mainMenuPlayBtn" onclick="openPlayMenu();" data-childSVG="PlayButton" style="margin-right: 5px;"></a>
-        <a class="mainMenuButtons halfMainMenuButtons" id="mainMenuSettingsBtn" onclick="openSettingsMenu();" data-childSVG="SettingsButton" style="margin-left: 5px;"></a>
-        <a class="mainMenuButtons" id="mainMenuTutorialBtn" onclick="openTutorial();"><div class="btnIconContainer" data-bgSVG="tutorialIcon"></div><span class="btnText" data-i18n="mainMenuTutorialBtn"></span></a>
-        <a class="mainMenuButtons" id="recentGamesMenuBtn" style="display:none;" onclick="openRecentGamesMenu();" data-i18n="mainMenuRecentGamesBtn"></a>
-        <a class="mainMenuButtons" id="installMainMenuBtn" style="display:none;" onclick="clickInstall();"><div class="btnIconContainer" data-bgSVG="plusIcon"></div><span class="btnText" data-i18n="installBtn"></span></a>
-        <div class="desc tinyDesc"><a href="./about.html" data-i18n="madeBy"></a></div>
+    <div id="newNotifs"></div>
+    <div class="background" id="background">
+        <div id="particles-js" style="width:100%;height:100%;"></div>
     </div>
-    <div class="centerMenu" id="recentGamesMenu" style="width: 240px;">
-        <div class="desc" data-i18n="recentGamesMenuDesc"></div>
-        <div id="recentGamesList"></div>
-        <a class="backButton mainMenuButtons" onclick="closeRecentGamesMenu();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
+    <div class="darkerBg" id="darkerBg"></div>
+    <div class="darkerBg" id="whiteCurtain" style="background-color: white;z-index: 51;"></div>
+    <div class="tutorialDisplay">
+        <div id="tutorialSVG"></div>
+        <span class="tutorialText"></span>
     </div>
-    <div class="centerMenu" id="unsupported" style="z-index: 200;width: 300px;">
-        <div class="desc" data-i18n="unsupportedDesc"></div>
-        <a class="mainMenuButtons" onclick="openMenu('centerMainMenu');closeMenu('unsupported');" data-i18n="playRisk"></a>
-    </div>
-    <div class="centerMenu" id="centerSettingsMenu" style="z-index: 101; width: 250px;">
-        <div class="scrollableMenu">
-            <input type="text" id="nameTextInput" class="mainMenuButtons text-input btnNoActive" placeholder="Enter a name here..." data-i18n-custom="placeholder:nameInput" onkeyup="updateName();" autocomplete="off" maxlength="15"/>
-            <div class="desc tinyDesc" data-i18n="nameInputDesc"></div>
-            <a class="mainMenuButtons" id="choseLanguageButton" onclick="changeLanguage();"><div class="btnIconContainer" data-bgSVG="flagIcon"></div><span class="btnText">Language</span></a>
-            <a class="mainMenuButtons" id="soundsButton" onclick="toggleSounds();"><div class="btnIconContainer" id="soundIcon" data-bgSVG="soundIcon"></div><span class="btnText" data-i18n="sounds"></span></a>
-            <div class="desc tinyDesc" data-i18n="soundsDesc"></div>
-        </div>
-        <a class="mainMenuButtons backButton" onclick="closeSettingsMenu();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
-    </div>
-    <div class="centerMenu" id="langMenu" style="z-index: 101; width: 250px;">
-        <div class="scrollableMenu" style="height: 300px;">
-            <div style="display: flex;">
-                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('fr_FR')" id="languageChangefr_FR" data-bgSVG="frFlag"></a>
-                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('en_GB')" id="languageChangeen_GB" data-bgSVG="ukFlag"></a>
-            </div>
-            <div style="display: flex;">
-                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('es_ES')" id="languageChangees_ES" data-bgSVG="esFlag"></a>
-                <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('ro_RO')" id="languageChangero_RO" data-bgSVG="roFlag"></a>
-            </div>
-        </div>
-        <a class="mainMenuButtons backButton" onclick="closeChangeLanguage();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
-    </div>
-    <div class="centerMenu" id="playMenu" style="z-index: 100; width: 240px;">
-        <div class="scrollableMenu">
-            <div class="desc" data-i18n="playMenuDesc"></div>
-            <a class="mainMenuButtons" id="playMenuOnlineButton" onclick="onlineGame();" data-i18n="playOnlineBtn"></a>
-            <a class="mainMenuButtons" id="playMenuOfflineButton" onclick="offlineGame();" data-i18n="playOfflineBtn"></a>
-        </div>
-        <a class="mainMenuButtons backButton" onclick="closePlayMenu();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
-    </div>
-
-    <div class="centerMenu" id="centerShareGameMenu" style="z-index: 100;max-width: 301px;">
-        <div class="desc" data-i18n="shareGameMenuDesc"></div>
-        <div style="display: flex;">
-            <input type="text" id="linkTextInput" class="mainMenuButtons text-input btnNoActive" readonly/>
-            <a class="mainMenuButtons halfMainMenuButtons" id="shareButton" style="margin-left: 5px;display: flex;order: 1;width: 40px;margin-right: 5px;" data-childSVG="shareBtn"></a>
-            <a class="mainMenuButtons halfMainMenuButtons" style="width: 40px;display: flex;order: 2;margin-left:5px;" onclick="copyClip('linkTextInput');" data-childSVG="copyBtn"></a>
-        </div>
-
-        <a class="mainMenuButtons" data-i18n="gameSettingsBtn"></a>
-
-        <a class="mainMenuButtons backButton" onclick="closeCenterShareGameMenu()" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
-    </div>
-</div>
-<div class="centerMenu" id="loader">
-    <div class="desc" data-i18n="loaderDesc"></div>
-    <div class="hexagonLoader"></div>
-</div>
-<div class="gameUI">
-    <div class="halfUI" style="width: 50%;display: inline-block;float: left;">
-        <div class="verticalAlign"></div>
-        <div class="vsDisplay" style="width: fit-content;padding-top: 5px;padding-bottom: 0;" id="reserveInfo">
-            <div class="vsTable">
-                <div style="display: inline-flex;"><div class="pawnDot"></div><span id="topReserveBlack">10</span></div>
-                <div style="display: inline-flex;"><div class="pawnDot whitePawnDot"></div><span id="topReserveWhite">10</span></div>
-            </div>
-        </div>
-        <div class="vsDisplay" id="ennemyDisplay" style="width: fit-content;padding-top: 5px;">
-            <!--<table class="vsTable">
-                <tr class="vsNames">
-                    <td id="yourName"></td>
-                    <td>
-                        <div class="vsAgainst" data-i18n="ennemyDisplayVS"></div>
-                    </td>
-                    <td id="ennemyName"></td>
-                </tr>
-                <tr>
-                    <td></td>
-                </tr>
-            </table>-->
-            <div class="vsContainer">
-                <div class="lightVS leftVS">
-                    <span id="yourName"></span>
-                    <div id="myPawns" style="align-self: center;margin-top: 5px;"></div>
-                </div>
-                <div class="vsAgainst" data-i18n="ennemyDisplayVS"></div>
-                <div class="darkVS rightVS">
-                    <span id="ennemyName"></span>
-                    <div id="ennemyPawns" style="align-self: center;margin-top: 5px;"></div>
-                </div>
-                <span id="thinking" data-i18n="ennemyDisplayThinking"></span>
-            </div>
-        </div>
-        <div class="vsDisplay" style="display: none;width: fit-content;padding-top: 0;transform: translate(-50%, 0px) scale(1);opacity: 1;" id="yourTurnInfo">
-            <div class="vsTable">
-                <p style="margin: 0;white-space: pre-line;max-width: 284px;" id="yourTurnDesc"></p>
-                <a class="mainMenuButtons" onclick="openAvailableActionsMenu()" data-i18n="availableOptionsBtn"></a>
-            </div>
-        </div>
-        <div class="vsDisplay" style="display: none;width: fit-content;padding-top: 0;" id="placePawnMenu">
-            <div class="vsTable">
-                <p style="margin: 0;white-space: pre-line;max-width: 284px;" data-i18n="placePawnDesc"></p>
-                <a class="mainMenuButtons pawnPlaceButton" onclick="placingPawnChange('whitePawn');">
-                    <div class="pawnDot whitePawnDot"></div>
-                    <span id="placePawnWhite"></span>
-                </a>
-                <a class="mainMenuButtons pawnPlaceButton" onclick="placingPawnChange('blackPawn');">
-                    <div class="pawnDot"></div>
-                    <span id="placePawnBlack"></span>
-                </a>
-                <a class="mainMenuButtons pawnPlaceButton" id="cancelPlacePawn" onclick="cancelPlacePawnOption();" style="width: min-content;"><span data-i18n="genericBack"></span></a>
-            </div>
-        </div>
-        <div class="vsDisplay" style="display: none;width: fit-content;padding-top: 0;" id="moveBotMenu">
-            <div class="vsTable">
-                <p style="margin: 0;white-space: pre-line;max-width: 284px;" data-i18n="moveBotDesc"></p>
-                <a class="mainMenuButtons" id="confirmRobotPath" style="display: none;" onclick="confirmRobotPath();" data-i18n="confirmPathBtn"></a>
-                <a class="mainMenuButtons" onclick="cancelMoveBotOption();" id="cancelMoveBotOption" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
-            </div>
-        </div>
-        <div class="centerMenu" id="availableActionsMenu" style="z-index: 100;max-width: 240px;">
-            <a class="mainMenuButtons" id="placePawnOptionButton" onclick="placePawnOption();" data-i18n="placePawnOptionBtn"></a>
-            <a class="mainMenuButtons" onclick="moveBot();" data-i18n="moveRbotBtn"></a>
-            <a class="mainMenuButtons" id="reloadEnergyOptionButton" onclick="openReloadEnergyMenu()" data-i18n="reloadEnergyBtn"></a>
-            <a class="mainMenuButtons backButton" onclick="closeAvailableActionsMenu();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
-        </div>
-        <div class="centerMenu" id="reloadEnergyMenu" style="z-index: 101">
-            <div id="myPawnsInMenu">
-                <div class="desc" id="textReloadPawns"></div>
-                <a class="mainMenuButtons pawnReloadButton" onclick="addToReload('whitePawn');">
-                    <div class="pawnDot whitePawnDot"></div>
-                    <span id="reserveWhite"></span>
-                </a>
-                <a class="mainMenuButtons pawnReloadButton" onclick="addToReload('blackPawn');">
-                    <div class="pawnDot"></div>
-                    <span id="reserveBlack"></span>
-                </a>
-                <div class="desc" id="reloadPawnsShowNew"></div>
-                <div id="pawnsReloadContainer"></div>
-                <a class="backButton mainMenuButtons" id="confirmReloadButton" onclick="sendReloadValue();" data-i18n="genericConfirm"></a>
-                <a class="backButton mainMenuButtons" onclick="cancelReloadPawnsButton();" ><div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText" data-i18n="genericBack"></span></a>
-            </div>
-        </div>
-        <div class="centerMenu" id="winnerMenu" style="z-index: 101">
-            <div class="desc" id="winnerName"></div>
-            <div class="desc" data-i18n="winnerMenuDesc"></div>
-            <a class="mainMenuButtons backButton" onclick="rematchBtn();">
-                <span id="rematchBtntxt" data-i18n="rematchBtn"></span>
-                <span id="ready" data-i18n="readyForRematch"></span>
+    <div class="mainMenu">
+        <div class="centerMenu" id="centerMainMenu" style="z-index: 100;width: 240px;">
+            <a class="mainMenuButtons" id="mainMenuResumeBtn" style="display:none;" onclick="closeMainMenu();">
+                <div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText"
+                    data-i18n="mainMenuResumeBtn"></span>
             </a>
-            <a class="mainMenuButtons" onclick="mainMenuAfterGame();" data-i18n="mainMenuBtn"></a>
+            <div id="mainMenuUpdateBtn" style="display: none;">
+                <div class="desc" data-i18n="updateDesc"></div>
+                <a class="mainMenuButtons" onclick="window.location.reload();">
+                    <div class="btnIconContainer" data-bgSVG="arrowUpdate"></div><span class="btnText"
+                        data-i18n="mainMenuUpdateBtn"></span>
+                </a>
+            </div>
+            <a class="mainMenuButtons halfMainMenuButtons" id="mainMenuPlayBtn" onclick="openPlayMenu();"
+                data-childSVG="PlayButton" style="margin-right: 5px;"></a>
+            <a class="mainMenuButtons halfMainMenuButtons" id="mainMenuSettingsBtn" onclick="openSettingsMenu();"
+                data-childSVG="SettingsButton" style="margin-left: 5px;"></a>
+            <a class="mainMenuButtons" id="mainMenuTutorialBtn" onclick="openTutorial();">
+                <div class="btnIconContainer" data-bgSVG="tutorialIcon"></div><span class="btnText"
+                    data-i18n="mainMenuTutorialBtn"></span>
+            </a>
+            <a class="mainMenuButtons" id="recentGamesMenuBtn" style="display:none;" onclick="openRecentGamesMenu();"
+                data-i18n="mainMenuRecentGamesBtn"></a>
+            <a class="mainMenuButtons" id="installMainMenuBtn" style="display:none;" onclick="clickInstall();">
+                <div class="btnIconContainer" data-bgSVG="plusIcon"></div><span class="btnText"
+                    data-i18n="installBtn"></span>
+            </a>
+            <div class="desc tinyDesc"><a href="./about.html" data-i18n="madeBy"></a></div>
+        </div>
+        <div class="centerMenu" id="recentGamesMenu" style="width: 240px;">
+            <div class="desc" data-i18n="recentGamesMenuDesc"></div>
+            <div id="recentGamesList"></div>
+            <a class="backButton mainMenuButtons" onclick="closeRecentGamesMenu();">
+                <div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText"
+                    data-i18n="genericBack"></span>
+            </a>
+        </div>
+        <div class="centerMenu" id="unsupported" style="z-index: 200;width: 300px;">
+            <div class="desc" data-i18n="unsupportedDesc"></div>
+            <a class="mainMenuButtons" onclick="openMenu('centerMainMenu');closeMenu('unsupported');"
+                data-i18n="playRisk"></a>
+        </div>
+        <div class="centerMenu" id="centerSettingsMenu" style="z-index: 101; width: 250px;">
+            <div class="scrollableMenu">
+                <input type="text" id="nameTextInput" class="mainMenuButtons text-input btnNoActive"
+                    placeholder="Enter a name here..." data-i18n-custom="placeholder:nameInput" onkeyup="updateName();"
+                    autocomplete="off" maxlength="15" />
+                <div class="desc tinyDesc" data-i18n="nameInputDesc"></div>
+                <a class="mainMenuButtons" id="choseLanguageButton" onclick="changeLanguage();">
+                    <div class="btnIconContainer" data-bgSVG="flagIcon"></div><span class="btnText">Language</span>
+                </a>
+                <a class="mainMenuButtons" id="soundsButton" onclick="toggleSounds();">
+                    <div class="btnIconContainer" id="soundIcon" data-bgSVG="soundIcon"></div><span class="btnText"
+                        data-i18n="sounds"></span>
+                </a>
+                <div class="desc tinyDesc" data-i18n="soundsDesc"></div>
+            </div>
+            <a class="mainMenuButtons backButton" onclick="closeSettingsMenu();">
+                <div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText"
+                    data-i18n="genericBack"></span>
+            </a>
+        </div>
+        <div class="centerMenu" id="langMenu" style="z-index: 101; width: 250px;">
+            <div class="scrollableMenu" style="height: 300px;">
+                <div style="display: flex;">
+                    <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('fr_FR')" id="languageChangefr_FR"
+                        data-bgSVG="frFlag"></a>
+                    <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('en_GB')" id="languageChangeen_GB"
+                        data-bgSVG="ukFlag"></a>
+                </div>
+                <div style="display: flex;">
+                    <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('es_ES')" id="languageChangees_ES"
+                        data-bgSVG="esFlag"></a>
+                    <a class="mainMenuButtons langBtn" onclick="changeLanguageBtn('ro_RO')" id="languageChangero_RO"
+                        data-bgSVG="roFlag"></a>
+                </div>
+            </div>
+            <a class="mainMenuButtons backButton" onclick="closeChangeLanguage();">
+                <div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText"
+                    data-i18n="genericBack"></span>
+            </a>
+        </div>
+        <div class="centerMenu" id="playMenu" style="z-index: 100; width: 240px;">
+            <div class="scrollableMenu">
+                <div class="desc" data-i18n="playMenuDesc"></div>
+                <a class="mainMenuButtons" id="playMenuOnlineButton" onclick="onlineGame();"
+                    data-i18n="playOnlineBtn"></a>
+                <a class="mainMenuButtons" id="playMenuOfflineButton" onclick="offlineGame();"
+                    data-i18n="playOfflineBtn"></a>
+            </div>
+            <a class="mainMenuButtons backButton" onclick="closePlayMenu();">
+                <div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText"
+                    data-i18n="genericBack"></span>
+            </a>
+        </div>
+
+        <div class="centerMenu" id="centerShareGameMenu" style="z-index: 100;max-width: 301px;">
+            <div class="desc" data-i18n="shareGameMenuDesc"></div>
+            <div style="display: flex;">
+                <input type="text" id="linkTextInput" class="mainMenuButtons text-input btnNoActive" readonly />
+                <a class="mainMenuButtons halfMainMenuButtons" id="shareButton"
+                    style="margin-left: 5px;display: flex;order: 1;width: 40px;margin-right: 5px;"
+                    data-childSVG="shareBtn"></a>
+                <a class="mainMenuButtons halfMainMenuButtons"
+                    style="width: 40px;display: flex;order: 2;margin-left:5px;" onclick="copyClip('linkTextInput');"
+                    data-childSVG="copyBtn"></a>
+            </div>
+
+            <a class="mainMenuButtons" data-i18n="gameSettingsBtn"></a>
+
+            <a class="mainMenuButtons backButton" onclick="closeCenterShareGameMenu()">
+                <div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText"
+                    data-i18n="genericBack"></span>
+            </a>
         </div>
     </div>
-    <div class="halfUI" style="display: inline-block;">
-        <div class="gameBoardContainer" style="width:50%;transform-origin: top;">
-            <svg class="gameBoard" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" preserveAspectRatio="xMidYMid meet" viewBox="0 0 640 640" width="640" height="640">
-                <defs>
-                    <path d="M509.96 187.79L487.77 147.79L443.39 147.79L421.21 187.79L443.39 227.79L487.77 227.79L509.96 187.79Z" id="a5rj8xpdDt" />
-                    <path d="M437.46 231.27L415.27 191.27L370.89 191.27L348.71 231.27L370.89 271.27L415.27 271.27L437.46 231.27Z" id="bBqQ1nJHp" />
-                    <path d="M437.46 144.04L415.27 104.04L370.89 104.04L348.71 144.04L370.89 184.04L415.27 184.04L437.46 144.04Z" id="ak7SVbCPk" />
-                    <path d="M364.38 187.79L342.19 147.79L297.81 147.79L275.62 187.79L297.81 227.79L342.19 227.79L364.38 187.79Z" id="a54mZtkfU" />
-                    <path d="M291.88 231.4L269.69 191.4L225.31 191.4L203.12 231.4L225.31 271.4L269.69 271.4L291.88 231.4Z" id="ac4QWV9se" />
-                    <path d="M291.88 144.04L269.69 104.04L225.31 104.04L203.12 144.04L225.31 184.04L269.69 184.04L291.88 144.04Z" id="aex5dDdzD" />
-                    <path d="M364.38 100.09L342.19 60.09L297.81 60.09L275.62 100.09L297.81 140.09L342.19 140.09L364.38 100.09Z" id="c2FtuzzdCb" />
-                    <path d="M364.38 275.9L342.19 235.9L297.81 235.9L275.62 275.9L297.81 315.9L342.19 315.9L364.38 275.9Z" id="bdUHySTSA" />
-                    <path d="M291.88 318.97L269.69 278.97L225.31 278.97L203.12 318.97L225.31 358.97L269.69 358.97L291.88 318.97Z" id="n1s6ovGwr" />
-                    <path d="M218.79 275.49L196.61 235.49L152.23 235.49L130.04 275.49L152.23 315.49L196.61 315.49L218.79 275.49Z" id="b11W1bKZq" />
-                    <path d="M218.79 187.79L196.61 147.79L152.23 147.79L130.04 187.79L152.23 227.79L196.61 227.79L218.79 187.79Z" id="b58BjnnEZZ" />
-                    <path d="M218.79 363.6L196.61 323.6L152.23 323.6L130.04 363.6L152.23 403.6L196.61 403.6L218.79 363.6Z" id="b3mXpdasf" />
-                    <path d="M130.04 452.65L152.34 492.59L196.71 492.48L218.79 452.42L196.5 412.48L152.13 412.59L130.04 452.65Z" id="a1Mn7laeTX" />
-                    <path d="M202.43 408.98L224.72 448.93L269.1 448.81L291.18 408.75L268.89 368.81L224.51 368.93L202.43 408.98Z" id="j70hb6659" />
-                    <path d="M202.66 496.21L224.95 536.15L269.32 536.04L291.41 495.98L269.12 456.04L224.74 456.15L202.66 496.21Z" id="k7KRGCyO" />
-                    <path d="M275.62 452.27L297.92 492.21L342.29 492.09L364.37 452.04L342.08 412.09L297.71 412.21L275.62 452.27Z" id="b26PfhaZZS" />
-                    <path d="M348.01 408.47L370.3 448.41L414.68 448.29L436.76 408.23L414.47 368.29L370.09 368.41L348.01 408.47Z" id="c5uHpM2hlZ" />
-                    <path d="M348.24 495.83L370.53 535.77L414.91 535.65L436.99 495.6L414.7 455.65L370.32 455.77L348.24 495.83Z" id="dvL2YfYR" />
-                    <path d="M275.85 539.97L298.15 579.91L342.52 579.8L364.6 539.74L342.31 499.8L297.94 499.91L275.85 539.97Z" id="b12V2CYsTZ" />
-                    <path d="M275.39 364.16L297.69 404.1L342.06 403.98L364.14 363.93L341.85 323.98L297.48 324.1L275.39 364.16Z" id="din3zraTh" />
-                    <path d="M347.78 320.9L370.07 360.84L414.45 360.73L436.53 320.67L414.24 280.73L369.86 280.84L347.78 320.9Z" id="a1r0GW2P6o" />
-                    <path d="M420.98 364.18L443.27 404.13L487.64 404.01L509.73 363.95L487.43 324.01L443.06 324.13L420.98 364.18Z" id="j13JIpeOtZ" />
-                    <path d="M421.21 451.89L443.5 491.83L487.87 491.71L509.96 451.66L487.66 411.71L443.29 411.83L421.21 451.89Z" id="av9a7PTu9" />
-                    <path d="M420.75 276.07L443.04 316.02L487.41 315.9L509.5 275.84L487.2 235.9L442.83 236.02L420.75 276.07Z" id="e5hIgU2NwH" />
-                </defs>
-                <g style="transform: scale(1.2) translateY(-8%);transform-origin: top;" id="containerOfSvg">
-                    <g>
-                        <g onclick="boardClick(this,5)">
-                            <use xlink:href="#a5rj8xpdDt" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#a5rj8xpdDt" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,7)">
-                            <use xlink:href="#bBqQ1nJHp" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#bBqQ1nJHp" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,2)">
-                            <use xlink:href="#ak7SVbCPk" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#ak7SVbCPk" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,4)">
-                            <use xlink:href="#a54mZtkfU" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#a54mZtkfU" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,6)">
-                            <use xlink:href="#ac4QWV9se" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#ac4QWV9se" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g  onclick="boardClick(this,1)">
-                            <use xlink:href="#aex5dDdzD" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#aex5dDdzD" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,0)">
-                            <use xlink:href="#c2FtuzzdCb" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#c2FtuzzdCb" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,9)">
-                            <use xlink:href="#bdUHySTSA" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#bdUHySTSA" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,11)">
-                            <use xlink:href="#n1s6ovGwr" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#n1s6ovGwr" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,8)">
-                            <use xlink:href="#b11W1bKZq" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#b11W1bKZq" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,3)">
-                            <use xlink:href="#b58BjnnEZZ" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#b58BjnnEZZ" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,13)">
-                            <use xlink:href="#b3mXpdasf" opacity="1" fill="#868686" fill-opacity="1" />
-                            <g><use xlink:href="#b3mXpdasf" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,18)">
-                            <use xlink:href="#a1Mn7laeTX" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#a1Mn7laeTX" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,16)">
-                            <use xlink:href="#j70hb6659" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#j70hb6659" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,21)">
-                            <use xlink:href="#k7KRGCyO" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#k7KRGCyO" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,19)">
-                            <use xlink:href="#b26PfhaZZS" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#b26PfhaZZS" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,17)">
-                            <use xlink:href="#c5uHpM2hlZ" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#c5uHpM2hlZ" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,22)">
-                            <use xlink:href="#dvL2YfYR" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#dvL2YfYR" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,23)">
-                            <use xlink:href="#b12V2CYsTZ" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#b12V2CYsTZ" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,14)">
-                            <use xlink:href="#din3zraTh" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#din3zraTh" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,12)">
-                            <use xlink:href="#a1r0GW2P6o" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#a1r0GW2P6o" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,15)">
-                            <use xlink:href="#j13JIpeOtZ" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#j13JIpeOtZ" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,20)">
-                            <use xlink:href="#av9a7PTu9" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#av9a7PTu9" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
-                        </g>
-                        <g onclick="boardClick(this,10)">
-                            <use xlink:href="#e5hIgU2NwH" opacity="1" fill="#cbcbcb" fill-opacity="1" />
-                            <g><use xlink:href="#e5hIgU2NwH" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="2" stroke-opacity="1" /></g>
+    <div class="centerMenu" id="loader">
+        <div class="desc" data-i18n="loaderDesc"></div>
+        <div class="hexagonLoader"></div>
+    </div>
+    <div class="gameUI">
+        <div class="halfUI" style="width: 50%;float: left;">
+            <div class="verticalAlign"></div>
+            <div class="vsDisplay" style="width: fit-content;padding-top: 5px;padding-bottom: 0;" id="reserveInfo">
+                <div class="vsTable">
+                    <div style="display: inline-flex;">
+                        <div class="pawnDot"></div><span id="topReserveBlack">10</span>
+                    </div>
+                    <div style="display: inline-flex;">
+                        <div class="pawnDot whitePawnDot"></div><span id="topReserveWhite">10</span>
+                    </div>
+                </div>
+            </div>
+            <div class="vsDisplay" id="ennemyDisplay" style="width: fit-content;padding-top: 5px;">
+                <!--<table class="vsTable">
+                    <tr class="vsNames">
+                        <td id="yourName"></td>
+                        <td>
+                            <div class="vsAgainst" data-i18n="ennemyDisplayVS"></div>
+                        </td>
+                        <td id="ennemyName"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>-->
+                <div class="vsContainer">
+                    <div class="lightVS leftVS">
+                        <span id="yourName"></span>
+                        <div id="myPawns" style="align-self: center;margin-top: 5px;"></div>
+                    </div>
+                    <div class="vsAgainst" data-i18n="ennemyDisplayVS"></div>
+                    <div class="darkVS rightVS">
+                        <span id="ennemyName"></span>
+                        <div id="ennemyPawns" style="align-self: center;margin-top: 5px;"></div>
+                    </div>
+                    <span id="thinking" data-i18n="ennemyDisplayThinking"></span>
+                </div>
+            </div>
+            <div class="vsDisplay"
+                style="display: none;width: fit-content;padding-top: 0;transform: translate(-50%, 0px) scale(1);opacity: 1;"
+                id="yourTurnInfo">
+                <div class="vsTable">
+                    <p style="margin: 0;white-space: pre-line;max-width: 284px;" id="yourTurnDesc"></p>
+                    <a class="mainMenuButtons" onclick="openAvailableActionsMenu()" data-i18n="availableOptionsBtn"></a>
+                </div>
+            </div>
+            <div class="vsDisplay" style="display: none;width: fit-content;padding-top: 0;" id="placePawnMenu">
+                <div class="vsTable">
+                    <p style="margin: 0;white-space: pre-line;max-width: 284px;" data-i18n="placePawnDesc"></p>
+                    <a class="mainMenuButtons pawnPlaceButton" onclick="placingPawnChange('whitePawn');">
+                        <div class="pawnDot whitePawnDot"></div>
+                        <span id="placePawnWhite"></span>
+                    </a>
+                    <a class="mainMenuButtons pawnPlaceButton" onclick="placingPawnChange('blackPawn');">
+                        <div class="pawnDot"></div>
+                        <span id="placePawnBlack"></span>
+                    </a>
+                    <a class="mainMenuButtons pawnPlaceButton" id="cancelPlacePawn" onclick="cancelPlacePawnOption();"
+                        style="width: min-content;"><span data-i18n="genericBack"></span></a>
+                </div>
+            </div>
+            <div class="vsDisplay" style="display: none;width: fit-content;padding-top: 0;" id="moveBotMenu">
+                <div class="vsTable">
+                    <p style="margin: 0;white-space: pre-line;max-width: 284px;" data-i18n="moveBotDesc"></p>
+                    <a class="mainMenuButtons" id="confirmRobotPath" style="display: none;"
+                        onclick="confirmRobotPath();" data-i18n="confirmPathBtn"></a>
+                    <a class="mainMenuButtons" onclick="cancelMoveBotOption();" id="cancelMoveBotOption">
+                        <div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText"
+                            data-i18n="genericBack"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="centerMenu" id="availableActionsMenu" style="z-index: 100;max-width: 240px;">
+                <a class="mainMenuButtons" id="placePawnOptionButton" onclick="placePawnOption();"
+                    data-i18n="placePawnOptionBtn"></a>
+                <a class="mainMenuButtons" onclick="moveBot();" data-i18n="moveRbotBtn"></a>
+                <a class="mainMenuButtons" id="reloadEnergyOptionButton" onclick="openReloadEnergyMenu()"
+                    data-i18n="reloadEnergyBtn"></a>
+                <a class="mainMenuButtons backButton" onclick="closeAvailableActionsMenu();">
+                    <div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText"
+                        data-i18n="genericBack"></span>
+                </a>
+            </div>
+            <div class="centerMenu" id="reloadEnergyMenu" style="z-index: 101">
+                <div id="myPawnsInMenu">
+                    <div class="desc" id="textReloadPawns"></div>
+                    <a class="mainMenuButtons pawnReloadButton" onclick="addToReload('whitePawn');">
+                        <div class="pawnDot whitePawnDot"></div>
+                        <span id="reserveWhite"></span>
+                    </a>
+                    <a class="mainMenuButtons pawnReloadButton" onclick="addToReload('blackPawn');">
+                        <div class="pawnDot"></div>
+                        <span id="reserveBlack"></span>
+                    </a>
+                    <div class="desc" id="reloadPawnsShowNew"></div>
+                    <div id="pawnsReloadContainer"></div>
+                    <a class="backButton mainMenuButtons" id="confirmReloadButton" onclick="sendReloadValue();"
+                        data-i18n="genericConfirm"></a>
+                    <a class="backButton mainMenuButtons" onclick="cancelReloadPawnsButton();">
+                        <div class="btnIconContainer" data-bgSVG="arrowBack"></div><span class="btnText"
+                            data-i18n="genericBack"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="centerMenu" id="winnerMenu" style="z-index: 101">
+                <div class="desc" id="winnerName"></div>
+                <div class="desc" data-i18n="winnerMenuDesc"></div>
+                <a class="mainMenuButtons backButton" onclick="rematchBtn();">
+                    <span id="rematchBtntxt" data-i18n="rematchBtn"></span>
+                    <span id="ready" data-i18n="readyForRematch"></span>
+                </a>
+                <a class="mainMenuButtons" onclick="mainMenuAfterGame();" data-i18n="mainMenuBtn"></a>
+            </div>
+        </div>
+        <div class="halfUI" style="display: inline-block;">
+            <div class="gameBoardContainer" style="width:50%;transform-origin: top;">
+                <svg class="gameBoard" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    version="1.1" preserveAspectRatio="xMidYMid meet" viewBox="0 0 640 640" width="640" height="640">
+                    <defs>
+                        <path
+                            d="M509.96 187.79L487.77 147.79L443.39 147.79L421.21 187.79L443.39 227.79L487.77 227.79L509.96 187.79Z"
+                            id="a5rj8xpdDt" />
+                        <path
+                            d="M437.46 231.27L415.27 191.27L370.89 191.27L348.71 231.27L370.89 271.27L415.27 271.27L437.46 231.27Z"
+                            id="bBqQ1nJHp" />
+                        <path
+                            d="M437.46 144.04L415.27 104.04L370.89 104.04L348.71 144.04L370.89 184.04L415.27 184.04L437.46 144.04Z"
+                            id="ak7SVbCPk" />
+                        <path
+                            d="M364.38 187.79L342.19 147.79L297.81 147.79L275.62 187.79L297.81 227.79L342.19 227.79L364.38 187.79Z"
+                            id="a54mZtkfU" />
+                        <path
+                            d="M291.88 231.4L269.69 191.4L225.31 191.4L203.12 231.4L225.31 271.4L269.69 271.4L291.88 231.4Z"
+                            id="ac4QWV9se" />
+                        <path
+                            d="M291.88 144.04L269.69 104.04L225.31 104.04L203.12 144.04L225.31 184.04L269.69 184.04L291.88 144.04Z"
+                            id="aex5dDdzD" />
+                        <path
+                            d="M364.38 100.09L342.19 60.09L297.81 60.09L275.62 100.09L297.81 140.09L342.19 140.09L364.38 100.09Z"
+                            id="c2FtuzzdCb" />
+                        <path
+                            d="M364.38 275.9L342.19 235.9L297.81 235.9L275.62 275.9L297.81 315.9L342.19 315.9L364.38 275.9Z"
+                            id="bdUHySTSA" />
+                        <path
+                            d="M291.88 318.97L269.69 278.97L225.31 278.97L203.12 318.97L225.31 358.97L269.69 358.97L291.88 318.97Z"
+                            id="n1s6ovGwr" />
+                        <path
+                            d="M218.79 275.49L196.61 235.49L152.23 235.49L130.04 275.49L152.23 315.49L196.61 315.49L218.79 275.49Z"
+                            id="b11W1bKZq" />
+                        <path
+                            d="M218.79 187.79L196.61 147.79L152.23 147.79L130.04 187.79L152.23 227.79L196.61 227.79L218.79 187.79Z"
+                            id="b58BjnnEZZ" />
+                        <path
+                            d="M218.79 363.6L196.61 323.6L152.23 323.6L130.04 363.6L152.23 403.6L196.61 403.6L218.79 363.6Z"
+                            id="b3mXpdasf" />
+                        <path
+                            d="M130.04 452.65L152.34 492.59L196.71 492.48L218.79 452.42L196.5 412.48L152.13 412.59L130.04 452.65Z"
+                            id="a1Mn7laeTX" />
+                        <path
+                            d="M202.43 408.98L224.72 448.93L269.1 448.81L291.18 408.75L268.89 368.81L224.51 368.93L202.43 408.98Z"
+                            id="j70hb6659" />
+                        <path
+                            d="M202.66 496.21L224.95 536.15L269.32 536.04L291.41 495.98L269.12 456.04L224.74 456.15L202.66 496.21Z"
+                            id="k7KRGCyO" />
+                        <path
+                            d="M275.62 452.27L297.92 492.21L342.29 492.09L364.37 452.04L342.08 412.09L297.71 412.21L275.62 452.27Z"
+                            id="b26PfhaZZS" />
+                        <path
+                            d="M348.01 408.47L370.3 448.41L414.68 448.29L436.76 408.23L414.47 368.29L370.09 368.41L348.01 408.47Z"
+                            id="c5uHpM2hlZ" />
+                        <path
+                            d="M348.24 495.83L370.53 535.77L414.91 535.65L436.99 495.6L414.7 455.65L370.32 455.77L348.24 495.83Z"
+                            id="dvL2YfYR" />
+                        <path
+                            d="M275.85 539.97L298.15 579.91L342.52 579.8L364.6 539.74L342.31 499.8L297.94 499.91L275.85 539.97Z"
+                            id="b12V2CYsTZ" />
+                        <path
+                            d="M275.39 364.16L297.69 404.1L342.06 403.98L364.14 363.93L341.85 323.98L297.48 324.1L275.39 364.16Z"
+                            id="din3zraTh" />
+                        <path
+                            d="M347.78 320.9L370.07 360.84L414.45 360.73L436.53 320.67L414.24 280.73L369.86 280.84L347.78 320.9Z"
+                            id="a1r0GW2P6o" />
+                        <path
+                            d="M420.98 364.18L443.27 404.13L487.64 404.01L509.73 363.95L487.43 324.01L443.06 324.13L420.98 364.18Z"
+                            id="j13JIpeOtZ" />
+                        <path
+                            d="M421.21 451.89L443.5 491.83L487.87 491.71L509.96 451.66L487.66 411.71L443.29 411.83L421.21 451.89Z"
+                            id="av9a7PTu9" />
+                        <path
+                            d="M420.75 276.07L443.04 316.02L487.41 315.9L509.5 275.84L487.2 235.9L442.83 236.02L420.75 276.07Z"
+                            id="e5hIgU2NwH" />
+                    </defs>
+                    <g style="transform: scale(1.2) translateY(-8%);transform-origin: top;" id="containerOfSvg">
+                        <g>
+                            <g onclick="boardClick(this,5)">
+                                <use xlink:href="#a5rj8xpdDt" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#a5rj8xpdDt" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,7)">
+                                <use xlink:href="#bBqQ1nJHp" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#bBqQ1nJHp" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,2)">
+                                <use xlink:href="#ak7SVbCPk" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#ak7SVbCPk" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,4)">
+                                <use xlink:href="#a54mZtkfU" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#a54mZtkfU" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,6)">
+                                <use xlink:href="#ac4QWV9se" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#ac4QWV9se" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,1)">
+                                <use xlink:href="#aex5dDdzD" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#aex5dDdzD" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,0)">
+                                <use xlink:href="#c2FtuzzdCb" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#c2FtuzzdCb" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,9)">
+                                <use xlink:href="#bdUHySTSA" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#bdUHySTSA" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,11)">
+                                <use xlink:href="#n1s6ovGwr" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#n1s6ovGwr" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,8)">
+                                <use xlink:href="#b11W1bKZq" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#b11W1bKZq" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,3)">
+                                <use xlink:href="#b58BjnnEZZ" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#b58BjnnEZZ" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,13)">
+                                <use xlink:href="#b3mXpdasf" opacity="1" fill="#868686" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#b3mXpdasf" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,18)">
+                                <use xlink:href="#a1Mn7laeTX" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#a1Mn7laeTX" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,16)">
+                                <use xlink:href="#j70hb6659" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#j70hb6659" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,21)">
+                                <use xlink:href="#k7KRGCyO" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#k7KRGCyO" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,19)">
+                                <use xlink:href="#b26PfhaZZS" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#b26PfhaZZS" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,17)">
+                                <use xlink:href="#c5uHpM2hlZ" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#c5uHpM2hlZ" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,22)">
+                                <use xlink:href="#dvL2YfYR" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#dvL2YfYR" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,23)">
+                                <use xlink:href="#b12V2CYsTZ" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#b12V2CYsTZ" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,14)">
+                                <use xlink:href="#din3zraTh" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#din3zraTh" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,12)">
+                                <use xlink:href="#a1r0GW2P6o" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#a1r0GW2P6o" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,15)">
+                                <use xlink:href="#j13JIpeOtZ" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#j13JIpeOtZ" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,20)">
+                                <use xlink:href="#av9a7PTu9" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#av9a7PTu9" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
+                            <g onclick="boardClick(this,10)">
+                                <use xlink:href="#e5hIgU2NwH" opacity="1" fill="#cbcbcb" fill-opacity="1" />
+                                <g>
+                                    <use xlink:href="#e5hIgU2NwH" opacity="1" fill-opacity="0" stroke="#000000"
+                                        stroke-width="2" stroke-opacity="1" />
+                                </g>
+                            </g>
                         </g>
                     </g>
-                </g>
-            </svg>
-            <div class="tableOverlay"></div>
+                </svg>
+                <div class="tableOverlay"></div>
+            </div>
         </div>
-    </div >
-    <button class="openMainMenuButton" data-bgSVG="menuBtn" onclick="openMainMenu();"></button>
-</div>
-<script src="/socket.io/socket.io.js?v=20"></script>
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/sw.js').then(function(registration) {
-                // Registration was successful
-                registration.onupdatefound = (()=>{
-                    if (null != registration.active) {
-                        const t = registration.installing;
-                        t.onstatechange = (()=>{
+        <button class="openMainMenuButton" data-bgSVG="menuBtn" onclick="openMainMenu();"></button>
+    </div>
+    <script src="/socket.io/socket.io.js?v=20"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').then(function (registration) {
+                    // Registration was successful
+                    registration.onupdatefound = (() => {
+                        if (null != registration.active) {
+                            const t = registration.installing;
+                            t.onstatechange = (() => {
                                 "installed" == t.state && showUpdate()
                             }
-                        )
-                    }
+                            )
+                        }
+                    });
+                }, function (err) {
+                    // registration failed :(
+                    console.log('ServiceWorker registration failed: ', err);
                 });
-            }, function(err) {
-                // registration failed :(
-                console.log('ServiceWorker registration failed: ', err);
             });
-        });
-    }
-    function showUpdate(){
-        document.getElementById("mainMenuUpdateBtn").style.display = "block";
-    }
-</script>
-<script type="text/javascript" src="scripts/index.js?v=20"></script>
-<script src="scripts/particles.js?v=20"></script>
-<script src="scripts/app.js?v=20"></script>
+        }
+        function showUpdate() {
+            document.getElementById("mainMenuUpdateBtn").style.display = "block";
+        }
+    </script>
+    <script type="text/javascript" src="scripts/index.js?v=20"></script>
+    <script src="scripts/particles.js?v=20"></script>
+    <script src="scripts/app.js?v=20"></script>
 </body>
+
 </html>
