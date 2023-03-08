@@ -1,6 +1,6 @@
 # <img src="public/images/icon1024.png" width="30"> Robotory
 
-Robotory is a board game designed in 2006 by Susumu Kawasaki. Try a live demo [here](http://robotory.herokuapp.com).
+Robotory is a board game designed in 2006 by Susumu Kawasaki. Unfortunately, I do not host a live demo anymore.
 > It is a tug-of-war for control of three robots using a dwindling common supply of energy.
 
 ## Rules
